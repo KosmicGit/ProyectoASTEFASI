@@ -1,6 +1,5 @@
 package es.cifpvirgen.Gestion.BaseDatos
 
-import Gestion.*
 import es.cifpvirgen.Data.Log
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario

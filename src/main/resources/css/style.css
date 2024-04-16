@@ -1,0 +1,56 @@
+body {
+    cursor: url('cursor.png'), auto;
+}
+
+.titulo {
+    font-size: 32px; /* Tamaño de la fuente */
+    font-weight: bold; /* Grosor de la fuente */
+    color: #333; /* Color del texto */
+    text-align: center; /* Alineación del texto */
+}
+
+.eslogan {
+    font-size: 24px; /* Tamaño de la fuente */
+    font-style: italic; /* Estilo de la fuente */
+    color: #666; /* Color del texto */
+    text-align: center; /* Alineación del texto */
+    margin-top: 10px; /* Margen superior */
+}
+
+.formulario {
+    text-align: center;
+}
+
+.inputs {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Botón */
+.bigbutton {
+    background-color: #ff69b4; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 15px 30px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    font-size: 18px; /* Tamaño de fuente */
+}
+
+/* Botón cursor sobre él */
+.bigbutton:hover {
+    background-color: #ff1493; /* Cambiar el color de fondo */
+}
+
+/* Botón clic */
+.bigbutton:active {
+    background-color: #db7093; /* Cambiar el color de fondo */
+}
+
+.login-container {
+    background-color: #ADD8E6; /* Azul claro */
+    border-radius: 10px; /* Esquinas redondeadas */
+    padding: 20px; /* Espaciado interno */
+    width: 300px; /* Ancho del contenedor */
+    margin: 0 auto; /* Centrar horizontalmente */
+}
