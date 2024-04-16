@@ -2,6 +2,10 @@ package es.cifpvirgen
 
 import es.cifpvirgen.Pages.Dashboard.dashPage
 import es.cifpvirgen.Pages.Login.loginPage
+import es.cifpvirgen.Pages.checkUser
+import es.cifpvirgen.Paginas.NotFound.notfoundPage
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.plugins.css.CSSPlugin
 import kweb.plugins.javascript.JavascriptPlugin
@@ -16,13 +20,20 @@ fun main() {
             route {
                 // URL "/"
                 path("/") {
-                    //url.value = "/login"
-                    h1().text("hola")
+                    if (!checkUser()) {
+                        url.value = "/login"
+                    } else {
+                        url.value = "/dashboard"
+                    }
                 }
 
                 // URL "/login"
                 path("/login") {
-                    loginPage()
+                    if (checkUser()) {
+                        url.value = "/dashboard"
+                    } else {
+                        loginPage()
+                    }
                 }
 
                 // URL "/dashboard"
@@ -30,8 +41,13 @@ fun main() {
                     dashPage()
                 }
 
+                //PARA PRUEBAS
+                path("/test") {
+
+                }
+
                 notFound {
-                    h1().text("404 Not Found")
+                    notfoundPage()
                 }
             }
         }
