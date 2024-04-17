@@ -9,6 +9,7 @@ import java.sql.SQLException
 
 
 class GestionarUsuarios {
+
     /**
      * Añade un nuevo usuario a la base de datos.
      *
@@ -80,12 +81,12 @@ class GestionarUsuarios {
     /**
      * Obtiene un usuario de la base de datos según su dirección de correo electrónico.
      *
-     * @param email La dirección de correo electrónico del usuario que se desea obtener.
+     * @param username El UserName del usuario que se desea obtener.
      * @return El objeto Usuario correspondiente al correo electrónico proporcionado, o null si no se encuentra en la base de datos.
      */
-    fun obtenerUsuario(email : String) : Usuario? {
-        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE email = ?")
-        statement.setString(1, email)
+    fun obtenerUsuario(username : String) : Usuario? {
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE username = ?")
+        statement.setString(1, username)
         val resultSet = statement.executeQuery()
 
         var usuario: Usuario? = null

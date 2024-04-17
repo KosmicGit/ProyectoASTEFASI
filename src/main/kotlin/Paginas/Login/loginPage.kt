@@ -1,6 +1,10 @@
 package es.cifpvirgen.Paginas.Login
 
+import es.cifpvirgen.Gestion.BaseDatos.ConexionBD
+import es.cifpvirgen.Gestion.BaseDatos.GestionarUsuarios
+import es.cifpvirgen.Gestion.Gestores
 import es.cifpvirgen.Paginas.cabezera
+import es.cifpvirgen.main
 import kweb.*
 import kweb.components.Component
 import kweb.state.KVar
@@ -60,6 +64,7 @@ fun Component.loginPage() {
     }.classes("formulario")
 }
 
-//private fun login(user, passwd) {
+private fun login(user, passwd) {
+    Gestores.gestorUsuarios.obtenerUsuario(user)
 
-//}
+}
