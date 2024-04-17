@@ -50,21 +50,20 @@ fun Component.loginPage() {
                 errorlogin.text = KVar("Por favor introduzca sus datos.")
                 errorlogin.classes("eslogan")
             } else {
-//                if (//login(username, password)) {
-//                    browser.callJsFunction("setCookie('Check', '1234', 10)")
-//                    url.value = "/dashboard"
-//                } else {
-//                    botonlogin.text("Error")
-//                    var errorlogin = h3()
-//                    errorlogin.text = KVar("😢No existe el Usuario o Contraseña.😔")
-//                    errorlogin.classes("eslogan")
-                //}
+                if (login(username, password)) {
+                    browser.callJsFunction("setCookie('Check', '1234', 10)")
+                    url.value = "/dashboard"
+                } else {
+                    botonlogin.text("Error")
+                    var errorlogin = h3()
+                    errorlogin.text = KVar("😢No existe el Usuario o Contraseña.😔")
+                    errorlogin.classes("eslogan")
                 }
-            }
+        }
     }.classes("formulario")
 }
 
-private fun login(user, passwd) {
+private fun login(user: KVar<String>, passwd: KVar<String>) {
     Gestores.gestorUsuarios.obtenerUsuario(user)
 
 }
