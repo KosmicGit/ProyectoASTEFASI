@@ -1,6 +1,6 @@
-package es.cifpvirgen.Pages.Login
+package es.cifpvirgen.Paginas.Login
 
-import es.cifpvirgen.Pages.cabezera
+import es.cifpvirgen.Paginas.cabezera
 import kweb.*
 import kweb.components.Component
 import kweb.state.KVar
@@ -46,19 +46,20 @@ fun Component.loginPage() {
                 errorlogin.text = KVar("Por favor introduzca sus datos.")
                 errorlogin.classes("eslogan")
             } else {
-                /*
-                if (login(username, password)) {
-                    loggedIn = true
-                    browser.callJsFunction("setCookie('Check', '1234', 10)")
-                    url.value = "/dashboard"
-                } else {
-                    botonlogin.text("Error")
-                    var errorlogin = h3()
-                    errorlogin.text = KVar("😢No existe el Usuario o Contraseña.😔")
-                    errorlogin.classes("eslogan")
+//                if (//login(username, password)) {
+//                    browser.callJsFunction("setCookie('Check', '1234', 10)")
+//                    url.value = "/dashboard"
+//                } else {
+//                    botonlogin.text("Error")
+//                    var errorlogin = h3()
+//                    errorlogin.text = KVar("😢No existe el Usuario o Contraseña.😔")
+//                    errorlogin.classes("eslogan")
+                //}
                 }
-                 */
             }
-        }
     }.classes("formulario")
 }
+
+//private fun login(user, passwd) {
+
+//}

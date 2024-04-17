@@ -1,6 +1,6 @@
 package es.cifpvirgen.Paginas.NotFound
 
-import es.cifpvirgen.Pages.cabezera
+import es.cifpvirgen.Paginas.cabezera
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component

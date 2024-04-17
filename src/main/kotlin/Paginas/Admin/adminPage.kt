@@ -1,2 +1,2 @@
-package es.cifpvirgen.Pages.Admin
+package es.cifpvirgen.Paginas.Admin
 

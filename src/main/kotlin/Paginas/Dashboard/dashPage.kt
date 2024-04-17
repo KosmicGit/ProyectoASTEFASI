@@ -1,6 +1,6 @@
-package es.cifpvirgen.Pages.Dashboard
+package es.cifpvirgen.Paginas.Dashboard
 
-import es.cifpvirgen.Pages.checkUser
+import es.cifpvirgen.Paginas.checkUser
 import kweb.components.Component
 
 fun Component.dashPage() {

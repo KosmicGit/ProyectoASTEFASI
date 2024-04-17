@@ -1,6 +1,5 @@
-package es.cifpvirgen.Pages
+package es.cifpvirgen.Paginas
 
-import es.cifpvirgen.Data.Usuario
 import kotlinx.coroutines.launch
 import kweb.components.Component
 import kweb.h1

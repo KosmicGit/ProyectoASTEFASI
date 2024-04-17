@@ -16,13 +16,20 @@ class Encriptacion {
         this.secretKeySpec = SecretKeySpec(secretKey.toByteArray(), "AES")
     }
 
-    fun encriptar(archivo : String, data : String) {
+    fun encriptar(data : String): String {
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
         val encryptedBytes = cipher.doFinal(data.toByteArray())
-        Files.write(Paths.get(archivo), Base64.getEncoder().encode(encryptedBytes))
+        return Base64.getEncoder().encodeToString(encryptedBytes)
     }
 
-    fun desencriptar(archivo : String) : List<String> {
+    fun desencriptar(data : String) : String {
+        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec)
+        val encryptedBytes = Base64.getDecoder().decode(data)
+        val decryptedString = String(cipher.doFinal(encryptedBytes))
+        return decryptedString
+    }
+
+    fun desencriptarBD(archivo : String) : List<String> {
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec)
         val encryptedBytes = Base64.getDecoder().decode(Files.readAllBytes(Paths.get(archivo)))
         val decryptedString = String(cipher.doFinal(encryptedBytes))

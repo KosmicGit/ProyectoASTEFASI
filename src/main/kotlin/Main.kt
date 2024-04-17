@@ -1,11 +1,9 @@
 package es.cifpvirgen
 
-import es.cifpvirgen.Pages.Dashboard.dashPage
-import es.cifpvirgen.Pages.Login.loginPage
-import es.cifpvirgen.Pages.checkUser
+import es.cifpvirgen.Paginas.Dashboard.dashPage
+import es.cifpvirgen.Paginas.Login.loginPage
+import es.cifpvirgen.Paginas.checkUser
 import es.cifpvirgen.Paginas.NotFound.notfoundPage
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.plugins.css.CSSPlugin
 import kweb.plugins.javascript.JavascriptPlugin
@@ -38,12 +36,16 @@ fun main() {
 
                 // URL "/dashboard"
                 path("/dashboard") {
-                    dashPage()
+                    if (!checkUser()) {
+                        url.value = "/login"
+                    } else {
+                        dashPage()
+                    }
                 }
 
                 //PARA PRUEBAS
                 path("/test") {
-
+                    loginPage()
                 }
 
                 notFound {

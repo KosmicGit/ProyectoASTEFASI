@@ -11,13 +11,13 @@ class ConexionBD {
 
     constructor() {
         val credenciales : ArrayList<String> = recogerRemoto()
-        ConexionBD.connection = DriverManager.getConnection(credenciales[2], credenciales[1], credenciales[0])
+        ConexionBD.connection = DriverManager.getConnection(credenciales[2], credenciales[0], credenciales[1])
     }
 
     fun recogerRemoto() : ArrayList<String> {
-        val enc = Encriptacion("A3VapMg22jAlIvO1")
+        val enc = Encriptacion("")
         val credenciales : ArrayList<String> = arrayListOf()
-        enc.desencriptar("credencialesRemoto.dat").forEach {str ->
+        enc.desencriptarBD("SqlServer.dat").forEach { str ->
             credenciales.add(str)
         }
         return credenciales
