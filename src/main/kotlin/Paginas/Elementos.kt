@@ -9,20 +9,18 @@ import kweb.h3
 //Estilos
 fun Component.cabezera() {
     div {
-        div {
-            element("center") {
-                //Titulo
-                val titulo = h1()
-                titulo.text("Asociación de Terapeutas familiares Sistémicos")
-                titulo.classes("title")
+        element("center") {
+            //Titulo
+            val titulo = h1()
+            titulo.text("Asociación de Terapeutas familiares Sistémicos")
+            titulo.classes("title")
 
-                //Eslogan
-                val eslogan = h3()
-                eslogan.text("🌈 Empresa de emociones, sentimientos y terapias.🌤️")
-                eslogan.classes("subtitle has-text-gray")
-            }
-        }.classes("box-eslogan")
-    }.classes("container")
+            //Eslogan
+            val eslogan = h3()
+            eslogan.text("🌈 Empresa de emociones, sentimientos y terapias.🌤️")
+            eslogan.classes("subtitle has-text-gray")
+        }
+    }.classes("box")
 }
 
 //Funciones
@@ -35,12 +33,4 @@ fun Component.checkUser(): Boolean {
         }
     }
     return check
-}
-
-fun Component.addCookie() {
-
-}
-
-fun Component.login() {
-
 }

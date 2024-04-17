@@ -12,7 +12,7 @@ class Gestores {
 
     companion object {
         //Gestores
-        val encript = Encriptacion("A3VapMg22jAlIvO1")
+        val encript = Encriptacion("")
         val conexion = ConexionBD()
         val gestorUsuarios = GestionarUsuarios()
         val gestorLogs = GestionarLogs()
