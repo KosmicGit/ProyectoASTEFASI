@@ -1,27 +1,30 @@
 // Establecer Cookie
-function setCookie(nombre, valor, minutosParaExpirar) {
-    var fechaExpiracion = new Date();
-    fechaExpiracion.setTime(fechaExpiracion.getTime() + (minutosParaExpirar * 60 * 1000));
-    var expiracion = "expires=" + fechaExpiracion.toUTCString();
-    document.cookie = nombre + "=" + valor + ";" + expiracion + ";path=/";
+function guardarCookie(valor) {
+    var ahora = new Date();
+    var tiempoExpiracion = ahora.getTime() + 30 * 60 * 1000;
+    ahora.setTime(tiempoExpiracion);
+    document.cookie = 'sesion=' + encodeURIComponent(valor) + ';expires=' + ahora.toUTCString() + ';path=/';
 }
 
-// Comprobar Cookie
-function checkCookie(cookieName) {
+// Obtener valor de Cookie
+function obtenerValorDeSesion() {
+    var nombre = 'sesion' + '=';
     var cookies = document.cookie.split(';');
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];
         while (cookie.charAt(0) == ' ') {
             cookie = cookie.substring(1);
         }
-        if (cookie.indexOf(cookieName + '=') == 0) {
-            return true;
+        if (cookie.indexOf(nombre) == 0) {
+            return decodeURIComponent(cookie.substring(nombre.length, cookie.length));
         }
     }
-    return false;
+    return null;
 }
 
-//Eliminar Cookie
-function deleteCookie(nombre) {
-    document.cookie = nombre + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+// Redirigir a url
+function redirect(url) {
+    var origen = window.location.origin;
+    var destino = origen + url;
+    window.location.href = destino
 }

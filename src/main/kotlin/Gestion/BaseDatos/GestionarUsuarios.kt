@@ -4,6 +4,7 @@ import es.cifpvirgen.Data.Log
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.DebugColors
+import es.cifpvirgen.Gestion.Encriptacion
 import es.cifpvirgen.Gestion.Gestores
 import java.sql.SQLException
 
@@ -22,7 +23,7 @@ class GestionarUsuarios {
             val statement = ConexionBD.connection!!.prepareStatement(query)
             statement.setString(1, usuario.username)
             statement.setString(2, usuario.email)
-            statement.setString(3, usuario.password)
+            statement.setString(3, Gestores.encript.encriptar(usuario.password))
             when (usuario.rol) {
                 Roles.TERAPEUTA -> {
                     statement.setInt(4,1)
@@ -96,7 +97,7 @@ class GestionarUsuarios {
                 val idUsuario = resultSet.getInt("idUsuario")
                 val username = resultSet.getString("username")
                 val email = resultSet.getString("email")
-                val password = resultSet.getString("password")
+                val password = Gestores.encript.desencriptar(resultSet.getString("password"))
                 var rol: Roles
                 if (resultSet.getInt("rol") == 1) {
                     rol = Roles.TERAPEUTA
@@ -174,7 +175,7 @@ class GestionarUsuarios {
                 val statement = ConexionBD.connection!!.prepareStatement(query)
                 statement.setString(1, datosNuevos.username)
                 statement.setString(2, datosNuevos.email)
-                statement.setString(3, datosNuevos.password)
+                statement.setString(3, Gestores.encript.encriptar(datosNuevos.password))
                 statement.setString(4, usuarioOriginal.email)
 
                 var cambios = ""
@@ -217,8 +218,8 @@ class GestionarUsuarios {
 
         try {
             while (resultSet.next()) {
-                val email = resultSet.getString("email")
-                val usuario = obtenerUsuario(email)
+                val username = resultSet.getString("username")
+                val usuario = obtenerUsuario(username)
                 if (usuario != null) {
                     listaUsuarios.add(usuario)
                 }
