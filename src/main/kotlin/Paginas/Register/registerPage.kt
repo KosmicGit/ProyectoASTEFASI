@@ -17,7 +17,9 @@ fun Component.registerPage() {
                     div {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
-                            element.href = "/"
+                            element.on.click {
+                                browser.callJsFunction("redirect({})", "/".json)
+                            }
                         }.classes("navbar-item")
                         span {
                             element.setAttributes("data-target" to JsonPrimitive("navbarMenuHeroC"))
@@ -31,7 +33,9 @@ fun Component.registerPage() {
                         element.classes("navbar-menu")
                         div {
                             a {
-                                element.href = "/"
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/".json)
+                                }
                                 span {
                                     span {
                                         i().classes("fa-solid fa-house")
@@ -40,7 +44,9 @@ fun Component.registerPage() {
                                 }.classes("icon-text")
                             }.classes("navbar-item is-active")
                             a {
-                                element.href = "/documentation"
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                }
                                 span {
                                     span {
                                         i().classes("fa-solid fa-book")
@@ -158,7 +164,9 @@ fun Component.registerPage() {
                         li {
                             a {
                                 element.text("Main")
-                                element.href = "/"
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/".json)
+                                }
                             }
                         }
                         li {
@@ -169,7 +177,9 @@ fun Component.registerPage() {
                                     }.classes("icon")
                                     span().text("Login")
                                 }.classes("icon-text")
-                                element.href = "/login"
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/login".json)
+                                }
                             }
                         }
                         li {

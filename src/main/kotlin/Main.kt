@@ -1,14 +1,27 @@
 package es.cifpvirgen
 
+import es.cifpvirgen.Paginas.Documentation.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
+import es.cifpvirgen.Paginas.Documentation.installdocPage
+import es.cifpvirgen.Paginas.Documentation.usedocPage
 import es.cifpvirgen.Paginas.Home.homePage
 import es.cifpvirgen.Paginas.Login.loginPage
 import es.cifpvirgen.Paginas.NotFound.notfoundPage
 import es.cifpvirgen.Paginas.Register.registerPage
+import es.cifpvirgen.Paginas.Register.registerSuccess
+import io.ktor.server.servlet.*
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.internal.writeJson
+import kotlinx.serialization.json.put
+import io.ktor.*
 import kweb.*
 import kweb.plugins.css.CSSPlugin
 import kweb.plugins.javascript.JavascriptPlugin
+import kweb.state.KVal
+import kweb.state.KVar
+import kweb.util.json
 import java.net.URI
+import javax.swing.text.Document
 
 
 fun main() {
@@ -26,9 +39,21 @@ fun main() {
                     homePage()
                 }
 
-                // URL "/documentation"
-                path("/documentation") {
+                // URL "/doc"
+                path("/doc") {
                     documentPage()
+                }
+
+                path("/doc/install") {
+                    installdocPage()
+                }
+
+                path("/doc/use") {
+                    usedocPage()
+                }
+
+                path("/doc/credits") {
+                    creditsdocPage()
                 }
 
                 // URL "/login"
@@ -43,7 +68,14 @@ fun main() {
 
                 // URL "/register/success"
                 path("/register/success") {
+                    registerSuccess()
+                }
 
+                path("/api/{apikey}") { params ->
+                    val apikey = params.getValue("apikey").value
+                    if (apikey == "") {
+                        callJsFunction("redirect({})", "/".json)
+                    }
                 }
 
                 notFound {

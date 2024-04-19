@@ -2865,6 +2865,8 @@ textarea {
 
 html {
   box-sizing: border-box;
+  cursor : pointer;
+  cursor : url("pointer.png"), auto;
 }
 
 *, *::before, *::after {

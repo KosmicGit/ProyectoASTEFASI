@@ -44,7 +44,7 @@ fun Component.loginPage(){
                             }.classes("navbar-item is-active")
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/documentation".json)
+                                    browser.callJsFunction("redirect({})", "/doc".json)
                                 }
                                 span {
                                     span {

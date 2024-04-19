@@ -14,7 +14,7 @@ fun Component.documentPage() {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                             element.on.click {
-                                element.href = "/"
+                                browser.callJsFunction("redirect({})", "/".json)
                             }
                         }.classes("navbar-item is-selected")
                         span {
@@ -46,9 +46,6 @@ fun Component.documentPage() {
                                 }.classes("icon-text")
                             }.classes("navbar-item has-text-black")
                             a {
-                                element.on.click {
-                                    browser.callJsFunction("redirect({})", "/documentation".json)
-                                }
                                 span {
                                     span {
                                         i().classes("fa-solid fa-book")
@@ -62,9 +59,7 @@ fun Component.documentPage() {
                                         i().classes("fab fa-github")
                                     }.classes("icon")
                                     span().text("Github")
-                                    element.on.click {
-                                        browser.callJsFunction("redirectExternal({})", "https://github.com/KosmicGit/ProyectoASTEFASI".json)
-                                    }
+                                    element.href = "https://github.com/KosmicGit/ProyectoASTEFASI"
                                 }.classes("button")
                             }.classes("navbar-item")
                         }.classes("navbar-end")
@@ -93,11 +88,41 @@ fun Component.documentPage() {
                     element.classes("container")
                     ul {
                         li { a().text("Introducción") }.classes("is-active")
-                        li { a().text("Instalación") }
-                        li { a().text("Uso básico") }
-                        li { a().text("Overview") }
-                        li { a().text("Overview") }
-                        li { a().text("Créditos") }
+                        li {
+                            a{
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                }
+                            }.text("Instalación")
+                        }
+                        li {
+                            a{
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc/use".json)
+                                }
+                            }.text("Uso básico")
+                        }
+                        li {
+                            a{
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                }
+                            }.text("Overview")
+                        }
+                        li {
+                            a{
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                }
+                            }.text("Overview")
+                        }
+                        li {
+                            a{
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc/credits".json)
+                                }
+                            }.text("Créditos")
+                        }
                     }
                 }
             }

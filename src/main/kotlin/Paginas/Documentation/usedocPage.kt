@@ -1,11 +1,11 @@
-package es.cifpvirgen.Paginas.Home
+package es.cifpvirgen.Paginas.Documentation
 
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
 import kweb.util.json
 
-fun Component.homePage() {
+fun Component.usedocPage() {
     section {
         div {
             element("header") {
@@ -13,7 +13,10 @@ fun Component.homePage() {
                     div {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
-                        }.classes("navbar-item")
+                            element.on.click {
+                                browser.callJsFunction("redirect({})", "/".json)
+                            }
+                        }.classes("navbar-item is-selected")
                         span {
                             element.setAttributes("data-target" to JsonPrimitive("navbarMenuHeroC"))
                             span {  }
@@ -26,24 +29,30 @@ fun Component.homePage() {
                         element.classes("navbar-menu")
                         div {
                             a {
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/".json)
+                                }
+                                element.on.mouseenter {
+                                    element.classes("navbar-item")
+                                }
+                                element.on.mouseleave {
+                                    element.classes("navbar-item has-text-black")
+                                }
                                 span {
                                     span {
                                         i().classes("fa-solid fa-house")
                                     }.classes("icon")
                                     span().text("Home")
                                 }.classes("icon-text")
-                            }.classes("navbar-item is-active")
+                            }.classes("navbar-item has-text-black")
                             a {
-                                element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc".json)
-                                }
                                 span {
                                     span {
                                         i().classes("fa-solid fa-book")
                                     }.classes("icon")
                                     span().text("Documentation")
                                 }.classes("icon-text")
-                            }.classes("navbar-item")
+                            }.classes("navbar-item is-active")
                             span {
                                 a {
                                     span {
@@ -56,14 +65,20 @@ fun Component.homePage() {
                         }.classes("navbar-end")
                     }.id = "navbarMenuHeroC"
                 }.classes("container")
-            }.classes("navbar")
+            }.classes("navbar is-black")
         }.classes("hero-head")
 
         div {
             div {
-                p { element.text("Asociación de Terapeutas Familiares Sistémicos") }.classes("title")
-                p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }.classes("subtitle")
-            }.classes("container has-text-centered")
+                div {
+                    p { element.text("AsTeFaSi es un proyecto final para 1º DAW.") }
+                    p { element.text("En él se trata de poner en conocimiento de los docentes, las habilidades adquiridas por los alumnos.") }
+                    p { element.text("Desde Base de Datos hasta Administración de Sistemas, pasando por Lenguajes de Marcas y por supuesto Programación") }
+                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
+                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
+                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
+                }.classes("box")
+            }.classes("container has-text-centered hax-text-white")
         }.classes("hero-body")
 
         div {
@@ -72,36 +87,33 @@ fun Component.homePage() {
                 div {
                     element.classes("container")
                     ul {
-                        li { a().text("Main") }.classes("is-active")
                         li {
-                            a {
-                                span {
-                                    span {
-                                        i().classes("fa-solid fa-right-to-bracket ")
-                                    }.classes("icon")
-                                    span().text("Login")
-                                }.classes("icon-text")
+                            a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/login".json)
+                                    browser.callJsFunction("redirect({})", "/doc".json)
                                 }
-                            }
+                            }.text("Introducción")
                         }
                         li {
-                            a {
-                                span {
-                                    span {
-                                        i().classes("fa-solid fa-user-plus")
-                                    }.classes("icon")
-                                    span().text("Register")
-                                }.classes("icon-text")
+                            a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/register".json)
+                                    browser.callJsFunction("redirect({})", "/doc/install".json)
                                 }
-                            }
+                            }.text("Instalación")
+                        }
+                        li { a().text("Uso básico") }.classes("is-active")
+                        li { a().text("Overview") }
+                        li { a().text("Overview") }
+                        li {
+                            a{
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc/credits".json)
+                                }
+                            }.text("Créditos")
                         }
                     }
                 }
             }
         }.classes("hero-foot")
-    }.classes("hero is-link is-fullheight")
+    }.classes("hero is-warning is-fullheight")
 }
