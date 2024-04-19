@@ -11,12 +11,12 @@ repositories {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    implementation("io.kweb:kweb-core:1.4.11")
+    implementation("io.kweb:kweb-core:1.4.12")
 
     // This (or another SLF4J binding) is required for Kweb to log errors
     implementation("org.slf4j:slf4j-simple:2.0.3")
 
-    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("mysql:mysql-connector-java:8.3.0")
 
     //Google GSON
     implementation("com.google.code.gson:gson:2.10.1")
