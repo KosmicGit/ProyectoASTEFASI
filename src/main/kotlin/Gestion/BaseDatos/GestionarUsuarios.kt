@@ -4,7 +4,6 @@ import es.cifpvirgen.Data.Log
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.DebugColors
-import es.cifpvirgen.Gestion.Encriptacion
 import es.cifpvirgen.Gestion.Gestores
 import java.sql.SQLException
 
@@ -14,25 +13,52 @@ class GestionarUsuarios {
     /**
      * Añade un nuevo usuario a la base de datos.
      *
+     * @return ultimoID El último ID de la base de Datos, en caso de haber un error, devuelve nulo
+     */
+    fun obtenerUltimoID(): Int? {
+        val query = "SELECT MAX(idUsuario) FROM Usuario"
+        var ultimoID: Int? = null
+
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        val resultSet = statement.executeQuery()
+
+        try {
+            if (resultSet.next()) {
+                ultimoID = resultSet.getInt(1)
+            }
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al obtener los datos de los usuarios:")
+            println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+        } finally {
+            resultSet.close()
+            statement.close()
+        }
+        return ultimoID
+    }
+
+    /**
+     * Añade un nuevo usuario a la base de datos.
+     *
      * @param usuario El objeto Usuario que se va a añadir a la base de datos.
      */
     fun addUsuario(usuario : Usuario) {
-        val query = "INSERT INTO Usuario (username, email, password, rol) VALUES (?, ?, ?, ?)"
+        val query = "INSERT INTO Usuario (idUsuario, username, email, password, rol) VALUES (?, ?, ?, ?, ?)"
 
         try {
             val statement = ConexionBD.connection!!.prepareStatement(query)
-            statement.setString(1, usuario.username)
-            statement.setString(2, usuario.email)
-            statement.setString(3, Gestores.encript.encriptar(usuario.password))
+            statement.setInt(1, usuario.idUsuario)
+            statement.setString(2, usuario.username)
+            statement.setString(3, usuario.email)
+            statement.setString(4, Gestores.encript.encriptar(usuario.password))
             when (usuario.rol) {
                 Roles.TERAPEUTA -> {
-                    statement.setInt(4,1)
+                    statement.setInt(5,1)
                 }
                 Roles.ADMINISTRADOR -> {
-                    statement.setInt(4, 2)
+                    statement.setInt(5, 2)
                 }
                 else -> {
-                    statement.setInt(4, 0)
+                    statement.setInt(5, 0)
                 }
             }
             val logRegistro = Log(usuario.username, usuario.email, Gestores.fechaActual(), "Usuario creado")

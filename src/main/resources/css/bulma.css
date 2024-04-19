@@ -22434,27 +22434,4 @@ has-background-danger.is-hoverable:active {
   pointer-events: all !important;
 }
 
-.titulo {
-  font-size: 32px; /* Tamaño de la fuente */
-  font-weight: bold; /* Grosor de la fuente */
-  color: #333; /* Color del texto */
-  text-align: center; /* Alineación del texto */
-}
-
-.eslogan {
-  font-size: 24px; /* Tamaño de la fuente */
-  font-style: italic; /* Estilo de la fuente */
-  color: #666; /* Color del texto */
-  text-align: center; /* Alineación del texto */
-  margin-top: 10px; /* Margen superior */
-}
-
-.formulario {
-  text-align: center;
-}
-
-.box-eslongan {
-  background-color: #000;
-}
-
 /*# sourceMappingURL=bulma.css.map */
