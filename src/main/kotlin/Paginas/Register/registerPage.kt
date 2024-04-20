@@ -120,6 +120,7 @@ fun Component.registerPage() {
                                     botonRegistro.text("Registrarse")
                                     botonRegistro.classes("button is-primary")
                                     botonRegistro.on.click {
+                                        br()
                                         botonRegistro.classes("button is-link is-loading")
                                         if (username.value == "" || password.value == "" || email.value == "") {
                                             botonRegistro.classes("button is-danger")
@@ -133,6 +134,7 @@ fun Component.registerPage() {
                                                     errorRegistro.text = KVar("Error al registrarse.")
                                                     botonRegistro.classes("button is-danger")
                                                     botonRegistro.text("Error")
+                                                    botonRegistro.on.mouseleave { element.classes("button is-primary") }
                                                 }
                                                 1 -> {
                                                     val errorRegistro = h3()
@@ -141,7 +143,7 @@ fun Component.registerPage() {
                                                     botonRegistro.text("Error")
                                                 }
                                                 4 -> {
-                                                    browser.callJsFunction("exitoRegistro()")
+                                                    browser.callJsFunction("exitoRegistro({})", Gestores.encriptarUsuario(Usuario( 0, username.value, email.value, "", Roles.PACIENTE, false)).json)
                                                     browser.callJsFunction("redirect({})", "/register/success".json)
                                                 }
                                             }
@@ -215,7 +217,7 @@ private fun register(user: KVar<String>, email: KVar<String>, passwd: KVar<Strin
     if (usuario == null) {
         val ultimoID = Gestores.gestorUsuarios.obtenerUltimoID()
         if (ultimoID != null) {
-            val nuevoRegistro = Usuario(ultimoID, user.value, email.value, passwd.value, Roles.PACIENTE)
+            val nuevoRegistro = Usuario(ultimoID + 1, user.value, email.value, passwd.value, Roles.PACIENTE, false)
             Gestores.gestorUsuarios.addUsuario(nuevoRegistro)
             if (Gestores.gestorUsuarios.obtenerUsuario(user.value) == null) {
                 idSalida = 3

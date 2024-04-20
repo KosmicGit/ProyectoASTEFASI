@@ -14,6 +14,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.internal.writeJson
 import kotlinx.serialization.json.put
 import io.ktor.*
+import kotlinx.coroutines.launch
 import kweb.*
 import kweb.plugins.css.CSSPlugin
 import kweb.plugins.javascript.JavascriptPlugin
@@ -68,14 +69,20 @@ fun main() {
 
                 // URL "/register/success"
                 path("/register/success") {
-                    registerSuccess()
+                    elementScope().launch {
+                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarExito()").toString()
+                        if (comprobarCookie == "true") {
+                            registerSuccess()
+                        } else {
+                            url.value = "/register"
+                        }
+                    }
                 }
 
-                path("/api/{apikey}") { params ->
-                    val apikey = params.getValue("apikey").value
-                    if (apikey == "") {
-                        callJsFunction("redirect({})", "/".json)
-                    }
+                // URL "/register/activate/{activateID}"
+                path("/register/activate/{activateID}") { params ->
+                    val activateID = params.getValue("activateID").value
+
                 }
 
                 notFound {

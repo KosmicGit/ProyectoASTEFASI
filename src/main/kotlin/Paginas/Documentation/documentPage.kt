@@ -6,6 +6,7 @@ import kweb.components.Component
 import kweb.util.json
 
 fun Component.documentPage() {
+    //TODO("Completar Documentación")
     section {
         div {
             element("header") {

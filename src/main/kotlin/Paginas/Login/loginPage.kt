@@ -130,14 +130,21 @@ fun Component.loginPage(){
                                         } else {
                                             val usuario = login(username, password)
                                             if (usuario != null) {
-                                                browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(usuario).json)
-                                                browser.callJsFunction("redirect({})", "/registrar".json)
+                                                if (usuario.verificado) {
+                                                    browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(usuario).json)
+                                                    browser.callJsFunction("redirect({})", "/registrar".json)
+                                                } else {
+                                                    botonlogin.classes("button is-danger")
+                                                    botonlogin.text("Error")
+                                                    val errorlogin = h3()
+                                                    errorlogin.text = KVar("Usuario no activado. Compruebe su correo")
+                                                }
+
                                             } else {
                                                 botonlogin.classes("button is-danger")
                                                 botonlogin.text("Error")
                                                 val errorlogin = h3()
                                                 errorlogin.text = KVar("😢No existe el Usuario o Contraseña.😔")
-                                                errorlogin.classes("eslogan")
                                             }
                                         }
                                     }

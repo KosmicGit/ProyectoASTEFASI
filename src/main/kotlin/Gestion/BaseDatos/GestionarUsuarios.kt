@@ -9,6 +9,7 @@ import java.sql.SQLException
 
 
 class GestionarUsuarios {
+    //TODO("Metodo para verificar cuenta")
 
     /**
      * Añade un nuevo usuario a la base de datos.
@@ -42,7 +43,7 @@ class GestionarUsuarios {
      * @param usuario El objeto Usuario que se va a añadir a la base de datos.
      */
     fun addUsuario(usuario : Usuario) {
-        val query = "INSERT INTO Usuario (idUsuario, username, email, password, rol) VALUES (?, ?, ?, ?, ?)"
+        val query = "INSERT INTO Usuario (idUsuario, username, email, password, rol, verificado) VALUES (?, ?, ?, ?, ?, ?)"
 
         try {
             val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -61,6 +62,8 @@ class GestionarUsuarios {
                     statement.setInt(5, 0)
                 }
             }
+            statement.setBoolean(6, usuario.verificado)
+
             val logRegistro = Log(usuario.username, usuario.email, Gestores.fechaActual(), "Usuario creado")
             Gestores.gestorLogs.addLog(logRegistro)
 
@@ -69,6 +72,7 @@ class GestionarUsuarios {
         } catch (e: SQLException) {
             if (e.errorCode == 1062) {
                 println(DebugColors.error() + " El usuario ya existe.")
+                println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
             } else {
                 println(DebugColors.error() + " Error al añadir al usuario:")
                 println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
@@ -132,8 +136,12 @@ class GestionarUsuarios {
                 } else {
                     rol = Roles.PACIENTE
                 }
+                var verificado = false
+                if (resultSet.getInt("verificado") == 1) {
+                    verificado = true
+                }
 
-                usuario = Usuario(idUsuario, username, email, password, rol)
+                usuario = Usuario(idUsuario, username, email, password, rol, verificado)
             }
         } catch (e: SQLException) {
             println(DebugColors.error() + " Error al obtener los datos del usuario:")

@@ -2,10 +2,10 @@ package es.cifpvirgen.Data
 
 import kweb.state.KVar
 
-data class Usuario(var idUsuario: Int, var username: String, var email: String, var password: String, var rol: Roles) {
+data class Usuario(var idUsuario: Int, var username: String, var email: String, var password: String, var rol: Roles, var verificado: Boolean) {
 
     fun copy(): Usuario {
-        return Usuario(this.idUsuario, this.username, this.email, this.password, this.rol)
+        return Usuario(this.idUsuario, this.username, this.email, this.password, this.rol, this.verificado)
     }
 
     companion object {
