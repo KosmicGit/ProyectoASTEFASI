@@ -15,7 +15,7 @@ class ConexionBD {
         ConexionBD.connection = DriverManager.getConnection(credenciales[2], credenciales[0], credenciales[1])
     }
 
-    fun recogerRemoto() : ArrayList<String> {
+    private fun recogerRemoto() : ArrayList<String> {
         val credenciales : ArrayList<String> = arrayListOf()
         Gestores.encript.desencriptarBD("SqlSecret.dat").forEach { str ->
             credenciales.add(str)

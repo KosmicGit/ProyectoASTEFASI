@@ -13,6 +13,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("io.kweb:kweb-core:1.4.12")
 
+    implementation("com.sun.mail:javax.mail:1.6.2")
+
     // This (or another SLF4J binding) is required for Kweb to log errors
     implementation("org.slf4j:slf4j-simple:2.0.3")
 

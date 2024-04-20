@@ -74,10 +74,6 @@ fun Component.registerSuccess() {
 
             div {
                 div {
-                    val username = kvar("")
-                    val email = kvar("")
-                    val password = kvar("")
-
                     div {
                         element("center") {
                             div {
@@ -88,7 +84,10 @@ fun Component.registerSuccess() {
                                     element("hr")
                                     p { element.text("¿Ahora que?") }.classes("subtitle is-5")
                                     p { element.text("Revise en la bandeja de su correo electónico "); element("u") { element.text(usuario.email) } }
-                                    p { element.text("en busca del correo que le hemos mandado para activar su cuenta") }
+                                    p { element.text("en busca del correo que le hemos enviado para activar su cuenta") }
+                                    br()
+                                    p { element.text("Recuerde:") }
+                                    p { element.text("No podrá acceder a las descargas y al programa hasta que no verifique su cuenta.") }
                                 }.classes("box")
                             }.classes("column is-half")
                         }

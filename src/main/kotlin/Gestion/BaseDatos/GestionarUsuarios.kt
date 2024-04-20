@@ -9,8 +9,6 @@ import java.sql.SQLException
 
 
 class GestionarUsuarios {
-    //TODO("Metodo para verificar cuenta")
-
     /**
      * Añade un nuevo usuario a la base de datos.
      *
@@ -37,6 +35,49 @@ class GestionarUsuarios {
         return ultimoID
     }
 
+    fun verificarUsuario(usuario: Usuario) {
+        val query = "UPDATE Usuario SET verificado = ? WHERE email = ?"
+
+        try {
+            val statement = ConexionBD.connection!!.prepareStatement(query)
+            statement.setInt(1, 1)
+            statement.setString(2, usuario.email)
+
+            val logPermiso = Log(usuario.username, usuario.email, Gestores.fechaActual(), "Usuario Verificado.")
+            Gestores.gestorLogs.addLog(logPermiso)
+
+            statement.executeUpdate()
+            statement.close()
+            println(DebugColors.ok() + " Usuario verificado con éxito")
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al cambiar el permiso del usuario:")
+            println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+        }
+    }
+
+    fun estaVerificado(usuario: Usuario): Boolean {
+        val query = "SELECT verificado FROM Usuario WHERE email = ?"
+        var verificado = false
+
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        statement.setString(1, usuario.email)
+        val resultSet = statement.executeQuery()
+
+        try {
+            if (resultSet.next()) {
+                if (resultSet.getInt("verificado") == 1) {
+                    verificado = true
+                }
+            }
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al obtener el estado de verificación del usuario:")
+            println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+        } finally {
+            resultSet.close()
+            statement.close()
+        }
+        return verificado
+    }
     /**
      * Añade un nuevo usuario a la base de datos.
      *

@@ -22,15 +22,3 @@ fun Component.cabezera() {
         }
     }.classes("box")
 }
-
-//Funciones
-fun Component.checkUser(): Boolean {
-    var check = false
-    elementScope().launch {
-        val resultado = browser.callJsFunctionWithResult("return checkCookie('check')")
-        if (resultado.toString() == "true") {
-            check = true
-        }
-    }
-    return check
-}

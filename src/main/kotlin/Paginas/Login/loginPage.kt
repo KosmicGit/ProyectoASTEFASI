@@ -132,7 +132,7 @@ fun Component.loginPage(){
                                             if (usuario != null) {
                                                 if (usuario.verificado) {
                                                     browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(usuario).json)
-                                                    browser.callJsFunction("redirect({})", "/registrar".json)
+                                                    browser.callJsFunction("redirect({})", "/downloads".json)
                                                 } else {
                                                     botonlogin.classes("button is-danger")
                                                     botonlogin.text("Error")

@@ -2,6 +2,7 @@ package es.cifpvirgen.Paginas.Register
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
+import es.cifpvirgen.Gestion.Email.ConexionMail
 import es.cifpvirgen.Gestion.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
@@ -120,8 +121,8 @@ fun Component.registerPage() {
                                     botonRegistro.text("Registrarse")
                                     botonRegistro.classes("button is-primary")
                                     botonRegistro.on.click {
-                                        br()
                                         botonRegistro.classes("button is-link is-loading")
+                                        br()
                                         if (username.value == "" || password.value == "" || email.value == "") {
                                             botonRegistro.classes("button is-danger")
                                             botonRegistro.text("Error")
@@ -143,7 +144,11 @@ fun Component.registerPage() {
                                                     botonRegistro.text("Error")
                                                 }
                                                 4 -> {
-                                                    browser.callJsFunction("exitoRegistro({})", Gestores.encriptarUsuario(Usuario( 0, username.value, email.value, "", Roles.PACIENTE, false)).json)
+                                                    val userKey = Gestores.encriptarUsuario(Usuario( 0, username.value, email.value, "", Roles.PACIENTE, false))
+                                                    browser.callJsFunction("exitoRegistro({})", userKey.json)
+                                                    Gestores.gestorMail.enviarCorreo(email.value, "AsTeFaSi: Active su cuenta.", "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +
+                                                            "<h1>Bienvenido a bordo ${username.value}!</h1>" + "<p>Utilice el siguiente enlace para activar su cuenta:</p>" + "<a href='http://localhost:8080/register/activate/${Gestores.codificarURL(userKey)}'>Activa tu cuenta aquí</a>" +
+                                                            "<p>Recuerde que es necesario realizar la activación de la cuenta para poder descargar y acceder a la Aplicación.</p>")
                                                     browser.callJsFunction("redirect({})", "/register/success".json)
                                                 }
                                             }
