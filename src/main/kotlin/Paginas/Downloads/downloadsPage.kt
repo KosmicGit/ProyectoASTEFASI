@@ -1,7 +1,234 @@
 package es.cifpvirgen.Paginas.Downloads
 
+import es.cifpvirgen.Data.Roles
+import es.cifpvirgen.Data.Usuario
+import kotlinx.serialization.json.JsonPrimitive
+import kweb.*
 import kweb.components.Component
+import kweb.util.json
 
-fun Component.downloadsPage() {
-    //TODO("Realizar pagina Descargas")
+fun Component.downloadsPage(usuario: Usuario) {
+    //TODO("Añadir archivos reales")
+    //TODO("Añadir funcionalidad botón exit")
+    section {
+        div {
+            element("header") {
+                div {
+                    div {
+                        a {
+                            img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
+                            element.on.click {
+                                browser.callJsFunction("redirect({})", "/".json)
+                            }
+                        }.classes("navbar-item is-selected")
+                        span {
+                            element.setAttributes("data-target" to JsonPrimitive("navbarMenuHeroC"))
+                            span {  }
+                            span {  }
+                            span {  }
+                            span {  }
+                        }.classes("navbar-burger")
+                    }.classes("navbar-brand")
+                    div {
+                        element.classes("navbar-menu")
+                        div {
+                            a {
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/".json)
+                                }
+                                element.on.mouseenter {
+                                    element.classes("navbar-item")
+                                }
+                                element.on.mouseleave {
+                                    element.classes("navbar-item has-text-black")
+                                }
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-house")
+                                    }.classes("icon")
+                                    span().text("Home")
+                                }.classes("icon-text")
+                            }.classes("navbar-item has-text-black")
+                            a {
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                }
+                                element.on.mouseenter {
+                                    element.classes("navbar-item")
+                                }
+                                element.on.mouseleave {
+                                    element.classes("navbar-item has-text-black")
+                                }
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-book")
+                                    }.classes("icon")
+                                    span().text("Documentation")
+                                }.classes("icon-text")
+                            }.classes("navbar-item has-text-black")
+                            span {
+                                a {
+                                    span {
+                                        i().classes("fab fa-github")
+                                    }.classes("icon")
+                                    span().text("Github")
+                                    element.href = "https://github.com/KosmicGit/ProyectoASTEFASI"
+                                }.classes("button")
+                            }.classes("navbar-item")
+                            span {
+                                a {
+                                    span {
+                                        i().classes("fa-solid fa-right-from-bracket")
+                                    }.classes("icon")
+                                    span().text("Salir")
+                                    element.href = "https://github.com/KosmicGit/ProyectoASTEFASI"
+                                }.classes("button is-danger is-inverted")
+                            }.classes("navbar-item")
+                        }.classes("navbar-end")
+                    }.id = "navbarMenuHeroC"
+                }.classes("container")
+            }.classes("navbar is-black")
+        }.classes("hero-head")
+
+        div {
+            div {
+                div {
+                    div {
+                        div {
+                            div {
+                                div {
+                                    div {
+                                        div {
+                                            p {
+                                                li{
+                                                    element("strong").text("AsTeFasi Sessions")
+                                                    element.addText( ": Gestor de sesiones terapeuticas.")
+                                                }
+                                            }
+                                        }.classes("column")
+                                    }.classes("columns has-text-left")
+                                    div {
+                                        div {
+                                            div {
+                                                div {
+                                                    p {
+                                                        a {
+                                                            span {
+                                                                i().classes("fa-solid fa-download")
+                                                            }.classes("icon")
+                                                            span().text("Download")
+                                                            element.href = "https://cifpvirgendegracia.com/"
+                                                        }.classes("button is-warning is-inverted")
+                                                    }
+                                                }.classes("column is-4")
+                                                div {
+                                                    div {
+                                                        div {
+                                                            p().text("Version: 1.0")
+                                                        }.classes("column")
+                                                    }.classes("columns")
+                                                    div {
+                                                        div {
+                                                            p {
+                                                                element.text("MD5 (")
+                                                                element("u").text("3e25960a79dbc69b674cd4ec67a72c62")
+                                                                element.addText(")")
+                                                            }
+                                                        }.classes("colum")
+                                                    }.classes("columns")
+                                                }.classes("column")
+                                            }.classes("columns is-vcentered has-text-left")
+                                        }.classes("column")
+
+                                    }.classes("columns has-text-left")
+                                }.classes("column is-9")
+                                div {
+                                    element("figure") {
+                                        img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/2gHZQfz/download2.png")))
+                                    }.classes("image is-128x128")
+                                }.classes("column")
+                            }.classes("columns is-vcentered")
+                            if (usuario.rol == Roles.ADMINISTRADOR) {
+                                element("hr")
+                                div {
+                                    div {
+                                        div {
+                                            div {
+                                                p {
+                                                    li{
+                                                        element("strong").text("DatMaker")
+                                                        element.addText( ": Gestor de archivos DAT. ")
+                                                        span { element.text("(HERRAMIENTA INTERNA)") }.classes("has-text-warning")
+                                                    }
+                                                }
+                                            }.classes("column")
+                                        }.classes("columns has-text-left")
+                                        div {
+                                            div {
+                                                div {
+                                                    div {
+                                                        p {
+                                                            a {
+                                                                span {
+                                                                    i().classes("fa-solid fa-download")
+                                                                }.classes("icon")
+                                                                span().text("Download")
+                                                                element.href = "https://cifpvirgendegracia.com/"
+                                                            }.classes("button is-warning is-inverted")
+                                                        }
+                                                    }.classes("column is-4")
+                                                    div {
+                                                        div {
+                                                            div {
+                                                                p().text("Version: 1.0")
+                                                            }.classes("column")
+                                                        }.classes("columns")
+                                                        div {
+                                                            div {
+                                                                p {
+                                                                    element.text("MD5 (")
+                                                                    element("u").text("d41d8cd98f00b204e9800998ecf8427e")
+                                                                    element.addText(")")
+                                                                }
+                                                            }.classes("colum")
+                                                        }.classes("columns")
+                                                    }.classes("column")
+                                                }.classes("columns is-vcentered has-text-left")
+                                            }.classes("column")
+
+                                        }.classes("columns has-text-left")
+                                    }.classes("column is-9")
+                                    div {
+                                        element("figure") {
+                                            img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/KwxRDtt/datmaker.png")))
+                                        }.classes("image is-128x128")
+                                    }.classes("column")
+                                }.classes("columns is-vcentered")
+                            }
+                        }.classes("box")
+                    }.classes("column is-three-fifths")
+                }.classes("columns is-centered")
+            }.classes("container has-text-centered hax-text-white")
+        }.classes("hero-body")
+
+        div {
+            nav {
+                div {
+                    element.classes("container")
+                    ul {
+                        li {
+                            a {
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-bars-progress")
+                                    }.classes("icon")
+                                    span().text("Downloads")
+                                }.classes("icon-text")
+                            }
+                        }.classes("is-active")
+                    }
+                }
+            }.classes("tabs is-boxed is-fullwidth")
+        }.classes("hero-foot")
+    }.classes("hero is-success is-fullheight")
 }

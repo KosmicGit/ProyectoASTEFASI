@@ -7,6 +7,7 @@ import es.cifpvirgen.Gestion.BaseDatos.GestionarLogs
 import es.cifpvirgen.Gestion.BaseDatos.GestionarUsuarios
 import es.cifpvirgen.Gestion.Email.ConexionMail
 import es.cifpvirgen.Gestion.Email.GestionarEmail
+import io.github.cdimascio.dotenv.dotenv
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -17,7 +18,7 @@ class Gestores {
 
     companion object {
         //Gestores
-        val encript = Encriptacion("")
+        val encrypt = Encriptacion(dotenv()["encryptKey"])
         val conexionMail = ConexionMail()
         val conexionBD = ConexionBD()
         val gestorUsuarios = GestionarUsuarios()
@@ -29,11 +30,11 @@ class Gestores {
         }
 
         fun encriptarUsuario(usuario: Usuario): String {
-            return encript.encriptar(Gson().toJson(usuario))
+            return encrypt.encriptar(Gson().toJson(usuario))
         }
 
         fun desencriptarUsuario(usuarioEncriptado: String): Usuario {
-            return Gson().fromJson(encript.desencriptar(usuarioEncriptado), Usuario::class.java)
+            return Gson().fromJson(encrypt.desencriptar(usuarioEncriptado), Usuario::class.java)
         }
 
         fun codificarURL(url: String): String {

@@ -78,13 +78,25 @@ fun Component.loginPage(){
                         div {
                             div {
                                 div {
-                                    //H2 Login
-                                    h2().text("\uD83D\uDD12 Login").classes("title is-4 has-text-white")
+                                    //Login
+                                    p {
+                                        span {
+                                            span {
+                                                i().classes("fa-solid fa-lock")
+                                            }.classes("icon")
+                                            span().text("Login")
+                                        }.classes("icon-text")
+                                    }.classes("title is-4 has-text-white")
                                     br()
                                     //H3 Username
-                                    val usernameh3 = h3()
-                                    usernameh3.text("👤 Username:")
-                                    usernameh3.classes("subtitle")
+                                    p {
+                                        span {
+                                            span {
+                                                i().classes("fa-solid fa-user")
+                                            }.classes("icon")
+                                            span().text("Username:")
+                                        }.classes("icon-text")
+                                    }.classes("subtitle")
                                     //Input Username
                                     val userinput = input(type = InputType.text)
                                     userinput.value = username
@@ -92,9 +104,14 @@ fun Component.loginPage(){
                                     br()
                                     br()
                                     //H3 Password
-                                    val passwordh3 = h3()
-                                    passwordh3.text("\uD83D\uDD11 Password:")
-                                    passwordh3.classes("subtitle")
+                                    p {
+                                        span {
+                                            span {
+                                                i().classes("fa-solid fa-key")
+                                            }.classes("icon")
+                                            span().text("Password:")
+                                        }.classes("icon-text")
+                                    }.classes("subtitle")
                                     //Input Password
                                     val passinput = input(type = InputType.password)
                                     passinput.value = password
@@ -116,9 +133,10 @@ fun Component.loginPage(){
                                 br()
 
                                 div {
-                                    val botonlogin = button(type = ButtonType.button)
-                                    botonlogin.text("Entrar")
-                                    botonlogin.classes("button is-primary")
+                                    var botonlogin = button(type = ButtonType.button) {
+                                        span { i().classes("fa-solid fa-right-to-bracket") }.classes("icon")
+                                        span().text("Entrar")
+                                    }.classes("button is-primary")
                                     botonlogin.on.click {
                                         botonlogin.classes("button is-link is-loading")
                                         if (username.value == "" || password.value == "") {
@@ -145,6 +163,8 @@ fun Component.loginPage(){
                                                 botonlogin.text("Error")
                                                 val errorlogin = h3()
                                                 errorlogin.text = KVar("😢No existe el Usuario o Contraseña.😔")
+                                                p { element.text("¿Ha olvidado su contraseña?") }
+                                                p { element.text("Restablezcala "); a { element.text("aquí") }.href = "/login/recovery" }
                                             }
                                         }
                                     }

@@ -54,12 +54,12 @@ function redirect(url) {
 }
 
 // Comprueba si existe la cookie success
-function comprobarExito() {
+function comprobarCookie(nombre) {
     var cookies = document.cookie.split(';');
 
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i].trim();
-        if (cookie.indexOf('success=') === 0) {
+        if (cookie.indexOf(nombre + '=') === 0) {
             return true;
         }
     }

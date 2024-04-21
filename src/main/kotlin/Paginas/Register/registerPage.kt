@@ -82,12 +82,24 @@ fun Component.registerPage() {
                             div {
                                 div {
                                     //H2 Login
-                                    h2().text("📄 Register").classes("title is-4 has-text-white")
+                                    p {
+                                        span {
+                                            span {
+                                                i().classes("fa-solid fa-address-card")
+                                            }.classes("icon")
+                                            span().text("Sign up")
+                                        }.classes("icon-text")
+                                    }.classes("title is-4 has-text-white")
                                     br()
                                     //H3 Username
-                                    val usernameh3 = h3()
-                                    usernameh3.text("👤 Username:")
-                                    usernameh3.classes("subtitle")
+                                    p {
+                                        span {
+                                            span {
+                                                i().classes("fa-solid fa-user")
+                                            }.classes("icon")
+                                            span().text("Username:")
+                                        }.classes("icon-text")
+                                    }.classes("subtitle")
                                     //Input Username
                                     val userinput = input(type = InputType.text)
                                     userinput.value = username
@@ -95,9 +107,14 @@ fun Component.registerPage() {
                                     br()
                                     br()
                                     //H3 Email
-                                    val emailh3 = h3()
-                                    emailh3.text("✉️ Email:")
-                                    emailh3.classes("subtitle")
+                                    p {
+                                        span {
+                                            span {
+                                                i().classes("fa-solid fa-envelope")
+                                            }.classes("icon")
+                                            span().text("Email:")
+                                        }.classes("icon-text")
+                                    }.classes("subtitle")
                                     //Input Email
                                     val emailinput = input(type = InputType.email)
                                     emailinput.value = email
@@ -105,9 +122,14 @@ fun Component.registerPage() {
                                     br()
                                     br()
                                     //H3 Password
-                                    val passwordh3 = h3()
-                                    passwordh3.text("\uD83D\uDD11 Password:")
-                                    passwordh3.classes("subtitle")
+                                    p {
+                                        span {
+                                            span {
+                                                i().classes("fa-solid fa-key")
+                                            }.classes("icon")
+                                            span().text("Password:")
+                                        }.classes("icon-text")
+                                    }.classes("subtitle")
                                     //Input Password
                                     val passinput = input(type = InputType.password)
                                     passinput.value = password
@@ -117,9 +139,10 @@ fun Component.registerPage() {
                                 br()
 
                                 div {
-                                    val botonRegistro = button(type = ButtonType.button)
-                                    botonRegistro.text("Registrarse")
-                                    botonRegistro.classes("button is-primary")
+                                    var botonRegistro = button(type = ButtonType.button) {
+                                        span { i().classes("fa-solid fa-user-plus") }.classes("icon")
+                                        span().text("Registrarse")
+                                    }.classes("button is-warning")
                                     botonRegistro.on.click {
                                         botonRegistro.classes("button is-link is-loading")
                                         br()

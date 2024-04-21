@@ -1,12 +1,12 @@
-package es.cifpvirgen.Paginas.Documentation
+package es.cifpvirgen.Paginas.Login
 
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
+import kweb.state.KVar
 import kweb.util.json
 
-fun Component.documentPage() {
-    //TODO("Completar Documentación")
+fun Component.recoveryPage() {
     section {
         div {
             element("header") {
@@ -17,7 +17,7 @@ fun Component.documentPage() {
                             element.on.click {
                                 browser.callJsFunction("redirect({})", "/".json)
                             }
-                        }.classes("navbar-item is-selected")
+                        }.classes("navbar-item")
                         span {
                             element.setAttributes("data-target" to JsonPrimitive("navbarMenuHeroC"))
                             span {  }
@@ -33,27 +33,24 @@ fun Component.documentPage() {
                                 element.on.click {
                                     browser.callJsFunction("redirect({})", "/".json)
                                 }
-                                element.on.mouseenter {
-                                    element.classes("navbar-item")
-                                }
-                                element.on.mouseleave {
-                                    element.classes("navbar-item has-text-black")
-                                }
                                 span {
                                     span {
                                         i().classes("fa-solid fa-house")
                                     }.classes("icon")
                                     span().text("Home")
                                 }.classes("icon-text")
-                            }.classes("navbar-item has-text-black")
+                            }.classes("navbar-item is-active")
                             a {
+                                element.on.click {
+                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                }
                                 span {
                                     span {
                                         i().classes("fa-solid fa-book")
                                     }.classes("icon")
                                     span().text("Documentation")
                                 }.classes("icon-text")
-                            }.classes("navbar-item is-active")
+                            }.classes("navbar-item")
                             span {
                                 a {
                                     span {
@@ -66,66 +63,66 @@ fun Component.documentPage() {
                         }.classes("navbar-end")
                     }.id = "navbarMenuHeroC"
                 }.classes("container")
-            }.classes("navbar is-black")
+            }.classes("navbar")
         }.classes("hero-head")
 
         div {
             div {
+                val username = kvar("")
+                val password = kvar("")
+
                 div {
-                    p { element.text("AsTeFaSi es un proyecto final para 1º DAW.") }
-                    p { element.text("En él se trata de poner en conocimiento de los docentes, las habilidades adquiridas por los alumnos.") }
-                    p { element.text("Desde Base de Datos hasta Administración de Sistemas, pasando por Lenguajes de Marcas y por supuesto Programación") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                }.classes("box")
-            }.classes("container has-text-centered hax-text-white")
+                    element("center") {
+                        div {
+                            div {
+                                TODO("POR HACER")
+                            }.classes("box")
+                        }.classes("column is-half")
+                    }
+                }
+            }.classes("container has-text-centered")
         }.classes("hero-body")
 
         div {
             nav {
+                element.classes("tabs is-boxed is-fullwidth")
                 div {
                     element.classes("container")
                     ul {
-                        li { a().text("Introducción") }.classes("is-active")
                         li {
-                            a{
+                            a {
+                                element.text("Main")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                    browser.callJsFunction("redirect({})", "/".json)
                                 }
-                            }.text("Instalación")
+                            }
                         }
                         li {
-                            a{
-                                element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/use".json)
-                                }
-                            }.text("Uso básico")
-                        }
+                            a {
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-right-to-bracket ")
+                                    }.classes("icon")
+                                    span().text("Login")
+                                }.classes("icon-text")
+                            }
+                        }.classes("is-active")
                         li {
-                            a{
+                            a {
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-user-plus")
+                                    }.classes("icon")
+                                    span().text("Register")
+                                }.classes("icon-text")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                    browser.callJsFunction("redirect({})", "/register".json)
                                 }
-                            }.text("Overview")
-                        }
-                        li {
-                            a{
-                                element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/install".json)
-                                }
-                            }.text("Overview")
-                        }
-                        li {
-                            a{
-                                element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/credits".json)
-                                }
-                            }.text("Créditos")
+                            }
                         }
                     }
                 }
-            }.classes("tabs is-boxed is-fullwidth")
+            }
         }.classes("hero-foot")
-    }.classes("hero is-warning is-fullheight")
+    }.classes("hero is-link is-fullheight")
 }

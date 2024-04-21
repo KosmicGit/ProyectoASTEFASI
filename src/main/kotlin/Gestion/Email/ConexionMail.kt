@@ -34,7 +34,7 @@ class ConexionMail {
 
     private fun recogerRemoto() : ArrayList<String> {
         val credenciales : ArrayList<String> = arrayListOf()
-        Gestores.encript.desencriptarBD("MailSecret.dat").forEach { str ->
+        Gestores.encrypt.desencriptarBD("MailSecret.dat").forEach { str ->
             credenciales.add(str)
         }
         return credenciales

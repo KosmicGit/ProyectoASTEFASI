@@ -91,7 +91,7 @@ class GestionarUsuarios {
             statement.setInt(1, usuario.idUsuario)
             statement.setString(2, usuario.username)
             statement.setString(3, usuario.email)
-            statement.setString(4, Gestores.encript.encriptar(usuario.password))
+            statement.setString(4, Gestores.encrypt.encriptar(usuario.password))
             when (usuario.rol) {
                 Roles.TERAPEUTA -> {
                     statement.setInt(5,1)
@@ -168,7 +168,7 @@ class GestionarUsuarios {
                 val idUsuario = resultSet.getInt("idUsuario")
                 val username = resultSet.getString("username")
                 val email = resultSet.getString("email")
-                val password = Gestores.encript.desencriptar(resultSet.getString("password"))
+                val password = Gestores.encrypt.desencriptar(resultSet.getString("password"))
                 var rol: Roles
                 if (resultSet.getInt("rol") == 1) {
                     rol = Roles.TERAPEUTA
@@ -250,7 +250,7 @@ class GestionarUsuarios {
                 val statement = ConexionBD.connection!!.prepareStatement(query)
                 statement.setString(1, datosNuevos.username)
                 statement.setString(2, datosNuevos.email)
-                statement.setString(3, Gestores.encript.encriptar(datosNuevos.password))
+                statement.setString(3, Gestores.encrypt.encriptar(datosNuevos.password))
                 statement.setString(4, usuarioOriginal.email)
 
                 var cambios = ""

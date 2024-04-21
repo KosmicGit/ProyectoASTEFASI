@@ -1,6 +1,5 @@
 package es.cifpvirgen.Gestion.BaseDatos
 
-import es.cifpvirgen.Gestion.Encriptacion
 import es.cifpvirgen.Gestion.Gestores
 import java.sql.Connection
 import java.sql.DriverManager
@@ -17,7 +16,7 @@ class ConexionBD {
 
     private fun recogerRemoto() : ArrayList<String> {
         val credenciales : ArrayList<String> = arrayListOf()
-        Gestores.encript.desencriptarBD("SqlSecret.dat").forEach { str ->
+        Gestores.encrypt.desencriptarBD("SqlSecret.dat").forEach { str ->
             credenciales.add(str)
         }
         return credenciales

@@ -82,6 +82,7 @@ fun Component.registerVerify(usuario: Usuario) {
                                     p { element.text("la direccion de correo "); element("u") { element.text(usuario.email) } }
                                     p { element.text("ya está activa y no hace falta volver a activarla.") }
                                 } else {
+                                    Gestores.gestorUsuarios.verificarUsuario(usuario)
                                     p {
                                         element.text("¡Cuenta activada!")
                                     }.classes("title")
