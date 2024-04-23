@@ -170,7 +170,7 @@ fun main() {
                 }
 
                 // URL "/profile/settings/user"
-                path("/profile/settings") {
+                path("/profile/settings/user") {
                     elementScope().launch {
                         val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
                         if (comprobarCookie == "true") {

@@ -133,7 +133,7 @@ fun Component.profilePage(usuario: Usuario) {
                                     val fotoPerfil = Gestores.gestorUsuarios.obtenerFoto(usuario)
                                     if (fotoPerfil != null) {
                                         element("figure") {
-                                            img(attributes = mapOf("src" to JsonPrimitive("data:image/png;base64,$fotoPerfil")))
+                                            img(attributes = mapOf("src" to JsonPrimitive(fotoPerfil)))
                                         }.classes("image is-128x128")
                                     } else {
                                         element("figure") {

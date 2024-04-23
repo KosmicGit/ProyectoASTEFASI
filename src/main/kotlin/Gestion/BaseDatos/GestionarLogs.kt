@@ -2,16 +2,17 @@ package es.cifpvirgen.Gestion.BaseDatos
 
 import es.cifpvirgen.Data.Log
 import es.cifpvirgen.Gestion.DebugColors
+import es.cifpvirgen.Gestion.IGestorLogs
 import java.sql.SQLException
 
-class GestionarLogs {
+class GestionarLogs: IGestorLogs {
 
     /**
      * Añade un nuevo registro a la base de datos.
      *
      * @param log El objeto Log que se va a añadir a la base de datos.
      */
-    fun addLog(log: Log) {
+    override fun addLog(log: Log) {
         val query = "INSERT INTO Log (username, email, fecha, accion) VALUES (?, ?, ?, ?)"
 
         try {
@@ -35,7 +36,7 @@ class GestionarLogs {
      * @param email La dirección de correo electrónico del usuario que se desea obtener.
      * @return Devuelve un Array con los logs en caso de encontrarlo o null si no se encuentra en la Basd de Datos.
      */
-    fun obtenerLog(email: String): ArrayList<Log>? {
+    override fun obtenerLog(email: String): ArrayList<Log>? {
         val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Log WHERE email = ?")
         statement.setString(1, email)
         val resultSet = statement.executeQuery()
@@ -72,7 +73,7 @@ class GestionarLogs {
      *
      * @return ArrayList de objetos Log que representan a todos los registros almacenados en la base de datos.
      */
-    fun obtenerLogs(): ArrayList<Log> {
+    override fun obtenerLogs(): ArrayList<Log> {
         val listaLogs = ArrayList<Log>()
 
         val query = "SELECT * FROM Log"
@@ -106,7 +107,7 @@ class GestionarLogs {
      * @param correoOriginal Registro a modificar.
      * @param correoNuevo Datos nuevos para el Registro a modificar.
      */
-    fun modificarEmailLog(correoOriginal: String, correoNuevo: String) {
+    override fun modificarEmailLog(correoOriginal: String, correoNuevo: String) {
         val query = "UPDATE Log SET email = ? WHERE email = ?"
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setString(1, correoNuevo)
@@ -130,7 +131,7 @@ class GestionarLogs {
      * @param usernameOriginal Registro a modificar.
      * @param usernameNuevo Datos nuevos para el Registro a modificar.
      */
-    fun modificarUsernameLog(usernameOriginal: String, usernameNuevo: String) {
+    override fun modificarUsernameLog(usernameOriginal: String, usernameNuevo: String) {
         val query = "UPDATE Log SET username = ? WHERE username = ?"
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setString(1, usernameNuevo)

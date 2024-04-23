@@ -5,16 +5,17 @@ import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.DebugColors
 import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.IGestorUsuarios
 import java.sql.SQLException
 
 
-class GestionarUsuarios {
+class GestionarUsuarios: IGestorUsuarios {
     /**
      * Añade un nuevo usuario a la base de datos.
      *
      * @return ultimoID El último ID de la base de Datos, en caso de haber un error, devuelve nulo
      */
-    fun obtenerUltimoID(): Int? {
+    override fun obtenerUltimoID(): Int? {
         val query = "SELECT MAX(idUsuario) FROM Usuario"
         var ultimoID: Int? = null
 
@@ -35,7 +36,7 @@ class GestionarUsuarios {
         return ultimoID
     }
 
-    fun verificarUsuario(usuario: Usuario) {
+    override fun verificarUsuario(usuario: Usuario) {
         val query = "UPDATE Usuario SET verificado = ? WHERE email = ?"
 
         try {
@@ -55,7 +56,7 @@ class GestionarUsuarios {
         }
     }
 
-    fun estaVerificado(usuario: Usuario): Boolean {
+    override fun estaVerificado(usuario: Usuario): Boolean {
         val query = "SELECT verificado FROM Usuario WHERE email = ?"
         var verificado = false
 
@@ -78,12 +79,13 @@ class GestionarUsuarios {
         }
         return verificado
     }
+
     /**
      * Añade un nuevo usuario a la base de datos.
      *
      * @param usuario El objeto Usuario que se va a añadir a la base de datos.
      */
-    fun addUsuario(usuario : Usuario) {
+    override fun addUsuario(usuario : Usuario) {
         val query = "INSERT INTO Usuario (idUsuario, username, email, password, rol, verificado) VALUES (?, ?, ?, ?, ?, ?)"
 
         try {
@@ -126,7 +128,7 @@ class GestionarUsuarios {
      *
      * @param usuario El objeto Usuario que se va a eliminar de la base de datos.
      */
-    fun borrarUsuario(usuario: Usuario) {
+    override fun borrarUsuario(usuario: Usuario) {
         val user = obtenerUsuario(usuario.email)
         if (user != null) {
             val query = "DELETE FROM Usuario WHERE email = ?"
@@ -156,7 +158,7 @@ class GestionarUsuarios {
      * @param username El UserName del usuario que se desea obtener.
      * @return El objeto Usuario correspondiente al Username proporcionado, o null si no se encuentra en la base de datos.
      */
-    fun obtenerUsuario(username : String) : Usuario? {
+    override fun obtenerUsuario(username : String) : Usuario? {
         val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE username = ?")
         statement.setString(1, username)
         val resultSet = statement.executeQuery()
@@ -201,7 +203,7 @@ class GestionarUsuarios {
      * @param email El Correo del usuario que se desea obtener.
      * @return El objeto Usuario correspondiente al correo electrónico proporcionado, o null si no se encuentra en la base de datos.
      */
-    fun obtenerUsuarioMail(email : String) : Usuario? {
+    override fun obtenerUsuarioMail(email : String) : Usuario? {
         val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE email = ?")
         statement.setString(1, email)
         val resultSet = statement.executeQuery()
@@ -240,7 +242,27 @@ class GestionarUsuarios {
         return usuario
     }
 
-    fun obtenerFoto(usuario: Usuario): String? {
+    override fun guardarFoto(imgB64: String, usuario: Usuario) {
+        val query = "UPDATE Usuario SET foto_perfil = ? WHERE username = ?"
+
+        try {
+            val connection = ConexionBD.connection ?: throw SQLException("No hay conexión a la base de datos.")
+            val statement = connection.prepareStatement(query)
+            statement.setString(1, imgB64)
+            statement.setString(2, usuario.username)
+
+            statement.executeUpdate()
+            statement.close()
+
+            val logRegistro = Log(usuario.username, usuario.email, Gestores.fechaActual(), "Foto de perfil actualizada.")
+            Gestores.gestorLogs.addLog(logRegistro)
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al actualizar la foto de perfil del usuario:")
+            println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+        }
+    }
+
+    override fun obtenerFoto(usuario: Usuario): String? {
         var fotoBase64: String? = null
 
         try {
@@ -270,7 +292,7 @@ class GestionarUsuarios {
      * @param usuario El objeto Usuario cuyos permisos se van a modificar.
      * @param rol El nuevo rol que se asignará al usuario.
      */
-    fun modificarPermisos(usuario : Usuario, rol : Roles) {
+    override fun modificarPermisos(usuario : Usuario, rol : Roles) {
         val user = obtenerUsuario(usuario.email)
         if (user != null) {
             val query = "UPDATE Usuario SET rol = ? WHERE email = ?"
@@ -311,7 +333,7 @@ class GestionarUsuarios {
      * @param usuarioOriginal El objeto Usuario cuyos datos se van a modificar.
      * @param datosNuevos El objeto Usuario con los nuevos datos que se van a asignar al usuario.
      */
-    fun modificarUsuario(usuarioOriginal: Usuario, datosNuevos: Usuario) {
+    override fun modificarUsuario(usuarioOriginal: Usuario, datosNuevos: Usuario) {
         val user = obtenerUsuarioMail(usuarioOriginal.email)
         if (user != null) {
             val query = "UPDATE Usuario SET username = ?, email = ?, password = ? WHERE email = ?"
@@ -353,7 +375,7 @@ class GestionarUsuarios {
      *
      * @return ArrayList de objetos Usuario que representan a todos los usuarios almacenados en la base de datos.
      */
-    fun obtenerUsuarios(): ArrayList<Usuario> {
+    override fun obtenerUsuarios(): ArrayList<Usuario> {
         val listaUsuarios = ArrayList<Usuario>()
 
         val query = "SELECT * FROM Usuario"

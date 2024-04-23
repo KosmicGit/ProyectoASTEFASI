@@ -2,6 +2,7 @@ package es.cifpvirgen.Paginas.Profile.Settings
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
+import es.cifpvirgen.Gestion.Gestores
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
@@ -121,46 +122,50 @@ fun Component.imageSettings(usuario: Usuario) {
                                 }.classes("icon-text")
                             }.classes("title has-text-white")
                             element("hr")
-
-                            var b64 = ""
-                            val ad = fileInput()
-                            ad.onFileSelect {
-                                println("hola")
-                                ad.retrieveFile {
-                                    val size = it.fileSize
-                                    val name = it.fileName
-                                    b64 = it.base64Content
-                                    img(attributes = mapOf("src" to JsonPrimitive("data:image/png;base64,$b64")))
-                                }
-                            }
-
-
-                            element("hr")
                             div {
-                                label {
-                                    input(type = InputType.file).classes("file-input")
-                                    span {
-                                        span {
-                                            i().classes("fas fa-upload")
-                                        }.classes("file-icon")
-                                        span {
-                                            element.text("Elige un archivo")
+                                var imgB64 = ""
+                                var imgName = ""
+                                div {  }.classes("column is-0")
+                                div {
+                                    div {
+                                        label {
+                                            val inputFile = fileInput(attributes = mapOf("class" to JsonPrimitive("file-input")))
+                                            span {
+                                                span {
+                                                    i().classes("fas fa-upload")
+                                                }.classes("file-icon")
+                                                span {
+                                                    element.text("Elige un archivo")
+                                                }.classes("file-label")
+                                            }.classes("file-cta")
+                                            var nameFileLabel = span { element.text("Ningun archivo seleccionado.") }.classes("file-name")
+                                            inputFile.onFileSelect {
+                                                inputFile.retrieveFile {
+                                                    imgName = it.fileName
+                                                    imgB64 = it.base64Content
+                                                    nameFileLabel.text.value = imgName
+                                                }
+                                            }
                                         }.classes("file-label")
-                                    }.classes("file-cta")
-                                    span { element.text("ika") }.classes("file-name")
-                                }.classes("file-label")
-                            }.classes("file has-name")
-                            var botonUpload = button(type = ButtonType.button) {
-                                span { i().classes("fa-solid fa-share-from-square") }.classes("icon")
-                                var textoBoton = span().text("Enviar")
-                            }.classes("button is-warning")
-                            botonUpload.on.click {
-                                elementScope().launch {
-                                    //val foto = browser.callJsFunctionWithCallback("return loadImage({})", "loadImage", "base64String".json, "K1m".json)
-                                    //h1().text(foto.toString())
-                                }
-                            }
-
+                                    }.classes("file has-name")
+                                }.classes("column is-9")
+                                div {
+                                    var botonUpload = button(type = ButtonType.button) {
+                                        span { i().classes("fa-solid fa-upload") }.classes("icon")
+                                        span().text("Enviar")
+                                    }.classes("button is-warning")
+                                    botonUpload.on.click {
+                                        if (imgB64 == "") {
+                                            p { element.text("Por favor seleccione una imagen.") }.classes("subtitle has-text-grey-light")
+                                        } else {
+                                            Gestores.gestorUsuarios.guardarFoto(imgB64, usuario)
+                                            browser.callJsFunction("mostrarNoti({})", "Imagen actualizada correctamente.".json)
+                                            browser.url.value = "/profile/settings"
+                                        }
+                                    }
+                                }.classes("column is-2")
+                            }.classes("columns is-vcentered")
+                            p { element.text("Introduzca una imagen para cambiar su foto de perfil") }.classes("subtitle has-text-grey-light")
                         }.classes("box")
                     }.classes("column is-half")
                 }.classes("columns is-centered has-text-center")

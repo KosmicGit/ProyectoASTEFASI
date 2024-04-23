@@ -6,6 +6,7 @@ import es.cifpvirgen.Gestion.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
+import kweb.state.KVar
 import kweb.util.json
 
 fun Component.emailSettings(usuario: Usuario) {
@@ -108,97 +109,51 @@ fun Component.emailSettings(usuario: Usuario) {
                 div {
                     div {
                         div {
+                            val newMail = KVar("")
                             p {
                                 span {
                                     span {
-                                        i().classes("fa-solid fa-gear")
+                                        i().classes("fa-solid fa-envelopes-bulk")
                                     }.classes("icon")
                                     span().text(" ")
-                                    span().text("Profile Settings")
+                                    span().text("Mail Settings")
                                 }.classes("icon-text")
                             }.classes("title has-text-white")
                             element("hr")
-                            div {
-                                div {
-                                    li().text("Usuario: ${usuario.username}")
-                                    li().text("Correo: ${usuario.email}")
-                                    li().text("Rol: ${usuario.rol}")
-                                }.classes("columna is-9 has-text-left")
-                                div { }.classes("column is-2")
-                                div {
-                                    val fotoPerfil = es.cifpvirgen.Gestion.Gestores.gestorUsuarios.obtenerFoto(usuario)
-                                    if (fotoPerfil != null) {
-                                        element("figure") {
-                                            img(attributes = mapOf("src" to JsonPrimitive("data:image/png;base64,$fotoPerfil")))
-                                        }.classes("image is-128x128")
-                                    } else {
-                                        element("figure") {
-                                            img(attributes = mapOf("src" to JsonPrimitive("https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png")))
-                                        }.classes("image is-128x128")
-                                    }
-                                }.classes("columna")
-                            }.classes("columns is-centered is-vcentered")
-                            element("hr")
-                            div {
-                                div {
-                                    p {
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-image")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Foto")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/image"
-                                            }
-                                        }.classes("button is-success")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-user-pen")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Usuario")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/user"
-                                            }
-                                        }.classes("button is-primary")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-calendar-days")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Fecha")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/date"
-                                            }
-                                        }.classes("button is-info")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-envelope")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Correo")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/email"
-                                            }
-                                        }.classes("button is-warning")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-key")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Contraseña")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/password"
-                                            }
-                                        }.classes("button is-danger")
-                                    }.classes("buttons is-centered")
-                                }.classes("column")
-                            }.classes("columns")
-                            element("hr")
+                            p { element.text("Introduzca su nuevo nombre de usuario.") }
+                            br()
+                            input(type = InputType.text) {
+                                element.classes("input is-normal")
+                                element.value = newMail
+                            }
+                            br()
+                            br()
                             div {
                                 div {
                                     button {
                                         span {
-                                            i().classes("fa-solid fa-trash")
+                                            i().classes("fa-solid fa-envelope")
                                         }.classes("icon is-small")
-                                        span().text("Eliminar Cuenta")
-                                    }.classes("button is-danger is-inverted")
+                                        span().text("Change")
+                                        element.on.click {
+                                            if (newMail.value == ""){
+                                                p { element.text("Introduzca un correo") }.classes("subtitle has-text-grey-light")
+                                            } else {
+                                                if (Gestores.gestorUsuarios.obtenerUsuarioMail(newMail.value) == null) {
+                                                    //TODO("Mail de verificacion para el nuevo correo")
+                                                    val modificacion = usuario.copy()
+                                                    modificacion.email = newMail.value
+                                                    Gestores.gestorUsuarios.modificarUsuario(usuario, modificacion)
+                                                    browser.callJsFunction("cerrarSesion({})", "sesion".json)
+                                                    browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(modificacion).json)
+                                                    browser.callJsFunction("mostrarNoti({})", "Usuario actualizado correctamente.".json)
+                                                    browser.url.value = "/profile/settings"
+                                                } else {
+                                                    p { element.text("El usuario ya existe.") }.classes("subtitle has-text-grey-light")
+                                                }
+                                            }
+                                        }
+                                    }.classes("button is-warning is-inverted")
                                 }.classes("column")
                             }.classes("colums is-centered")
                         }.classes("box")
