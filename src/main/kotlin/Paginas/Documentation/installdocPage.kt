@@ -14,7 +14,7 @@ fun Component.installdocPage() {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                             element.on.click {
-                                browser.callJsFunction("redirect({})", "/".json)
+                                browser.url.value = "/"
                             }
                         }.classes("navbar-item is-selected")
                         span {
@@ -30,7 +30,7 @@ fun Component.installdocPage() {
                         div {
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                                 element.on.mouseenter {
                                     element.classes("navbar-item")
@@ -90,7 +90,7 @@ fun Component.installdocPage() {
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                    browser.url.value = "/doc"
                                 }
                             }.text("Introducción")
                         }
@@ -98,7 +98,7 @@ fun Component.installdocPage() {
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/use".json)
+                                    browser.url.value = "/doc/use"
                                 }
                             }.text("Uso básico")
                         }
@@ -107,7 +107,7 @@ fun Component.installdocPage() {
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/credits".json)
+                                    browser.url.value = "/doc/credits"
                                 }
                             }.text("Créditos")
                         }

@@ -19,7 +19,7 @@ fun Component.registerPage() {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                             element.on.click {
-                                browser.callJsFunction("redirect({})", "/".json)
+                                browser.url.value = "/"
                             }
                         }.classes("navbar-item")
                         span {
@@ -35,7 +35,7 @@ fun Component.registerPage() {
                         div {
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                                 span {
                                     span {
@@ -46,7 +46,7 @@ fun Component.registerPage() {
                             }.classes("navbar-item is-active")
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                    browser.url.value = "/doc"
                                 }
                                 span {
                                     span {
@@ -77,111 +77,109 @@ fun Component.registerPage() {
                 val password = kvar("")
 
                 div {
-                    element("center") {
+                    div {
                         div {
                             div {
-                                div {
-                                    //H2 Login
-                                    p {
+                                //H2 Login
+                                p {
+                                    span {
                                         span {
-                                            span {
-                                                i().classes("fa-solid fa-address-card")
-                                            }.classes("icon")
-                                            span().text("Sign up")
-                                        }.classes("icon-text")
-                                    }.classes("title is-4 has-text-white")
-                                    br()
-                                    //H3 Username
-                                    p {
-                                        span {
-                                            span {
-                                                i().classes("fa-solid fa-user")
-                                            }.classes("icon")
-                                            span().text("Username:")
-                                        }.classes("icon-text")
-                                    }.classes("subtitle")
-                                    //Input Username
-                                    val userinput = input(type = InputType.text)
-                                    userinput.value = username
-                                    userinput.classes("input is-small")
-                                    br()
-                                    br()
-                                    //H3 Email
-                                    p {
-                                        span {
-                                            span {
-                                                i().classes("fa-solid fa-envelope")
-                                            }.classes("icon")
-                                            span().text("Email:")
-                                        }.classes("icon-text")
-                                    }.classes("subtitle")
-                                    //Input Email
-                                    val emailinput = input(type = InputType.email)
-                                    emailinput.value = email
-                                    emailinput.classes("input is-small")
-                                    br()
-                                    br()
-                                    //H3 Password
-                                    p {
-                                        span {
-                                            span {
-                                                i().classes("fa-solid fa-key")
-                                            }.classes("icon")
-                                            span().text("Password:")
-                                        }.classes("icon-text")
-                                    }.classes("subtitle")
-                                    //Input Password
-                                    val passinput = input(type = InputType.password)
-                                    passinput.value = password
-                                    passinput.classes("input is-small")
-                                }
-
+                                            i().classes("fa-solid fa-address-card")
+                                        }.classes("icon")
+                                        span().text("Sign up")
+                                    }.classes("icon-text")
+                                }.classes("title is-4 has-text-white")
                                 br()
+                                //H3 Username
+                                p {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user")
+                                        }.classes("icon")
+                                        span().text("Username:")
+                                    }.classes("icon-text")
+                                }.classes("subtitle")
+                                //Input Username
+                                val userinput = input(type = InputType.text)
+                                userinput.value = username
+                                userinput.classes("input is-small")
+                                br()
+                                br()
+                                //H3 Email
+                                p {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-envelope")
+                                        }.classes("icon")
+                                        span().text("Email:")
+                                    }.classes("icon-text")
+                                }.classes("subtitle")
+                                //Input Email
+                                val emailinput = input(type = InputType.email)
+                                emailinput.value = email
+                                emailinput.classes("input is-small")
+                                br()
+                                br()
+                                //H3 Password
+                                p {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-key")
+                                        }.classes("icon")
+                                        span().text("Password:")
+                                    }.classes("icon-text")
+                                }.classes("subtitle")
+                                //Input Password
+                                val passinput = input(type = InputType.password)
+                                passinput.value = password
+                                passinput.classes("input is-small")
+                            }
 
-                                div {
-                                    var botonRegistro = button(type = ButtonType.button) {
-                                        span { i().classes("fa-solid fa-user-plus") }.classes("icon")
-                                        span().text("Registrarse")
-                                    }.classes("button is-warning")
-                                    botonRegistro.on.click {
-                                        botonRegistro.classes("button is-link is-loading")
-                                        br()
-                                        if (username.value == "" || password.value == "" || email.value == "") {
-                                            botonRegistro.classes("button is-danger")
-                                            botonRegistro.text("Error")
-                                            val errorRegistro = h3()
-                                            errorRegistro.text = KVar("Por favor introduzca sus datos.")
-                                        } else {
-                                            when (register(username, email, password)) {
-                                                0, 2, 3 -> {
-                                                    val errorRegistro = h3()
-                                                    errorRegistro.text = KVar("Error al registrarse.")
-                                                    botonRegistro.classes("button is-danger")
-                                                    botonRegistro.text("Error")
-                                                    botonRegistro.on.mouseleave { element.classes("button is-primary") }
-                                                }
-                                                1 -> {
-                                                    val errorRegistro = h3()
-                                                    errorRegistro.text = KVar("El usuario ya existe.")
-                                                    botonRegistro.classes("button is-danger")
-                                                    botonRegistro.text("Error")
-                                                }
-                                                4 -> {
-                                                    val userKey = Gestores.encriptarUsuario(Usuario( 0, username.value, email.value, "", Roles.PACIENTE, false))
-                                                    browser.callJsFunction("exitoRegistro({})", userKey.json)
-                                                    Gestores.gestorMail.enviarCorreo(email.value, "AsTeFaSi: Active su cuenta.", "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +
-                                                            "<h1>Bienvenido a bordo ${username.value}!</h1>" + "<p>Utilice el siguiente enlace para activar su cuenta:</p>" + "<a href='http://localhost:8080/register/activate/${Gestores.codificarURL(userKey)}'>Activa tu cuenta aquí</a>" +
-                                                            "<p>Recuerde que es necesario realizar la activación de la cuenta para poder descargar y acceder a la Aplicación.</p>")
-                                                    browser.callJsFunction("redirect({})", "/register/success".json)
-                                                }
+                            br()
+
+                            div {
+                                var botonRegistro = button(type = ButtonType.button) {
+                                    span { i().classes("fa-solid fa-user-plus") }.classes("icon")
+                                    span().text("Registrarse")
+                                }.classes("button is-warning")
+                                botonRegistro.on.click {
+                                    botonRegistro.classes("button is-link is-loading")
+                                    br()
+                                    if (username.value == "" || password.value == "" || email.value == "") {
+                                        botonRegistro.classes("button is-danger")
+                                        botonRegistro.text("Error")
+                                        val errorRegistro = h3()
+                                        errorRegistro.text = KVar("Por favor introduzca sus datos.")
+                                    } else {
+                                        when (register(username, email, password)) {
+                                            0, 2, 3 -> {
+                                                val errorRegistro = h3()
+                                                errorRegistro.text = KVar("Error al registrarse.")
+                                                botonRegistro.classes("button is-danger")
+                                                botonRegistro.text("Error")
+                                                botonRegistro.on.mouseleave { element.classes("button is-primary") }
+                                            }
+                                            1 -> {
+                                                val errorRegistro = h3()
+                                                errorRegistro.text = KVar("El usuario ya existe.")
+                                                botonRegistro.classes("button is-danger")
+                                                botonRegistro.text("Error")
+                                            }
+                                            4 -> {
+                                                val userKey = Gestores.encriptarUsuario(Usuario( 0, username.value, email.value, "", Roles.PACIENTE, false))
+                                                browser.callJsFunction("exitoRegistro({})", userKey.json)
+                                                Gestores.gestorMail.enviarCorreo(email.value, "AsTeFaSi: Active su cuenta.", "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +
+                                                        "<h1>Bienvenido a bordo ${username.value}!</h1>" + "<p>Utilice el siguiente enlace para activar su cuenta:</p>" + "<a href='http://localhost:8080/register/activate/${Gestores.codificarURL(userKey)}'>Activa tu cuenta aquí</a>" +
+                                                        "<p>Recuerde que es necesario realizar la activación de la cuenta para poder descargar y acceder a la Aplicación.</p>")
+                                                browser.url.value = "/register/success"
                                             }
                                         }
                                     }
                                 }
-                            }.classes("box")
-                        }.classes("column is-half")
-                    }
-                }
+                            }
+                        }.classes("box")
+                    }.classes("column is-half")
+                }.classes("columns is-centered has-text-center")
             }.classes("container has-text-centered")
         }.classes("hero-body")
 
@@ -193,9 +191,14 @@ fun Component.registerPage() {
                     ul {
                         li {
                             a {
-                                element.text("Main")
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-flag-checkered")
+                                    }.classes("icon")
+                                    span().text("Start")
+                                }.classes("icon-text")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                             }
                         }
@@ -208,7 +211,7 @@ fun Component.registerPage() {
                                     span().text("Login")
                                 }.classes("icon-text")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/login".json)
+                                    browser.url.value = "/login"
                                 }
                             }
                         }

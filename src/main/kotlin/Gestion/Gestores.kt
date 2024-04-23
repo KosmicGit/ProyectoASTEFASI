@@ -13,6 +13,7 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Base64
 
 class Gestores {
 
@@ -43,6 +44,17 @@ class Gestores {
 
         fun decodificarURL(url: String): String {
             return URLDecoder.decode(url, StandardCharsets.UTF_8.toString())
+        }
+
+        fun cadenaValida(cadena: String): Boolean {
+            return try {
+                val decodedBytes = Base64.getDecoder().decode(cadena)
+                val decodedString = String(decodedBytes)
+                decodedString == cadena
+            } catch (e: IllegalArgumentException) {
+                println(e)
+                false
+            }
         }
 
     }

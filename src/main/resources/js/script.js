@@ -47,12 +47,6 @@ function obtenerSuccess() {
     return null;
 }
 
-// Redirigir a url dentro del dominio
-function redirect(url) {
-    var origen = window.location.origin;
-    window.location.href = origen + url
-}
-
 // Comprueba si existe la cookie success
 function comprobarCookie(nombre) {
     var cookies = document.cookie.split(';');
@@ -64,4 +58,21 @@ function comprobarCookie(nombre) {
         }
     }
     return false;
+}
+
+// Eliminar cookie sesion
+function cerrarSesion(cookie) {
+    document.cookie = cookie + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+}
+
+// Mostart notificacion
+function mostrarNoti(texto) {
+    Toastify({
+        text: texto,
+        duration: 3000,
+        gravity: "bottom",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        stopOnFocus: true
+    }).showToast();
 }

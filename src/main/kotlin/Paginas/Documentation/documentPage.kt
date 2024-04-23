@@ -15,7 +15,7 @@ fun Component.documentPage() {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                             element.on.click {
-                                browser.callJsFunction("redirect({})", "/".json)
+                                browser.url.value = "/"
                             }
                         }.classes("navbar-item is-selected")
                         span {
@@ -31,7 +31,7 @@ fun Component.documentPage() {
                         div {
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                                 element.on.mouseenter {
                                     element.classes("navbar-item")
@@ -72,12 +72,16 @@ fun Component.documentPage() {
         div {
             div {
                 div {
-                    p { element.text("AsTeFaSi es un proyecto final para 1º DAW.") }
-                    p { element.text("En él se trata de poner en conocimiento de los docentes, las habilidades adquiridas por los alumnos.") }
-                    p { element.text("Desde Base de Datos hasta Administración de Sistemas, pasando por Lenguajes de Marcas y por supuesto Programación") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
+                    p { element.text("Introducción")}.classes("title has-text-white")
+                    element("hr")
+                    p { element.text("AsTeFaSi es un proyecto final de curso para 1º DAW.") }
+                    br()
+                    p { element.text("En él se trata de poner en conocimiento de los docentes, las habilidades adquiridas por los alumnos:") }
+                    p { element.text("Desde "); span { element.text("Base de Datos") }.classes("has-text-link"); element.addText((" hasta ")); span { element.text("Administración de Sistemas") }.classes("has-text-primary"); element.addText(", pasando por "); span { element.text("Lenguaje de Marcas") }.classes("has-text-warning"); element.addText((" y por supuesto ")); span { element.text("Programacion") }.classes("has-text-danger"); element.addText(".")}
+                    br()
+                    p { element.text("Combinamos varias disciplinas y conocimientos en un único proyecto") }
+                    p { element.text("con el fin de demostrarnos y demostrar nuestas habilidades al") }
+                    p { element.text("realizar un despliegue de tal magnitud.") }
                 }.classes("box")
             }.classes("container has-text-centered hax-text-white")
         }.classes("hero-body")
@@ -91,35 +95,35 @@ fun Component.documentPage() {
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                    browser.url.value = "/doc/install"
                                 }
                             }.text("Instalación")
                         }
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/use".json)
+                                    browser.url.value = "/doc/use"
                                 }
                             }.text("Uso básico")
                         }
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                    browser.url.value = "/doc/install"
                                 }
                             }.text("Overview")
                         }
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                    browser.url.value = "/doc/install"
                                 }
                             }.text("Overview")
                         }
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/credits".json)
+                                    browser.url.value = "/doc/credits"
                                 }
                             }.text("Créditos")
                         }

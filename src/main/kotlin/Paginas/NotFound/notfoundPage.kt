@@ -1,6 +1,5 @@
 package es.cifpvirgen.Paginas.NotFound
 
-import es.cifpvirgen.Paginas.cabezera
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
@@ -8,7 +7,6 @@ import kweb.components.Component
 import kweb.img
 
 fun Component.notfoundPage() {
-    cabezera()
     div {
         element("fieldset") {
             element("legend").text("Error 404")

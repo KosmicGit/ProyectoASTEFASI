@@ -16,7 +16,7 @@ fun Component.registerVerify(usuario: Usuario) {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                             element.on.click {
-                                browser.callJsFunction("redirect({})", "/".json)
+                                browser.url.value = "/"
                             }
                         }.classes("navbar-item")
                         span {
@@ -32,7 +32,7 @@ fun Component.registerVerify(usuario: Usuario) {
                         div {
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                                 span {
                                     span {
@@ -43,7 +43,7 @@ fun Component.registerVerify(usuario: Usuario) {
                             }.classes("navbar-item is-active")
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                    browser.url.value = "/doc"
                                 }
                                 span {
                                     span {
@@ -70,32 +70,30 @@ fun Component.registerVerify(usuario: Usuario) {
         div {
             div {
                 div {
-                    element("center") {
+                    div {
                         div {
-                            div {
-                                if (Gestores.gestorUsuarios.estaVerificado(usuario)) {
-                                    p {
-                                        element.text("Esta cuenta ya está activada.")
-                                    }.classes("title")
-                                    element("hr")
-                                    p { element.text("La cuenta del usuario ${usuario.username} enlazada a") }
-                                    p { element.text("la direccion de correo "); element("u") { element.text(usuario.email) } }
-                                    p { element.text("ya está activa y no hace falta volver a activarla.") }
-                                } else {
-                                    Gestores.gestorUsuarios.verificarUsuario(usuario)
-                                    p {
-                                        element.text("¡Cuenta activada!")
-                                    }.classes("title")
-                                    element("hr")
-                                    p { element.text("Ya puede iniciar sesión y acceder a las descargas, también") }
-                                    p { element.text("puedes acceder al programa mediante su usuario y contraseña.") }
-                                    br()
-                                    p { element.text("Nos alegra tenerte con nosotros ${usuario.username}.") }.classes("subtitle")
-                                }
-                            }.classes("box")
-                        }.classes("column is-half")
-                    }
-                }
+                            if (Gestores.gestorUsuarios.estaVerificado(usuario)) {
+                                p {
+                                    element.text("Esta cuenta ya está activada.")
+                                }.classes("title")
+                                element("hr")
+                                p { element.text("La cuenta del usuario ${usuario.username} enlazada a") }
+                                p { element.text("la direccion de correo "); element("u") { element.text(usuario.email) } }
+                                p { element.text("ya está activa y no hace falta volver a activarla.") }
+                            } else {
+                                Gestores.gestorUsuarios.verificarUsuario(usuario)
+                                p {
+                                    element.text("¡Cuenta activada!")
+                                }.classes("title")
+                                element("hr")
+                                p { element.text("Ya puede iniciar sesión y acceder a las descargas, también") }
+                                p { element.text("puedes acceder al programa mediante su usuario y contraseña.") }
+                                br()
+                                p { element.text("Nos alegra tenerte con nosotros ${usuario.username}.") }.classes("subtitle")
+                            }
+                        }.classes("box")
+                    }.classes("column is-half")
+                }.classes("columns is-centered has-text-center")
             }.classes("container has-text-centered")
         }.classes("hero-body")
 
@@ -107,9 +105,14 @@ fun Component.registerVerify(usuario: Usuario) {
                     ul {
                         li {
                             a {
-                                element.text("Main")
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-flag-checkered")
+                                    }.classes("icon")
+                                    span().text("Start")
+                                }.classes("icon-text")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                             }
                         }
@@ -122,7 +125,7 @@ fun Component.registerVerify(usuario: Usuario) {
                                     span().text("Login")
                                 }.classes("icon-text")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/login".json)
+                                    browser.url.value = "/login"
                                 }
                             }
                         }
@@ -134,6 +137,9 @@ fun Component.registerVerify(usuario: Usuario) {
                                     }.classes("icon")
                                     span().text("Register")
                                 }.classes("icon-text")
+                                element.on.click {
+                                    browser.url.value = "/register"
+                                }
                             }
                         }.classes("is-active")
                     }

@@ -35,7 +35,7 @@ fun Component.homePage() {
                             }.classes("navbar-item is-active")
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                    browser.url.value = "/doc"
                                 }
                                 span {
                                     span {
@@ -62,7 +62,7 @@ fun Component.homePage() {
         div {
             div {
                 p { element.text("Asociación de Terapeutas Familiares Sistémicos") }.classes("title")
-                p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }.classes("subtitle")
+                p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias. \uD83C\uDF24\uFE0F") }.classes("subtitle")
             }.classes("container has-text-centered")
         }.classes("hero-body")
 
@@ -72,17 +72,26 @@ fun Component.homePage() {
                 div {
                     element.classes("container")
                     ul {
-                        li { a().text("Main") }.classes("is-active")
                         li {
                             a {
                                 span {
                                     span {
-                                        i().classes("fa-solid fa-right-to-bracket ")
+                                        i().classes("fa-solid fa-flag-checkered")
+                                    }.classes("icon")
+                                    span().text("Start")
+                                }.classes("icon-text")
+                            }
+                        }.classes("is-active")
+                        li {
+                            a {
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-right-to-bracket")
                                     }.classes("icon")
                                     span().text("Login")
                                 }.classes("icon-text")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/login".json)
+                                    browser.url.value = "/login"
                                 }
                             }
                         }
@@ -95,7 +104,7 @@ fun Component.homePage() {
                                     span().text("Register")
                                 }.classes("icon-text")
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/register".json)
+                                    browser.url.value = "/register"
                                 }
                             }
                         }

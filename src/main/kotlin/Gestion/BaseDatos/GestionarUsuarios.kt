@@ -154,7 +154,7 @@ class GestionarUsuarios {
      * Obtiene un usuario de la base de datos según su dirección de correo electrónico.
      *
      * @param username El UserName del usuario que se desea obtener.
-     * @return El objeto Usuario correspondiente al correo electrónico proporcionado, o null si no se encuentra en la base de datos.
+     * @return El objeto Usuario correspondiente al Username proporcionado, o null si no se encuentra en la base de datos.
      */
     fun obtenerUsuario(username : String) : Usuario? {
         val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE username = ?")
@@ -193,6 +193,75 @@ class GestionarUsuarios {
         }
 
         return usuario
+    }
+
+    /**
+     * Obtiene un usuario de la base de datos según su dirección de correo electrónico.
+     *
+     * @param email El Correo del usuario que se desea obtener.
+     * @return El objeto Usuario correspondiente al correo electrónico proporcionado, o null si no se encuentra en la base de datos.
+     */
+    fun obtenerUsuarioMail(email : String) : Usuario? {
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE email = ?")
+        statement.setString(1, email)
+        val resultSet = statement.executeQuery()
+
+        var usuario: Usuario? = null
+
+        try {
+            if (resultSet.next()) {
+                val idUsuario = resultSet.getInt("idUsuario")
+                val username = resultSet.getString("username")
+                val email = resultSet.getString("email")
+                val password = Gestores.encrypt.desencriptar(resultSet.getString("password"))
+                var rol: Roles
+                if (resultSet.getInt("rol") == 1) {
+                    rol = Roles.TERAPEUTA
+                } else if (resultSet.getInt("rol") == 2){
+                    rol = Roles.ADMINISTRADOR
+                } else {
+                    rol = Roles.PACIENTE
+                }
+                var verificado = false
+                if (resultSet.getInt("verificado") == 1) {
+                    verificado = true
+                }
+
+                usuario = Usuario(idUsuario, username, email, password, rol, verificado)
+            }
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al obtener los datos del usuario:")
+            println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+        } finally {
+            resultSet.close()
+            statement.close()
+        }
+
+        return usuario
+    }
+
+    fun obtenerFoto(usuario: Usuario): String? {
+        var fotoBase64: String? = null
+
+        try {
+            val statement = ConexionBD.connection!!.prepareStatement("SELECT foto_perfil FROM Usuario WHERE email = ?")
+            statement.setString(1, usuario.email)
+            val resultSet = statement.executeQuery()
+
+            if (resultSet.next()) {
+                fotoBase64 = resultSet.getString("foto_perfil")
+                if (resultSet.wasNull()) {
+                    fotoBase64 = null
+                }
+            }
+
+            resultSet.close()
+            statement.close()
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al obtener la foto del usuario:")
+            println(DebugColors.amarillo("[${e.errorCode}]") + "${e.message}")
+        }
+        return fotoBase64
     }
 
     /**
@@ -243,7 +312,7 @@ class GestionarUsuarios {
      * @param datosNuevos El objeto Usuario con los nuevos datos que se van a asignar al usuario.
      */
     fun modificarUsuario(usuarioOriginal: Usuario, datosNuevos: Usuario) {
-        val user = obtenerUsuario(usuarioOriginal.email)
+        val user = obtenerUsuarioMail(usuarioOriginal.email)
         if (user != null) {
             val query = "UPDATE Usuario SET username = ?, email = ?, password = ? WHERE email = ?"
             try {
@@ -310,3 +379,4 @@ class GestionarUsuarios {
         return listaUsuarios
     }
 }
+

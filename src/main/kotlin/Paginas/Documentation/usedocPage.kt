@@ -14,7 +14,7 @@ fun Component.usedocPage() {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                             element.on.click {
-                                browser.callJsFunction("redirect({})", "/".json)
+                                browser.url.value = "/"
                             }
                         }.classes("navbar-item is-selected")
                         span {
@@ -30,7 +30,7 @@ fun Component.usedocPage() {
                         div {
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                                 element.on.mouseenter {
                                     element.classes("navbar-item")
@@ -90,14 +90,14 @@ fun Component.usedocPage() {
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                    browser.url.value = "/doc"
                                 }
                             }.text("Introducción")
                         }
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/install".json)
+                                    browser.url.value = "/doc/install"
                                 }
                             }.text("Instalación")
                         }
@@ -107,7 +107,7 @@ fun Component.usedocPage() {
                         li {
                             a{
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc/credits".json)
+                                    browser.url.value = "/doc/credits"
                                 }
                             }.text("Créditos")
                         }

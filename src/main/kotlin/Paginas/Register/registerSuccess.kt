@@ -8,10 +8,10 @@ import kweb.components.Component
 import kweb.util.json
 
 fun Component.registerSuccess() {
-    //TODO("Completar mensaje de registro completado")
     elementScope().launch {
         val result = (browser.callJsFunctionWithResult("return obtenerSuccess()")).toString().replace("\"", "")
         val usuario = Gestores.desencriptarUsuario(result)
+        browser.callJsFunction("cerrarSesion({})", "success".json)
 
         section {
             div {
@@ -21,7 +21,7 @@ fun Component.registerSuccess() {
                             a {
                                 img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                             }.classes("navbar-item")
                             span {
@@ -37,7 +37,7 @@ fun Component.registerSuccess() {
                             div {
                                 a {
                                     element.on.click {
-                                        browser.callJsFunction("redirect({})", "/".json)
+                                        browser.url.value = "/"
                                     }
                                     span {
                                         span {
@@ -48,7 +48,7 @@ fun Component.registerSuccess() {
                                 }.classes("navbar-item is-active")
                                 a {
                                     element.on.click {
-                                        browser.callJsFunction("redirect({})", "/doc".json)
+                                        browser.url.value = "/doc"
                                     }
                                     span {
                                         span {
@@ -75,23 +75,21 @@ fun Component.registerSuccess() {
             div {
                 div {
                     div {
-                        element("center") {
+                        div {
                             div {
-                                div {
-                                    p {
-                                        element.text("Bienvenido a bordo ${usuario.username}!.")
-                                    }.classes("title")
-                                    element("hr")
-                                    p { element.text("¿Ahora que?") }.classes("subtitle is-5")
-                                    p { element.text("Revise en la bandeja de su correo electónico "); element("u") { element.text(usuario.email) } }
-                                    p { element.text("en busca del correo que le hemos enviado para activar su cuenta") }
-                                    br()
-                                    p { element.text("Recuerde:") }
-                                    p { element.text("No podrá acceder a las descargas y al programa hasta que no verifique su cuenta.") }
-                                }.classes("box")
-                            }.classes("column is-half")
-                        }
-                    }
+                                p {
+                                    element.text("Bienvenido a bordo ${usuario.username}!.")
+                                }.classes("title")
+                                element("hr")
+                                p { element.text("¿Ahora que?") }.classes("subtitle is-5")
+                                p { element.text("Revise en la bandeja de su correo electónico "); element("u") { element.text(usuario.email) } }
+                                p { element.text("en busca del correo que le hemos enviado para activar su cuenta") }
+                                br()
+                                p { element.text("Recuerde:") }.classes("subtitle is-5")
+                                p { element.text("No podrá acceder al programa ni a las descargas hasta que no verifique su cuenta.") }
+                            }.classes("box")
+                        }.classes("column is-half")
+                    }.classes("columns is-centered has-text-center")
                 }.classes("container has-text-centered")
             }.classes("hero-body")
 
@@ -103,9 +101,14 @@ fun Component.registerSuccess() {
                         ul {
                             li {
                                 a {
-                                    element.text("Main")
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-flag-checkered")
+                                        }.classes("icon")
+                                        span().text("Start")
+                                    }.classes("icon-text")
                                     element.on.click {
-                                        browser.callJsFunction("redirect({})", "/".json)
+                                        browser.url.value = "/"
                                     }
                                 }
                             }
@@ -118,7 +121,7 @@ fun Component.registerSuccess() {
                                         span().text("Login")
                                     }.classes("icon-text")
                                     element.on.click {
-                                        browser.callJsFunction("redirect({})", "/login".json)
+                                        browser.url.value = "/login"
                                     }
                                 }
                             }
@@ -130,6 +133,9 @@ fun Component.registerSuccess() {
                                         }.classes("icon")
                                         span().text("Register")
                                     }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/register"
+                                    }
                                 }
                             }.classes("is-active")
                         }

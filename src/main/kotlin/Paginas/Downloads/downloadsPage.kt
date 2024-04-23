@@ -9,7 +9,6 @@ import kweb.util.json
 
 fun Component.downloadsPage(usuario: Usuario) {
     //TODO("Añadir archivos reales")
-    //TODO("Añadir funcionalidad botón exit")
     section {
         div {
             element("header") {
@@ -18,7 +17,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                         a {
                             img(attributes = mapOf("src" to JsonPrimitive("https://i.ibb.co/F01PkQv/logo.png")))
                             element.on.click {
-                                browser.callJsFunction("redirect({})", "/".json)
+                                browser.url.value = "/"
                             }
                         }.classes("navbar-item is-selected")
                         span {
@@ -34,7 +33,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                         div {
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/".json)
+                                    browser.url.value = "/"
                                 }
                                 element.on.mouseenter {
                                     element.classes("navbar-item")
@@ -51,7 +50,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                             }.classes("navbar-item has-text-black")
                             a {
                                 element.on.click {
-                                    browser.callJsFunction("redirect({})", "/doc".json)
+                                    browser.url.value = "/doc"
                                 }
                                 element.on.mouseenter {
                                     element.classes("navbar-item")
@@ -78,10 +77,24 @@ fun Component.downloadsPage(usuario: Usuario) {
                             span {
                                 a {
                                     span {
+                                        i().classes("fa-solid fa-user-gear")
+                                    }.classes("icon")
+                                    span().text(usuario.username)
+                                    element.on.click {
+                                        browser.url.value = "/profile/settings"
+                                    }
+                                }.classes("button is-info is-inverted")
+                            }.classes("navbar-item")
+                            span {
+                                a {
+                                    span {
                                         i().classes("fa-solid fa-right-from-bracket")
                                     }.classes("icon")
-                                    span().text("Salir")
-                                    element.href = "https://github.com/KosmicGit/ProyectoASTEFASI"
+                                    span().text("Log out")
+                                    element.on.click {
+                                        browser.callJsFunction("cerrarSesion({})", "sesion".json)
+                                        browser.url.value = "/"
+                                    }
                                 }.classes("button is-danger is-inverted")
                             }.classes("navbar-item")
                         }.classes("navbar-end")
@@ -98,6 +111,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                             div {
                                 div {
                                     div {
+                                        div {  }.classes("column is-0")
                                         div {
                                             p {
                                                 li{
@@ -153,6 +167,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                                 div {
                                     div {
                                         div {
+                                            div {  }.classes("column is-0")
                                             div {
                                                 p {
                                                     li{
@@ -220,12 +235,40 @@ fun Component.downloadsPage(usuario: Usuario) {
                             a {
                                 span {
                                     span {
+                                        i().classes("fa-solid fa-user")
+                                    }.classes("icon")
+                                    span().text("Profile")
+                                }.classes("icon-text")
+                                element.on.click {
+                                    browser.url.value = "/profile"
+                                }
+                            }
+                        }
+                        li {
+                            a {
+                                span {
+                                    span {
                                         i().classes("fa-solid fa-bars-progress")
                                     }.classes("icon")
                                     span().text("Downloads")
                                 }.classes("icon-text")
                             }
                         }.classes("is-active")
+                        if (usuario.rol == Roles.ADMINISTRADOR) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-users-gear")
+                                        }.classes("icon")
+                                        span().text("Admin")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }.classes("tabs is-boxed is-fullwidth")
