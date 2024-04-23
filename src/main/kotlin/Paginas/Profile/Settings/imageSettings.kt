@@ -2,10 +2,13 @@ package es.cifpvirgen.Paginas.Profile.Settings
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.Gestores
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
+import kweb.html.fileUpload.FileFormInput
+import kweb.html.fileUpload.FileUpload
+import kweb.state.KVar
 import kweb.util.json
 
 fun Component.imageSettings(usuario: Usuario) {
@@ -111,96 +114,53 @@ fun Component.imageSettings(usuario: Usuario) {
                             p {
                                 span {
                                     span {
-                                        i().classes("fa-solid fa-gear")
+                                        i().classes("fa-solid fa-image")
                                     }.classes("icon")
                                     span().text(" ")
-                                    span().text("Profile Settings")
+                                    span().text("Image Settings")
                                 }.classes("icon-text")
                             }.classes("title has-text-white")
                             element("hr")
-                            div {
-                                div {
-                                    li().text("Usuario: ${usuario.username}")
-                                    li().text("Correo: ${usuario.email}")
-                                    li().text("Rol: ${usuario.rol}")
-                                }.classes("columna is-9 has-text-left")
-                                div { }.classes("column is-2")
-                                div {
-                                    val fotoPerfil = Gestores.gestorUsuarios.obtenerFoto(usuario)
-                                    if (fotoPerfil != null) {
-                                        element("figure") {
-                                            img(attributes = mapOf("src" to JsonPrimitive("data:image/png;base64,$fotoPerfil")))
-                                        }.classes("image is-128x128")
-                                    } else {
-                                        element("figure") {
-                                            img(attributes = mapOf("src" to JsonPrimitive("https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png")))
-                                        }.classes("image is-128x128")
-                                    }
-                                }.classes("columna")
-                            }.classes("columns is-centered is-vcentered")
+
+                            var b64 = ""
+                            val ad = fileInput()
+                            ad.onFileSelect {
+                                println("hola")
+                                ad.retrieveFile {
+                                    val size = it.fileSize
+                                    val name = it.fileName
+                                    b64 = it.base64Content
+                                    img(attributes = mapOf("src" to JsonPrimitive("data:image/png;base64,$b64")))
+                                }
+                            }
+
+
                             element("hr")
                             div {
-                                div {
-                                    p {
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-image")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Foto")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/image"
-                                            }
-                                        }.classes("button is-success")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-user-pen")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Usuario")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/user"
-                                            }
-                                        }.classes("button is-primary")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-calendar-days")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Fecha")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/date"
-                                            }
-                                        }.classes("button is-info")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-envelope")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Correo")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/email"
-                                            }
-                                        }.classes("button is-warning")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-key")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Contraseña")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/password"
-                                            }
-                                        }.classes("button is-danger")
-                                    }.classes("buttons is-centered")
-                                }.classes("column")
-                            }.classes("columns")
-                            element("hr")
-                            div {
-                                div {
-                                    button {
+                                label {
+                                    input(type = InputType.file).classes("file-input")
+                                    span {
                                         span {
-                                            i().classes("fa-solid fa-trash")
-                                        }.classes("icon is-small")
-                                        span().text("Eliminar Cuenta")
-                                    }.classes("button is-danger is-inverted")
-                                }.classes("column")
-                            }.classes("colums is-centered")
+                                            i().classes("fas fa-upload")
+                                        }.classes("file-icon")
+                                        span {
+                                            element.text("Elige un archivo")
+                                        }.classes("file-label")
+                                    }.classes("file-cta")
+                                    span { element.text("ika") }.classes("file-name")
+                                }.classes("file-label")
+                            }.classes("file has-name")
+                            var botonUpload = button(type = ButtonType.button) {
+                                span { i().classes("fa-solid fa-share-from-square") }.classes("icon")
+                                var textoBoton = span().text("Enviar")
+                            }.classes("button is-warning")
+                            botonUpload.on.click {
+                                elementScope().launch {
+                                    //val foto = browser.callJsFunctionWithCallback("return loadImage({})", "loadImage", "base64String".json, "K1m".json)
+                                    //h1().text(foto.toString())
+                                }
+                            }
+
                         }.classes("box")
                     }.classes("column is-half")
                 }.classes("columns is-centered has-text-center")
