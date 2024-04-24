@@ -8,6 +8,8 @@ import es.cifpvirgen.Gestion.BaseDatos.GestionarUsuarios
 import es.cifpvirgen.Gestion.Email.ConexionMail
 import es.cifpvirgen.Gestion.Email.GestionarEmail
 import io.github.cdimascio.dotenv.dotenv
+import kweb.CookieReceiver
+import kweb.Kweb
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -44,17 +46,6 @@ class Gestores {
 
         fun decodificarURL(url: String): String {
             return URLDecoder.decode(url, StandardCharsets.UTF_8.toString())
-        }
-
-        fun cadenaValida(cadena: String): Boolean {
-            return try {
-                val decodedBytes = Base64.getDecoder().decode(cadena)
-                val decodedString = String(decodedBytes)
-                decodedString == cadena
-            } catch (e: IllegalArgumentException) {
-                println(e)
-                false
-            }
         }
 
     }

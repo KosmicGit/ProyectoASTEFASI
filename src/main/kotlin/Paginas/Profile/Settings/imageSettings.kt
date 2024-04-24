@@ -156,7 +156,7 @@ fun Component.imageSettings(usuario: Usuario) {
                                     }.classes("button is-warning")
                                     botonUpload.on.click {
                                         if (imgB64 == "") {
-                                            p { element.text("Por favor seleccione una imagen.") }.classes("subtitle has-text-grey-light")
+                                            browser.callJsFunction("mostrarNoti({})", "Por favor seleccione una imagen.".json)
                                         } else {
                                             Gestores.gestorUsuarios.guardarFoto(imgB64, usuario)
                                             browser.callJsFunction("mostrarNoti({})", "Imagen actualizada correctamente.".json)
@@ -211,6 +211,21 @@ fun Component.imageSettings(usuario: Usuario) {
                                             i().classes("fa-solid fa-users-gear")
                                         }.classes("icon")
                                         span().text("Admin")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
+                        if (usuario.rol == Roles.TERAPEUTA) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-doctor")
+                                        }.classes("icon")
+                                        span().text("Patients")
                                     }.classes("icon-text")
                                     element.on.click {
                                         browser.url.value = "/admin"

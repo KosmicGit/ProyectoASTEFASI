@@ -141,9 +141,7 @@ fun Component.loginPage(){
                                     if (username.value == "" || password.value == "") {
                                         botonlogin.classes("button is-danger")
                                         botonlogin.text("Error")
-                                        val errorlogin = h3()
-                                        errorlogin.text = KVar("Por favor introduzca sus datos.")
-                                        errorlogin.classes("eslogan")
+                                        browser.callJsFunction("mostrarNoti({})", "Debes rellenar todos los campos".json)
                                     } else {
                                         val usuario = login(username, password)
                                         if (usuario != null) {
@@ -153,15 +151,13 @@ fun Component.loginPage(){
                                             } else {
                                                 botonlogin.classes("button is-danger")
                                                 botonlogin.text("Error")
-                                                val errorlogin = h3()
-                                                errorlogin.text = KVar("Usuario no activado. Compruebe su correo")
+                                                browser.callJsFunction("mostrarNoti({})", "Usuario no activado. Compruebe su correo".json)
                                             }
 
                                         } else {
                                             botonlogin.classes("button is-danger")
                                             botonlogin.text("Error")
-                                            val errorlogin = h3()
-                                            errorlogin.text = KVar("😢No existe el Usuario o Contraseña.😔")
+                                            browser.callJsFunction("mostrarNoti({})", "No existe el usuario o contraseña.".json)
                                             p { element.text("¿Ha olvidado su contraseña?") }
                                             p { element.text("Restablezcala "); a { element.text("aquí") }.href = "/login/recovery" }
                                         }

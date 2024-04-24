@@ -137,7 +137,7 @@ fun Component.emailSettings(usuario: Usuario) {
                                         span().text("Change")
                                         element.on.click {
                                             if (newMail.value == ""){
-                                                p { element.text("Introduzca un correo") }.classes("subtitle has-text-grey-light")
+                                                browser.callJsFunction("mostrarNoti({})", "Introduzca una dirección de correo".json)
                                             } else {
                                                 if (Gestores.gestorUsuarios.obtenerUsuarioMail(newMail.value) == null) {
                                                     //TODO("Mail de verificacion para el nuevo correo")
@@ -149,7 +149,7 @@ fun Component.emailSettings(usuario: Usuario) {
                                                     browser.callJsFunction("mostrarNoti({})", "Usuario actualizado correctamente.".json)
                                                     browser.url.value = "/profile/settings"
                                                 } else {
-                                                    p { element.text("El usuario ya existe.") }.classes("subtitle has-text-grey-light")
+                                                    browser.callJsFunction("mostrarNoti({})", "El usuario ya existe.".json)
                                                 }
                                             }
                                         }
@@ -193,7 +193,7 @@ fun Component.emailSettings(usuario: Usuario) {
                                 }
                             }
                         }
-                        if (usuario.rol == es.cifpvirgen.Data.Roles.ADMINISTRADOR) {
+                        if (usuario.rol == Roles.ADMINISTRADOR) {
                             li {
                                 a {
                                     span {
@@ -201,6 +201,21 @@ fun Component.emailSettings(usuario: Usuario) {
                                             i().classes("fa-solid fa-users-gear")
                                         }.classes("icon")
                                         span().text("Admin")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
+                        if (usuario.rol == Roles.TERAPEUTA) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-doctor")
+                                        }.classes("icon")
+                                        span().text("Patients")
                                     }.classes("icon-text")
                                     element.on.click {
                                         browser.url.value = "/admin"

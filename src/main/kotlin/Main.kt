@@ -22,20 +22,22 @@ import kotlinx.coroutines.launch
 import kweb.*
 import kweb.plugins.css.CSSPlugin
 import kweb.plugins.javascript.JavascriptPlugin
+import kweb.plugins.staticFiles.ResourceFolder
+import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.util.json
 import java.net.URI
 
 
 fun main() {
-    Kweb(port = 8080, plugins = listOf(CSSPlugin("css", "bulma.css"), JavascriptPlugin("js", "script.js"))) {
+    Kweb(port = 8080, plugins = listOf(CSSPlugin("css", "bulma.css"), JavascriptPlugin("js", "script.js"), StaticFilesPlugin(resourceFolder = ResourceFolder("static"), "/cdn"))) {
         doc.head {
             title().text("\uD83C\uDF08  AsTeFaSi Web. \uD83C\uDF24\uFE0F")
             link(LinkRelationship.stylesheet, URI.create("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css").toURL())
             link(LinkRelationship.icon, URI.create("https://upload.wikimedia.org/wikipedia/commons/d/d1/Favicon.ico.png").toURL())
         }
         doc.body {
-
             route {
+
                 // URL "/"
                 path("/") {
                     homePage()
@@ -82,10 +84,9 @@ fun main() {
                 // URL "/downloads"
                 path("/downloads") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 downloadsPage(usuario)
                             } else {
@@ -100,10 +101,9 @@ fun main() {
                 // URL "/admin"
                 path("/admin") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado && usuario.rol == Roles.ADMINISTRADOR) {
                                 adminPage(usuario)
                             } else {
@@ -118,10 +118,9 @@ fun main() {
                 // URL "/profile"
                 path("/profile") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 profilePage(usuario)
                             } else {
@@ -136,10 +135,9 @@ fun main() {
                 // URL "/profile/settings"
                 path("/profile/settings") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 profileSettings(usuario)
                             } else {
@@ -154,10 +152,9 @@ fun main() {
                 // URL "/profile/settings/image"
                 path("/profile/settings/image") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 imageSettings(usuario)
                             } else {
@@ -172,10 +169,9 @@ fun main() {
                 // URL "/profile/settings/user"
                 path("/profile/settings/user") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 userSettings(usuario)
                             } else {
@@ -190,10 +186,9 @@ fun main() {
                 // URL "/profile/settings/date"
                 path("/profile/settings/date") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 dateSettings(usuario)
                             } else {
@@ -208,10 +203,9 @@ fun main() {
                 // URL "/profile/settings/password"
                 path("/profile/settings/password") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 passwordSettings(usuario)
                             } else {
@@ -226,10 +220,9 @@ fun main() {
                 // URL "/profile/settings/email"
                 path("/profile/settings/email") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 emailSettings(usuario)
                             } else {
@@ -244,10 +237,9 @@ fun main() {
                 // URL "/profile/settings/delete"
                 path("/profile/settings/delete") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "sesion".json).toString()
-                        if (comprobarCookie == "true") {
-                            val comprobarVerificado = (browser.callJsFunctionWithResult("return obtenerSesion()")).toString().replace("\"", "")
-                            val usuario = Gestores.desencriptarUsuario(comprobarVerificado)
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
                             if (usuario.verificado) {
                                 deleteSettings(usuario)
                             } else {
@@ -267,9 +259,10 @@ fun main() {
                 // URL "/register/success"
                 path("/register/success") {
                     elementScope().launch {
-                        val comprobarCookie = browser.callJsFunctionWithResult("return comprobarCookie({})", "success".json).toString()
-                        if (comprobarCookie == "true") {
-                            registerSuccess()
+                        val comprobarCookie = CookieReceiver(browser).getString("success")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
+                            registerSuccess(usuario)
                         } else {
                             url.value = "/register"
                         }

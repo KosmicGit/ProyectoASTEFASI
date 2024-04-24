@@ -106,13 +106,12 @@ fun Component.recoveryPage() {
                             }.classes("button is-warning")
                             botonrecovery.on.click {
                                 botonrecovery.classes("button is-warning is-loading")
-
                                 if (email.value == "") {
                                     if (botonrecovery.text.value != "Error") {
                                         botonrecovery.text("Error")
                                         botonrecovery.classes("button is-danger")
                                         br()
-                                        p().text("El campo no puede estar vacío.").classes("has-text-danger")
+                                        browser.callJsFunction("mostrarNoti({})", "Debes introducir un email.".json)
                                     }
                                 } else {
                                     val usuario = Gestores.gestorUsuarios.obtenerUsuarioMail(email.value)
@@ -120,7 +119,7 @@ fun Component.recoveryPage() {
                                         botonrecovery.text("Error")
                                         botonrecovery.classes("button is-danger")
                                         br()
-                                        p().text("No existe ningún usuario con este correo.").classes("has-text-danger")
+                                        browser.callJsFunction("mostrarNoti({})", "No existe ningún usuario con este correo.".json)
 
                                     } else {
                                         Gestores.gestorMail.enviarCorreo(
@@ -134,6 +133,7 @@ fun Component.recoveryPage() {
                                             }'>Restablece tu contraseña aquí</a>" +
                                                     "<p>Si usted no ha solicitado el cambio de contraseña, ignore este correo.</p>"
                                         )
+                                        browser.callJsFunction("mostrarNoti({})", "Correo enviado.".json)
                                         botonrecovery.text("Enviado")
                                         botonrecovery.classes("button is-primary")
                                     }

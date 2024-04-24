@@ -130,7 +130,7 @@ fun Component.recoveryPanel(usuario: Usuario) {
                                     botonPassword.classes("button is-danger is-loading")
                                     if (password.value == "") {
                                         botonPassword.text("Error")
-                                        p { element.text("Debes introducir una contraseña.") }.classes("has-text-danger")
+                                        browser.callJsFunction("mostrarNoti({})", "Debes introducir una contraseña".json)
                                         botonPassword.classes("button is-danger")
                                     } else {
                                         val modificacion = usuario.copy()

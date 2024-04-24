@@ -5,7 +5,10 @@ import es.cifpvirgen.Gestion.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
+import kweb.state.KVar
 import kweb.util.json
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 fun Component.registerVerify(usuario: Usuario) {
     section {
@@ -81,15 +84,73 @@ fun Component.registerVerify(usuario: Usuario) {
                                 p { element.text("la direccion de correo "); element("u") { element.text(usuario.email) } }
                                 p { element.text("ya está activa y no hace falta volver a activarla.") }
                             } else {
-                                Gestores.gestorUsuarios.verificarUsuario(usuario)
-                                p {
-                                    element.text("¡Cuenta activada!")
-                                }.classes("title")
+                                val Nombre = KVar("")
+                                val Apellido = KVar("")
+                                val FechaNac = KVar("")
+                                val DNI = KVar("")
+
+                                //Gestores.gestorUsuarios.verificarUsuario(usuario)
+                                p { element.text("¡Antes de Continuar!") }.classes("title")
                                 element("hr")
-                                p { element.text("Ya puede iniciar sesión y acceder a las descargas, también") }
-                                p { element.text("puedes acceder al programa mediante su usuario y contraseña.") }
+                                p { element.text("Necesitamos sus datos para poder completar su ficha.") }.classes("subtitle is-6 has-text-grey-light")
+                                p { element.text("(Necesario para las sesiones)") }.classes("subtitle is-6 has-text-grey-light")
+                                p {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-tag")
+                                        }.classes("icon")
+                                        span().text("Nombre:")
+                                    }.classes("icon-text")
+                                }.classes("subtitle")
+                                input(type = InputType.text).classes("input")
                                 br()
-                                p { element.text("Nos alegra tenerte con nosotros ${usuario.username}.") }.classes("subtitle")
+                                br()
+                                p {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-signature")
+                                        }.classes("icon")
+                                        span().text("Apellido:")
+                                    }.classes("icon-text")
+                                }.classes("subtitle")
+                                input(type = InputType.text).classes("input")
+                                br()
+                                br()
+                                p {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-cake-candles")
+                                        }.classes("icon")
+                                        span().text("Fecha de Nacimiento:")
+                                    }.classes("icon-text")
+                                }.classes("subtitle")
+                                input(type = InputType.date){
+                                    element.value = FechaNac
+                                }.classes("input")
+                                br()
+                                br()
+                                p {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-id-card")
+                                        }.classes("icon")
+                                        span().text("DNI:")
+                                    }.classes("icon-text")
+                                }.classes("subtitle")
+                                input(type = InputType.text).classes("input")
+                                br()
+                                br()
+                                var botonRegistro = button(type = ButtonType.button) {
+                                    span { i().classes("fa-solid fa-arrow-right") }.classes("icon")
+                                    span().text("Continuar")
+                                    element.on.click {
+                                        if (Nombre.value == "" || Apellido.value == "" || FechaNac.value == "" || DNI.value == "") {
+                                            element.classes("button is-danger")
+                                            element.text("Error")
+                                            browser.callJsFunction("mostrarNoti({})", "Debes rellenar todos los campos".json)
+                                        }
+                                    }
+                                }.classes("button is-primary")
                             }
                         }.classes("box")
                     }.classes("column is-half")

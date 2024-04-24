@@ -2,6 +2,7 @@ package es.cifpvirgen.Paginas.Downloads
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
+import es.cifpvirgen.Paginas.Register.registerSuccess
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
@@ -131,7 +132,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                                                                 i().classes("fa-solid fa-download")
                                                             }.classes("icon")
                                                             span().text("Download")
-                                                            element.href = "https://cifpvirgendegracia.com/"
+                                                            element.href = "/cdn/AsTeFaSi-Sessions.zip"
                                                         }.classes("button is-warning is-inverted")
                                                     }
                                                 }.classes("column is-4")
@@ -188,7 +189,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                                                                     i().classes("fa-solid fa-download")
                                                                 }.classes("icon")
                                                                 span().text("Download")
-                                                                element.href = "https://cifpvirgendegracia.com/"
+                                                                element.href = "/cdn/AsTeFaSi-DatMaker.zip"
                                                             }.classes("button is-warning is-inverted")
                                                         }
                                                     }.classes("column is-4")

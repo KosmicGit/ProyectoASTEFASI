@@ -198,6 +198,9 @@ fun Component.profileSettings(usuario: Usuario) {
                                             i().classes("fa-solid fa-trash")
                                         }.classes("icon is-small")
                                         span().text("Eliminar Cuenta")
+                                        element.on.click {
+                                            browser.url.value = "/profile/settings/delete"
+                                        }
                                     }.classes("button is-danger is-inverted")
                                 }.classes("column")
                             }.classes("colums is-centered")
@@ -246,6 +249,21 @@ fun Component.profileSettings(usuario: Usuario) {
                                             i().classes("fa-solid fa-users-gear")
                                         }.classes("icon")
                                         span().text("Admin")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
+                        if (usuario.rol == Roles.TERAPEUTA) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-doctor")
+                                        }.classes("icon")
+                                        span().text("Patients")
                                     }.classes("icon-text")
                                     element.on.click {
                                         browser.url.value = "/admin"

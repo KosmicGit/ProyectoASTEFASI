@@ -14,52 +14,6 @@ function exitoRegistro(valor) {
     document.cookie = "success=" + encodeURIComponent(valor) + "; expires=" + expirationDate.toUTCString() + "; path=/";
 }
 
-
-// Obtener valor de Sesion
-function obtenerSesion() {
-    var nombre = 'sesion' + '=';
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        while (cookie.charAt(0) == ' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(nombre) == 0) {
-            return decodeURIComponent(cookie.substring(nombre.length, cookie.length));
-        }
-    }
-    return null;
-}
-
-// Obtener valor de Success
-function obtenerSuccess() {
-    var nombre = 'success' + '=';
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        while (cookie.charAt(0) == ' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(nombre) == 0) {
-            return decodeURIComponent(cookie.substring(nombre.length, cookie.length));
-        }
-    }
-    return null;
-}
-
-// Comprueba si existe la cookie success
-function comprobarCookie(nombre) {
-    var cookies = document.cookie.split(';');
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.indexOf(nombre + '=') === 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
 // Eliminar cookie sesion
 function cerrarSesion(cookie) {
     document.cookie = cookie + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
@@ -72,6 +26,6 @@ function mostrarNoti(texto) {
         duration: 5000,
         gravity: "top",
         position: "right",
-        backgroundColor: "linear-gradient(to right, #ff6b6b, #ffb347)"
+        backgroundColor: "repeating-linear-gradient(45deg, #00d1b2, #00d1b2 10px, #0088a8 10px, #0088a8 20px)"
     }).showToast();
 }

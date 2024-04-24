@@ -129,7 +129,7 @@ class GestionarUsuarios: IGestorUsuarios {
      * @param usuario El objeto Usuario que se va a eliminar de la base de datos.
      */
     override fun borrarUsuario(usuario: Usuario) {
-        val user = obtenerUsuario(usuario.email)
+        val user = obtenerUsuarioMail(usuario.email)
         if (user != null) {
             val query = "DELETE FROM Usuario WHERE email = ?"
 
@@ -350,6 +350,7 @@ class GestionarUsuarios: IGestorUsuarios {
                 }
                 if (datosNuevos.email != usuarioOriginal.email) {
                     cambios = "Email: ${usuarioOriginal.email} -> ${datosNuevos.email}"
+                    Gestores.gestorLogs.modificarEmailLog(usuarioOriginal.email, datosNuevos.email)
                 }
                 if (datosNuevos.password != usuarioOriginal.password) {
                     cambios = "Contraseña"

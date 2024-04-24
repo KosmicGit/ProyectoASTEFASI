@@ -137,17 +137,17 @@ fun Component.passwordSettings(usuario: Usuario) {
                                         span().text("Change")
                                         element.on.click {
                                             if (newPasswd.value == ""){
-                                                p { element.text("Introduzca una contraseña") }.classes("subtitle has-text-grey-light")
+                                                browser.callJsFunction("mostrarNoti({})", "Introduzca una contraseña.".json)
                                             } else {
                                                 if (usuario.password == newPasswd.value) {
-                                                    p { element.text("Has introducido tu contraseña actual") }.classes("subtitle has-text-grey-light")
+                                                    browser.callJsFunction("mostrarNoti({})", "Ha introducido su contraseña actual.".json)
                                                 } else {
+                                                    browser.callJsFunction("mostrarNoti({})", "Contraseña actualizada correctamente.".json)
                                                     val modificacion = usuario.copy()
-                                                    modificacion.email = newPasswd.value
+                                                    modificacion.password = newPasswd.value
                                                     Gestores.gestorUsuarios.modificarUsuario(usuario, modificacion)
                                                     browser.callJsFunction("cerrarSesion({})", "sesion".json)
                                                     browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(modificacion).json)
-                                                    browser.callJsFunction("mostrarNoti({})", "Contraseña actualizada correctamente.".json)
                                                     browser.url.value = "/profile/settings"
                                                 }
                                             }
@@ -200,6 +200,21 @@ fun Component.passwordSettings(usuario: Usuario) {
                                             i().classes("fa-solid fa-users-gear")
                                         }.classes("icon")
                                         span().text("Admin")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
+                        if (usuario.rol == Roles.TERAPEUTA) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-doctor")
+                                        }.classes("icon")
+                                        span().text("Patients")
                                     }.classes("icon-text")
                                     element.on.click {
                                         browser.url.value = "/admin"

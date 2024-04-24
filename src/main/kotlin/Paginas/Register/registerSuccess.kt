@@ -1,5 +1,6 @@
 package es.cifpvirgen.Paginas.Register
 
+import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.Gestores
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
@@ -7,12 +8,9 @@ import kweb.*
 import kweb.components.Component
 import kweb.util.json
 
-fun Component.registerSuccess() {
+fun Component.registerSuccess(usuario: Usuario) {
     elementScope().launch {
-        val result = (browser.callJsFunctionWithResult("return obtenerSuccess()")).toString().replace("\"", "")
-        val usuario = Gestores.desencriptarUsuario(result)
         browser.callJsFunction("cerrarSesion({})", "success".json)
-
         section {
             div {
                 element("header") {

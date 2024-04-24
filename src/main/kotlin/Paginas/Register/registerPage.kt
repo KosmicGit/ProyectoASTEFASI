@@ -148,26 +148,24 @@ fun Component.registerPage() {
                                     if (username.value == "" || password.value == "" || email.value == "") {
                                         botonRegistro.classes("button is-danger")
                                         botonRegistro.text("Error")
-                                        val errorRegistro = h3()
-                                        errorRegistro.text = KVar("Por favor introduzca sus datos.")
+                                        browser.callJsFunction("mostrarNoti({})", "Debes rellenar todos los campos".json)
                                     } else {
                                         when (register(username, email, password)) {
                                             0, 2, 3 -> {
-                                                val errorRegistro = h3()
-                                                errorRegistro.text = KVar("Error al registrarse.")
+                                                browser.callJsFunction("mostrarNoti({})", "Error al registrarse".json)
                                                 botonRegistro.classes("button is-danger")
                                                 botonRegistro.text("Error")
                                                 botonRegistro.on.mouseleave { element.classes("button is-primary") }
                                             }
                                             1 -> {
-                                                val errorRegistro = h3()
-                                                errorRegistro.text = KVar("El usuario ya existe.")
+                                                browser.callJsFunction("mostrarNoti({})", "El usuario ya existe".json)
                                                 botonRegistro.classes("button is-danger")
                                                 botonRegistro.text("Error")
                                             }
                                             4 -> {
                                                 val userKey = Gestores.encriptarUsuario(Usuario( 0, username.value, email.value, "", Roles.PACIENTE, false))
                                                 browser.callJsFunction("exitoRegistro({})", userKey.json)
+                                                browser.callJsFunction("mostrarNoti({})", "Usuario registrado correctamente, compruebe la bandeja de su correo".json)
                                                 Gestores.gestorMail.enviarCorreo(email.value, "AsTeFaSi: Active su cuenta.", "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +
                                                         "<h1>Bienvenido a bordo ${username.value}!</h1>" + "<p>Utilice el siguiente enlace para activar su cuenta:</p>" + "<a href='http://localhost:8080/register/activate/${Gestores.codificarURL(userKey)}'>Activa tu cuenta aquí</a>" +
                                                         "<p>Recuerde que es necesario realizar la activación de la cuenta para poder descargar y acceder a la Aplicación.</p>")

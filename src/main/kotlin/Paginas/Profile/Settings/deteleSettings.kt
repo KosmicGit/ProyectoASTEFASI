@@ -111,96 +111,30 @@ fun Component.deleteSettings(usuario: Usuario) {
                             p {
                                 span {
                                     span {
-                                        i().classes("fa-solid fa-gear")
+                                        i().classes("fa-solid fa-trash-can")
                                     }.classes("icon")
                                     span().text(" ")
-                                    span().text("Profile Settings")
+                                    span().text("Delete Account")
                                 }.classes("icon-text")
                             }.classes("title has-text-white")
                             element("hr")
-                            div {
-                                div {
-                                    li().text("Usuario: ${usuario.username}")
-                                    li().text("Correo: ${usuario.email}")
-                                    li().text("Rol: ${usuario.rol}")
-                                }.classes("columna is-9 has-text-left")
-                                div { }.classes("column is-2")
-                                div {
-                                    val fotoPerfil = es.cifpvirgen.Gestion.Gestores.gestorUsuarios.obtenerFoto(usuario)
-                                    if (fotoPerfil != null) {
-                                        element("figure") {
-                                            img(attributes = mapOf("src" to JsonPrimitive("data:image/png;base64,$fotoPerfil")))
-                                        }.classes("image is-128x128")
-                                    } else {
-                                        element("figure") {
-                                            img(attributes = mapOf("src" to JsonPrimitive("https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png")))
-                                        }.classes("image is-128x128")
-                                    }
-                                }.classes("columna")
-                            }.classes("columns is-centered is-vcentered")
+                            p { element.text("Está a punto de eliminar su cuenta de usuario") }.classes("subtitle has-text-warning")
+                            p { element.text("Esta acción es irreversible") }.classes("subtitle has-text-danger is-4")
+                            button {
+                                span {
+                                    i().classes("fa-solid fa-ban")
+                                }.classes("icon is-small")
+                                span().text("Detele")
+                                element.on.click {
+                                    browser.callJsFunction("mostarNoti({})", "Cuenta de usuario eliminada, hasta más ver ${usuario.username}.".json)
+                                    Gestores.gestorUsuarios.borrarUsuario(usuario)
+                                    browser.callJsFunction("cerrarSesion({})", "sesion".json)
+                                    browser.url.value = "/"
+
+                                }
+                            }.classes("button is-danger")
                             element("hr")
-                            div {
-                                div {
-                                    p {
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-image")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Foto")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/image"
-                                            }
-                                        }.classes("button is-success")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-user-pen")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Usuario")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/user"
-                                            }
-                                        }.classes("button is-primary")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-calendar-days")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Fecha")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/date"
-                                            }
-                                        }.classes("button is-info")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-envelope")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Correo")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/email"
-                                            }
-                                        }.classes("button is-warning")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-key")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Contraseña")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/password"
-                                            }
-                                        }.classes("button is-danger")
-                                    }.classes("buttons is-centered")
-                                }.classes("column")
-                            }.classes("columns")
-                            element("hr")
-                            div {
-                                div {
-                                    button {
-                                        span {
-                                            i().classes("fa-solid fa-trash")
-                                        }.classes("icon is-small")
-                                        span().text("Eliminar Cuenta")
-                                    }.classes("button is-danger is-inverted")
-                                }.classes("column")
-                            }.classes("colums is-centered")
+                            p { element.text("Si desea que eliminemos su ficha de nuestro archivo póngase en contacto con su terapetua.") }.classes("has-text-grey-light")
                         }.classes("box")
                     }.classes("column is-half")
                 }.classes("columns is-centered has-text-center")
@@ -238,7 +172,7 @@ fun Component.deleteSettings(usuario: Usuario) {
                                 }
                             }
                         }
-                        if (usuario.rol == es.cifpvirgen.Data.Roles.ADMINISTRADOR) {
+                        if (usuario.rol == Roles.ADMINISTRADOR) {
                             li {
                                 a {
                                     span {
@@ -246,6 +180,21 @@ fun Component.deleteSettings(usuario: Usuario) {
                                             i().classes("fa-solid fa-users-gear")
                                         }.classes("icon")
                                         span().text("Admin")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
+                        if (usuario.rol == Roles.TERAPEUTA) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-doctor")
+                                        }.classes("icon")
+                                        span().text("Patients")
                                     }.classes("icon-text")
                                     element.on.click {
                                         browser.url.value = "/admin"

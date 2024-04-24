@@ -137,7 +137,7 @@ fun Component.userSettings(usuario: Usuario) {
                                         span().text("Change")
                                         element.on.click {
                                             if (newUsername.value == ""){
-                                                p { element.text("Introduzca un nombre de usuario") }.classes("subtitle has-text-grey-light")
+                                                browser.callJsFunction("mostrarNoti({})", "Introduzca un nombre de usuario.".json)
                                             } else {
                                                 if (Gestores.gestorUsuarios.obtenerUsuario(newUsername.value) == null) {
                                                     val modificacion = usuario.copy()
@@ -148,7 +148,7 @@ fun Component.userSettings(usuario: Usuario) {
                                                     browser.callJsFunction("mostrarNoti({})", "Usuario actualizado correctamente.".json)
                                                     browser.url.value = "/profile/settings"
                                                 } else {
-                                                    p { element.text("El usuario ya existe.") }.classes("subtitle has-text-grey-light")
+                                                    browser.callJsFunction("mostrarNoti({})", "El usuario ya existe.".json)
                                                 }
                                             }
                                         }
@@ -192,7 +192,7 @@ fun Component.userSettings(usuario: Usuario) {
                                 }
                             }
                         }
-                        if (usuario.rol == es.cifpvirgen.Data.Roles.ADMINISTRADOR) {
+                        if (usuario.rol == Roles.ADMINISTRADOR) {
                             li {
                                 a {
                                     span {
@@ -200,6 +200,21 @@ fun Component.userSettings(usuario: Usuario) {
                                             i().classes("fa-solid fa-users-gear")
                                         }.classes("icon")
                                         span().text("Admin")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
+                        if (usuario.rol == Roles.TERAPEUTA) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-doctor")
+                                        }.classes("icon")
+                                        span().text("Patients")
                                     }.classes("icon-text")
                                     element.on.click {
                                         browser.url.value = "/admin"

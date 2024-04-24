@@ -253,6 +253,21 @@ fun Component.dateSettings(usuario: Usuario) {
                                 }
                             }
                         }
+                        if (usuario.rol == Roles.TERAPEUTA) {
+                            li {
+                                a {
+                                    span {
+                                        span {
+                                            i().classes("fa-solid fa-user-doctor")
+                                        }.classes("icon")
+                                        span().text("Patients")
+                                    }.classes("icon-text")
+                                    element.on.click {
+                                        browser.url.value = "/admin"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }.classes("tabs is-boxed is-fullwidth")
