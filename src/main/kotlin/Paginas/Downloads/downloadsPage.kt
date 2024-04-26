@@ -2,7 +2,6 @@ package es.cifpvirgen.Paginas.Downloads
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Paginas.Register.registerSuccess
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component

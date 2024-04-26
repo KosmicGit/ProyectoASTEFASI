@@ -6,11 +6,10 @@ import es.cifpvirgen.Gestion.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
-import kweb.state.KVar
 import kweb.util.json
 
 fun Component.profilePage(usuario: Usuario) {
-    //TODO("COmpletar pagina perfil")
+    val paciente = Gestores.gestorPacientes.obtenerPacienteIdUsuario(usuario.idUsuario)!!
     section {
         div {
             element("header") {
@@ -122,10 +121,10 @@ fun Component.profilePage(usuario: Usuario) {
                             element("hr")
                             div {
                                 div {
-                                    li().text("Nombre: {nombre aqui}")
-                                    li().text("Apellidos: {Apellido aqui}")
+                                    li().text("Nombre: ${paciente.nombre}")
+                                    li().text("Apellidos: ${paciente.apellido}")
                                     li().text("Correo: ${usuario.email}")
-                                    li().text("Fecha de Nacimiento: {fecha aqui}")
+                                    li().text("Fecha de Nacimiento: ${Gestores.stringFecha(paciente.fecha_nacimiento)}")
                                     li().text("Tipo: ${usuario.rol}")
                                 }.classes("columna is-9 has-text-left")
                                 div { }.classes("column is-2")

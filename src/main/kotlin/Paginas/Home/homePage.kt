@@ -3,7 +3,6 @@ package es.cifpvirgen.Paginas.Home
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
-import kweb.util.json
 
 fun Component.homePage() {
     section {

@@ -1,16 +1,20 @@
 package es.cifpvirgen.Paginas.Register
 
+import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
+import es.cifpvirgen.Datos.Paciente
 import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.InputsUsuario
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
 import kweb.state.KVar
 import kweb.util.json
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 fun Component.registerVerify(usuario: Usuario) {
+    //TODO("Controlar entradas")
     section {
         div {
             element("header") {
@@ -89,7 +93,6 @@ fun Component.registerVerify(usuario: Usuario) {
                                 val FechaNac = KVar("")
                                 val DNI = KVar("")
 
-                                //Gestores.gestorUsuarios.verificarUsuario(usuario)
                                 p { element.text("¡Antes de Continuar!") }.classes("title")
                                 element("hr")
                                 p { element.text("Necesitamos sus datos para poder completar su ficha.") }.classes("subtitle is-6 has-text-grey-light")
@@ -102,7 +105,21 @@ fun Component.registerVerify(usuario: Usuario) {
                                         span().text("Nombre:")
                                     }.classes("icon-text")
                                 }.classes("subtitle")
-                                input(type = InputType.text).classes("input")
+                                input(type = InputType.text){
+                                    element.value = Nombre
+                                    element.on.input {
+                                        element.on.focusout {
+                                            if (Nombre.value == "") {
+                                                element.classes("input is-danger")
+                                                element.on.focusin {
+                                                    element.classes("input")
+                                                }
+                                            } else {
+                                                element.classes("input is-success")
+                                            }
+                                        }
+                                    }
+                                }.classes("input")
                                 br()
                                 br()
                                 p {
@@ -113,7 +130,21 @@ fun Component.registerVerify(usuario: Usuario) {
                                         span().text("Apellido:")
                                     }.classes("icon-text")
                                 }.classes("subtitle")
-                                input(type = InputType.text).classes("input")
+                                input(type = InputType.text){
+                                    element.value = Apellido
+                                    element.on.input {
+                                        element.on.focusout {
+                                            if (Apellido.value == "") {
+                                                element.classes("input is-danger")
+                                                element.on.focusin {
+                                                    element.classes("input")
+                                                }
+                                            } else {
+                                                element.classes("input is-success")
+                                            }
+                                        }
+                                    }
+                                }.classes("input")
                                 br()
                                 br()
                                 p {
@@ -126,6 +157,18 @@ fun Component.registerVerify(usuario: Usuario) {
                                 }.classes("subtitle")
                                 input(type = InputType.date){
                                     element.value = FechaNac
+                                    element.on.input {
+                                        element.on.focusout {
+                                            if (!InputsUsuario.comprobarFecha(Gestores.parsearFecha(FechaNac.value))) {
+                                                element.classes("input is-danger")
+                                                element.on.focusin {
+                                                    element.classes("input")
+                                                }
+                                            } else {
+                                                element.classes("input is-success")
+                                            }
+                                        }
+                                    }
                                 }.classes("input")
                                 br()
                                 br()
@@ -137,20 +180,36 @@ fun Component.registerVerify(usuario: Usuario) {
                                         span().text("DNI:")
                                     }.classes("icon-text")
                                 }.classes("subtitle")
-                                input(type = InputType.text).classes("input")
+                                input(type = InputType.text){
+                                    element.value = DNI
+                                    element.on.input {
+                                        element.on.focusout {
+                                            if (!InputsUsuario.comprobarDNI(DNI.value)) {
+                                                element.classes("input is-danger")
+                                                element.on.focusin {
+                                                    element.classes("input")
+                                                }
+                                            } else {
+                                                element.classes("input is-success")
+                                            }
+                                        }
+                                    }
+                                }.classes("input")
                                 br()
                                 br()
-                                var botonRegistro = button(type = ButtonType.button) {
+                                button(type = ButtonType.button) {
                                     span { i().classes("fa-solid fa-arrow-right") }.classes("icon")
                                     span().text("Continuar")
                                     element.on.click {
-                                        if (Nombre.value == "" || Apellido.value == "" || FechaNac.value == "" || DNI.value == "") {
+                                        if (Nombre.value == "" || Apellido.value == "" || FechaNac.value == "" || DNI.value == "" || !InputsUsuario.comprobarFecha(Gestores.parsearFecha(FechaNac.value)) || !InputsUsuario.comprobarDNI(DNI.value)) {
                                             element.classes("button is-danger")
                                             element.text("Error")
                                             browser.callJsFunction("mostrarNoti({})", "Debes rellenar todos los campos".json)
                                         } else {
-                                            //TODO("logica del du")
-                                            browser.url.value = "/register/final"
+                                            Gestores.gestorUsuarios.verificarUsuario(usuario)
+                                            browser.callJsFunction("mostrarNoti({})", "Usuario verificado correctamente.".json)
+                                            Gestores.gestorPacientes.addPaciente(Paciente(DNI.value, Nombre.value, Apellido.value, LocalDate.parse(FechaNac.value, DateTimeFormatter.ofPattern("yyyy-MM-dd")), Roles.PACIENTE, usuario.idUsuario))
+                                            browser.url.value = "/login"
                                         }
                                     }
                                 }.classes("button is-primary")

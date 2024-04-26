@@ -19,6 +19,8 @@ interface IGestorUsuarios {
 
     fun obtenerUsuarioMail(email: String): Usuario?
 
+    fun obtenerUsuarioId(idUsuario: Int) : Usuario?
+
     fun guardarFoto(imgB64: String, usuario: Usuario)
 
     fun obtenerFoto(usuario: Usuario): String?

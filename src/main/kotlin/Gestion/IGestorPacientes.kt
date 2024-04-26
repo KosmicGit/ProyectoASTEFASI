@@ -1,7 +1,6 @@
 package es.cifpvirgen.Gestion
 
 import es.cifpvirgen.Data.Roles
-import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Datos.Paciente
 
 interface IGestorPacientes {

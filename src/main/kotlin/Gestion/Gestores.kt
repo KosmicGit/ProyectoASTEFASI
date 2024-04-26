@@ -9,15 +9,12 @@ import es.cifpvirgen.Gestion.BaseDatos.GestionarUsuarios
 import es.cifpvirgen.Gestion.Email.ConexionMail
 import es.cifpvirgen.Gestion.Email.GestionarEmail
 import io.github.cdimascio.dotenv.dotenv
-import kweb.CookieReceiver
-import kweb.Kweb
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Base64
 
 class Gestores {
 
@@ -59,10 +56,17 @@ class Gestores {
             return (LocalDate.parse(fecha.toString(), DateTimeFormatter.ofPattern("ddMMyyyy")))
         }
 
+        fun parsearFecha(fecha: String): LocalDate {
+            return LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        }
+
         fun formatearFecha(fecha: LocalDate): Int {
             return fecha.format(DateTimeFormatter.ofPattern("ddMMyyyy")).toInt()
         }
 
+        fun stringFecha(fecha: LocalDate): String {
+            return fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        }
     }
 
 }

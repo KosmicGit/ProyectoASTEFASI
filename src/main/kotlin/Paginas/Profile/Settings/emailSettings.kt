@@ -3,6 +3,7 @@ package es.cifpvirgen.Paginas.Profile.Settings
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.InputsUsuario
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
@@ -120,11 +121,23 @@ fun Component.emailSettings(usuario: Usuario) {
                                 }.classes("icon-text")
                             }.classes("title has-text-white")
                             element("hr")
-                            p { element.text("Introduzca su nuevo nombre de usuario.") }
+                            p { element.text("Introduzca su nuevo correo electronico.") }
                             br()
                             input(type = InputType.text) {
                                 element.classes("input is-normal")
                                 element.value = newMail
+                                element.on.input {
+                                    element.on.focusout {
+                                        if (!InputsUsuario.comprobarEmail(newMail.value)) {
+                                            element.classes("input is-danger")
+                                            element.on.focusin {
+                                                element.classes("input")
+                                            }
+                                        } else {
+                                            element.classes("input is-success")
+                                        }
+                                    }
+                                }
                             }
                             br()
                             br()
@@ -136,7 +149,7 @@ fun Component.emailSettings(usuario: Usuario) {
                                         }.classes("icon is-small")
                                         span().text("Change")
                                         element.on.click {
-                                            if (newMail.value == ""){
+                                            if (newMail.value == "" || !InputsUsuario.comprobarEmail(newMail.value)) {
                                                 browser.callJsFunction("mostrarNoti({})", "Introduzca una dirección de correo".json)
                                             } else {
                                                 if (Gestores.gestorUsuarios.obtenerUsuarioMail(newMail.value) == null) {

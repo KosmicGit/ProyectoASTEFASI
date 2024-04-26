@@ -1,7 +1,6 @@
 package es.cifpvirgen.Paginas.Register
 
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.Gestores
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*

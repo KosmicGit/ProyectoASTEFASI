@@ -120,6 +120,18 @@ fun Component.recoveryPanel(usuario: Usuario) {
                                 val passinput = input(type = InputType.password)
                                 passinput.value = password
                                 passinput.classes("input is-normal")
+                                passinput.on.input {
+                                    passinput.on.focusout {
+                                        if (password.value == "") {
+                                            passinput.classes("input is-danger")
+                                            passinput.on.focusout {
+                                                passinput.classes("input")
+                                            }
+                                        } else {
+                                            passinput.classes("input is-success")
+                                        }
+                                    }
+                                }
                                 br()
                                 br()
                                 var botonPassword = button(type = ButtonType.button) {

@@ -2,8 +2,8 @@ package es.cifpvirgen.Paginas.Register
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.Email.ConexionMail
 import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.InputsUsuario
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
@@ -103,6 +103,18 @@ fun Component.registerPage() {
                                 val userinput = input(type = InputType.text)
                                 userinput.value = username
                                 userinput.classes("input is-small")
+                                userinput.on.input {
+                                    userinput.on.focusout {
+                                        if (username.value == "") {
+                                            userinput.classes("input is-small is-danger")
+                                            userinput.on.focusin {
+                                                userinput.classes("input is-small")
+                                            }
+                                        } else {
+                                            userinput.classes("input is-small is-success")
+                                        }
+                                    }
+                                }
                                 br()
                                 br()
                                 //H3 Email
@@ -118,6 +130,18 @@ fun Component.registerPage() {
                                 val emailinput = input(type = InputType.email)
                                 emailinput.value = email
                                 emailinput.classes("input is-small")
+                                emailinput.on.input {
+                                    emailinput.on.focusout {
+                                        if (!InputsUsuario.comprobarEmail(email.value)) {
+                                            emailinput.classes("input is-small is-danger")
+                                            emailinput.on.focusin {
+                                                emailinput.classes("input is-small")
+                                            }
+                                        } else {
+                                            emailinput.classes("input is-small is-success")
+                                        }
+                                    }
+                                }
                                 br()
                                 br()
                                 //H3 Password
@@ -133,6 +157,18 @@ fun Component.registerPage() {
                                 val passinput = input(type = InputType.password)
                                 passinput.value = password
                                 passinput.classes("input is-small")
+                                passinput.on.input {
+                                    passinput.on.focusout {
+                                        if (password.value == "") {
+                                            passinput.classes("input is-small is-danger")
+                                            passinput.on.focusin {
+                                                passinput.classes("input is-small")
+                                            }
+                                        } else {
+                                            passinput.classes("input is-small is-success")
+                                        }
+                                    }
+                                }
                             }
 
                             br()
@@ -145,7 +181,7 @@ fun Component.registerPage() {
                                 botonRegistro.on.click {
                                     botonRegistro.classes("button is-link is-loading")
                                     br()
-                                    if (username.value == "" || password.value == "" || email.value == "") {
+                                    if (username.value == "" || password.value == "" || email.value == "" || !InputsUsuario.comprobarEmail(email.value)) {
                                         botonRegistro.classes("button is-danger")
                                         botonRegistro.text("Error")
                                         browser.callJsFunction("mostrarNoti({})", "Debes rellenar todos los campos".json)
@@ -163,7 +199,8 @@ fun Component.registerPage() {
                                                 botonRegistro.text("Error")
                                             }
                                             4 -> {
-                                                val userKey = Gestores.encriptarUsuario(Usuario( 0, username.value, email.value, "", Roles.PACIENTE, false))
+                                                val idUsuario = Gestores.gestorUsuarios.obtenerUsuarioMail(email.value)!!.idUsuario
+                                                val userKey = Gestores.encriptarUsuario(Usuario( idUsuario, username.value, email.value, password.value, Roles.PACIENTE, false))
                                                 browser.callJsFunction("exitoRegistro({})", userKey.json)
                                                 browser.callJsFunction("mostrarNoti({})", "Usuario registrado correctamente, compruebe la bandeja de su correo".json)
                                                 Gestores.gestorMail.enviarCorreo(email.value, "AsTeFaSi: Active su cuenta.", "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +

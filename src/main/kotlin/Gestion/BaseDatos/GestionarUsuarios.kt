@@ -16,7 +16,7 @@ class GestionarUsuarios: IGestorUsuarios {
      * @return ultimoID El último ID de la base de Datos, en caso de haber un error, devuelve nulo
      */
     override fun obtenerUltimoID(): Int? {
-        val query = "SELECT MAX(idUsuario) FROM Usuario"
+        val query = "SELECT MAX(ID_USUARIO) FROM Usuario"
         var ultimoID: Int? = null
 
         val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -37,7 +37,7 @@ class GestionarUsuarios: IGestorUsuarios {
     }
 
     override fun verificarUsuario(usuario: Usuario) {
-        val query = "UPDATE Usuario SET verificado = ? WHERE email = ?"
+        val query = "UPDATE Usuario SET VERIFICADO = ? WHERE CORREO = ?"
 
         try {
             val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -57,7 +57,7 @@ class GestionarUsuarios: IGestorUsuarios {
     }
 
     override fun estaVerificado(usuario: Usuario): Boolean {
-        val query = "SELECT verificado FROM Usuario WHERE email = ?"
+        val query = "SELECT VERIFICADO FROM Usuario WHERE CORREO = ?"
         var verificado = false
 
         val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -66,7 +66,7 @@ class GestionarUsuarios: IGestorUsuarios {
 
         try {
             if (resultSet.next()) {
-                if (resultSet.getInt("verificado") == 1) {
+                if (resultSet.getInt("VERIFICADO") == 1) {
                     verificado = true
                 }
             }
@@ -86,7 +86,7 @@ class GestionarUsuarios: IGestorUsuarios {
      * @param usuario El objeto Usuario que se va a añadir a la base de datos.
      */
     override fun addUsuario(usuario : Usuario) {
-        val query = "INSERT INTO Usuario (idUsuario, username, email, password, rol, verificado) VALUES (?, ?, ?, ?, ?, ?)"
+        val query = "INSERT INTO Usuario (ID_USUARIO, NOMBRE_USUARIO, CORREO, CLAVE_ACCESO, ROL, VERIFICADO) VALUES (?, ?, ?, ?, ?, ?)"
 
         try {
             val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -131,7 +131,7 @@ class GestionarUsuarios: IGestorUsuarios {
     override fun borrarUsuario(usuario: Usuario) {
         val user = obtenerUsuarioMail(usuario.email)
         if (user != null) {
-            val query = "DELETE FROM Usuario WHERE email = ?"
+            val query = "DELETE FROM Usuario WHERE CORREO = ?"
 
             try {
                 val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -158,7 +158,7 @@ class GestionarUsuarios: IGestorUsuarios {
      * @return El objeto Usuario correspondiente al Username proporcionado, o null si no se encuentra en la base de datos.
      */
     override fun obtenerUsuario(username : String) : Usuario? {
-        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE username = ?")
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE NOMBRE_USUARIO = ?")
         statement.setString(1, username)
         val resultSet = statement.executeQuery()
 
@@ -166,20 +166,19 @@ class GestionarUsuarios: IGestorUsuarios {
 
         try {
             if (resultSet.next()) {
-                val idUsuario = resultSet.getInt("idUsuario")
-                val username = resultSet.getString("username")
-                val email = resultSet.getString("email")
-                val password = Gestores.encrypt.desencriptar(resultSet.getString("password"))
-                var rol: Roles
-                if (resultSet.getInt("rol") == 1) {
+                val idUsuario = resultSet.getInt("ID_USUARIO")
+                val email = resultSet.getString("CORREO")
+                val password = Gestores.encrypt.desencriptar(resultSet.getString("CLAVE_ACCESO"))
+                val rol: Roles
+                if (resultSet.getInt("ROL") == 1) {
                     rol = Roles.TERAPEUTA
-                } else if (resultSet.getInt("rol") == 2){
+                } else if (resultSet.getInt("ROL") == 2){
                     rol = Roles.ADMINISTRADOR
                 } else {
                     rol = Roles.PACIENTE
                 }
                 var verificado = false
-                if (resultSet.getInt("verificado") == 1) {
+                if (resultSet.getInt("VERIFICADO") == 1) {
                     verificado = true
                 }
 
@@ -203,7 +202,7 @@ class GestionarUsuarios: IGestorUsuarios {
      * @return El objeto Usuario correspondiente al correo electrónico proporcionado, o null si no se encuentra en la base de datos.
      */
     override fun obtenerUsuarioMail(email : String) : Usuario? {
-        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE email = ?")
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE CORREO = ?")
         statement.setString(1, email)
         val resultSet = statement.executeQuery()
 
@@ -211,14 +210,13 @@ class GestionarUsuarios: IGestorUsuarios {
 
         try {
             if (resultSet.next()) {
-                val idUsuario = resultSet.getInt("idUsuario")
-                val username = resultSet.getString("username")
-                val email = resultSet.getString("email")
-                val password = Gestores.encrypt.desencriptar(resultSet.getString("password"))
-                var rol: Roles
-                if (resultSet.getInt("rol") == 1) {
+                val idUsuario = resultSet.getInt("ID_USUARIO")
+                val username = resultSet.getString("NOMBRE_USUARIO")
+                val password = Gestores.encrypt.desencriptar(resultSet.getString("CLAVE_ACCESO"))
+                val rol: Roles
+                if (resultSet.getInt("ROL") == 1) {
                     rol = Roles.TERAPEUTA
-                } else if (resultSet.getInt("rol") == 2){
+                } else if (resultSet.getInt("ROL") == 2){
                     rol = Roles.ADMINISTRADOR
                 } else {
                     rol = Roles.PACIENTE
@@ -241,8 +239,46 @@ class GestionarUsuarios: IGestorUsuarios {
         return usuario
     }
 
+    override fun obtenerUsuarioId(idUsuario: Int) : Usuario? {
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE ID_USUARIO = ?")
+        statement.setInt(1, idUsuario)
+        val resultSet = statement.executeQuery()
+
+        var usuario: Usuario? = null
+
+        try {
+            if (resultSet.next()) {
+                val username = resultSet.getString("NOMBRE_USUARIO")
+                val email = resultSet.getString("CORREO")
+                val password = Gestores.encrypt.desencriptar(resultSet.getString("CLAVE_ACCESO"))
+                val rol: Roles
+                if (resultSet.getInt("ROL") == 1) {
+                    rol = Roles.TERAPEUTA
+                } else if (resultSet.getInt("ROL") == 2){
+                    rol = Roles.ADMINISTRADOR
+                } else {
+                    rol = Roles.PACIENTE
+                }
+                var verificado = false
+                if (resultSet.getInt("VERIFICADO") == 1) {
+                    verificado = true
+                }
+
+                usuario = Usuario(idUsuario, username, email, password, rol, verificado)
+            }
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al obtener los datos del usuario:")
+            println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+        } finally {
+            resultSet.close()
+            statement.close()
+        }
+
+        return usuario
+    }
+
     override fun guardarFoto(imgB64: String, usuario: Usuario) {
-        val query = "UPDATE Usuario SET foto_perfil = ? WHERE username = ?"
+        val query = "UPDATE Usuario SET FOTO_PERFIL = ? WHERE NOMBRE_USUARIO = ?"
 
         try {
             val connection = ConexionBD.connection ?: throw SQLException("No hay conexión a la base de datos.")
@@ -265,12 +301,12 @@ class GestionarUsuarios: IGestorUsuarios {
         var fotoBase64: String? = null
 
         try {
-            val statement = ConexionBD.connection!!.prepareStatement("SELECT foto_perfil FROM Usuario WHERE email = ?")
+            val statement = ConexionBD.connection!!.prepareStatement("SELECT FOTO_PERFIL FROM Usuario WHERE CORREO = ?")
             statement.setString(1, usuario.email)
             val resultSet = statement.executeQuery()
 
             if (resultSet.next()) {
-                fotoBase64 = resultSet.getString("foto_perfil")
+                fotoBase64 = resultSet.getString("FOTO_PERFIL")
                 if (resultSet.wasNull()) {
                     fotoBase64 = null
                 }
@@ -294,7 +330,7 @@ class GestionarUsuarios: IGestorUsuarios {
     override fun modificarPermisos(usuario : Usuario, rol : Roles) {
         val user = obtenerUsuario(usuario.email)
         if (user != null) {
-            val query = "UPDATE Usuario SET rol = ? WHERE email = ?"
+            val query = "UPDATE Usuario SET ROL = ? WHERE CORREO = ?"
 
             try {
                 val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -335,7 +371,7 @@ class GestionarUsuarios: IGestorUsuarios {
     override fun modificarUsuario(usuarioOriginal: Usuario, datosNuevos: Usuario) {
         val user = obtenerUsuarioMail(usuarioOriginal.email)
         if (user != null) {
-            val query = "UPDATE Usuario SET username = ?, email = ?, password = ? WHERE email = ?"
+            val query = "UPDATE Usuario SET NOMBRE_USUARIO = ?, CORREO = ?, CLAVE_ACCESO = ? WHERE CORREO = ?"
             try {
                 val statement = ConexionBD.connection!!.prepareStatement(query)
                 statement.setString(1, datosNuevos.username)
@@ -384,7 +420,7 @@ class GestionarUsuarios: IGestorUsuarios {
 
         try {
             while (resultSet.next()) {
-                val username = resultSet.getString("username")
+                val username = resultSet.getString("NOMBRE_USUARIO")
                 val usuario = obtenerUsuario(username)
                 if (usuario != null) {
                     listaUsuarios.add(usuario)

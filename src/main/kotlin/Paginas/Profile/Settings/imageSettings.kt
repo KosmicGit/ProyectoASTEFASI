@@ -3,13 +3,9 @@ package es.cifpvirgen.Paginas.Profile.Settings
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.Gestores
-import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
-import kweb.html.fileUpload.FileFormInput
-import kweb.html.fileUpload.FileUpload
-import kweb.state.KVar
 import kweb.util.json
 
 fun Component.imageSettings(usuario: Usuario) {

@@ -1,6 +1,7 @@
 package es.cifpvirgen.Paginas.Login
 
 import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.InputsUsuario
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
@@ -98,6 +99,18 @@ fun Component.recoveryPage() {
                             val emailinput = input(type = InputType.email)
                             emailinput.value = email
                             emailinput.classes("input is-normal")
+                            emailinput.on.input {
+                                emailinput.on.focusout {
+                                    if (!InputsUsuario.comprobarEmail(email.value)) {
+                                        emailinput.classes("input is-danger")
+                                        emailinput.on.focusout {
+                                            emailinput.classes("input")
+                                        }
+                                    } else {
+                                        emailinput.classes("input is-success")
+                                    }
+                                }
+                            }
                             br()
                             br()
                             var botonrecovery = button(type = ButtonType.button) {
@@ -114,28 +127,35 @@ fun Component.recoveryPage() {
                                         browser.callJsFunction("mostrarNoti({})", "Debes introducir un email.".json)
                                     }
                                 } else {
-                                    val usuario = Gestores.gestorUsuarios.obtenerUsuarioMail(email.value)
-                                    if (usuario == null) {
+                                    if (InputsUsuario.comprobarEmail(email.value)) {
+                                        val usuario = Gestores.gestorUsuarios.obtenerUsuarioMail(email.value)
+                                        if (usuario == null) {
+                                            botonrecovery.text("Error")
+                                            botonrecovery.classes("button is-danger")
+                                            br()
+                                            browser.callJsFunction("mostrarNoti({})", "No existe ningún usuario con este correo.".json)
+
+                                        } else {
+                                            Gestores.gestorMail.enviarCorreo(
+                                                email.value,
+                                                "AsTeFaSi: Restablece su contraseña.",
+                                                "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +
+                                                        "<h1>Restablezca su contraseña.</h1>" + "<p>Hola ${usuario.username}." + "<p>Utilice el siguiente enlace para restablecer su contraseña:</p>" + "<a href='http://localhost:8080/login/recovery/${
+                                                    Gestores.codificarURL(
+                                                        Gestores.encriptarUsuario(usuario)
+                                                    )
+                                                }'>Restablece tu contraseña aquí</a>" +
+                                                        "<p>Si usted no ha solicitado el cambio de contraseña, ignore este correo.</p>"
+                                            )
+                                            browser.callJsFunction("mostrarNoti({})", "Correo enviado.".json)
+                                            botonrecovery.text("Enviado")
+                                            botonrecovery.classes("button is-primary")
+                                        }
+                                    } else {
                                         botonrecovery.text("Error")
                                         botonrecovery.classes("button is-danger")
                                         br()
-                                        browser.callJsFunction("mostrarNoti({})", "No existe ningún usuario con este correo.".json)
-
-                                    } else {
-                                        Gestores.gestorMail.enviarCorreo(
-                                            email.value,
-                                            "AsTeFaSi: Restablece su contraseña.",
-                                            "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +
-                                                    "<h1>Restablezca su contraseña.</h1>" + "<p>Hola ${usuario.username}." + "<p>Utilice el siguiente enlace para restablecer su contraseña:</p>" + "<a href='http://localhost:8080/login/recovery/${
-                                                Gestores.codificarURL(
-                                                    Gestores.encriptarUsuario(usuario)
-                                                )
-                                            }'>Restablece tu contraseña aquí</a>" +
-                                                    "<p>Si usted no ha solicitado el cambio de contraseña, ignore este correo.</p>"
-                                        )
-                                        browser.callJsFunction("mostrarNoti({})", "Correo enviado.".json)
-                                        botonrecovery.text("Enviado")
-                                        botonrecovery.classes("button is-primary")
+                                        browser.callJsFunction("mostrarNoti({})", "Introduce un correo válido.".json)
                                     }
                                 }
                             }

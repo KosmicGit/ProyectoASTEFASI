@@ -2,7 +2,6 @@ package es.cifpvirgen.Gestion.BaseDatos
 
 import es.cifpvirgen.Data.Log
 import es.cifpvirgen.Data.Roles
-import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Datos.Paciente
 import es.cifpvirgen.Gestion.DebugColors
 import es.cifpvirgen.Gestion.Gestores
@@ -33,6 +32,12 @@ class GestionarPacientes: IGestorPacientes {
             }
             statement.setInt(6, paciente.idUsuario)
 
+            val usuario = Gestores.gestorUsuarios.obtenerUsuarioId(paciente.idUsuario)
+            if (usuario != null) {
+                val logAdd = Log(usuario.username, usuario.email, Gestores.fechaActual(), "Ficha Paciente creada")
+                Gestores.gestorLogs.addLog(logAdd)
+            }
+
             statement.executeUpdate()
             statement.close()
         } catch (e: SQLException) {
@@ -47,11 +52,32 @@ class GestionarPacientes: IGestorPacientes {
     }
 
     override fun borrarPaciente(paciente: Paciente) {
-        TODO("Not yet implemented")
+        val user = obtenerPaciente(paciente.dni)
+        if (user != null) {
+            val query = "DELETE FROM cliente WHERE DNI = ?"
+
+            try {
+                val statement = ConexionBD.connection!!.prepareStatement(query)
+                statement.setString(1, paciente.dni)
+
+                val usuario = Gestores.gestorUsuarios.obtenerUsuarioId(paciente.idUsuario)
+                if (usuario != null) {
+                    val logEliminar = Log(usuario.username, usuario.email, Gestores.fechaActual(), "Ficha Paciente eliminado")
+                    Gestores.gestorLogs.addLog(logEliminar)
+                }
+
+                statement.executeUpdate()
+                statement.close()
+            } catch (e: SQLException) {
+                println(DebugColors.error() + " Error al " + DebugColors.rojo("eliminar") + " el usuario:")
+                println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+            }
+        } else {
+            println(DebugColors.error() + " El usuario no existe.")
+        }
     }
 
     override fun obtenerPaciente(dni: String): Paciente? {
-        //TODO("Not yet implemented")
         val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM cliente WHERE DNI = ?")
         statement.setString(1, dni)
         val resultSet = statement.executeQuery()
@@ -60,38 +86,66 @@ class GestionarPacientes: IGestorPacientes {
 
         try {
             if (resultSet.next()) {
-                val idUsuario = resultSet.getInt("idUsuario")
-                val username = resultSet.getString("username")
-                val email = resultSet.getString("email")
-                val password = Gestores.encrypt.desencriptar(resultSet.getString("password"))
+                val dni = resultSet.getString("DNI")
+                val nombre = resultSet.getString("NOMBRE")
+                val apellido = resultSet.getString("APELLIDO")
+                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
                 var rol: Roles
-                if (resultSet.getInt("rol") == 1) {
+                if (resultSet.getInt("ID_ROL") == 1) {
                     rol = Roles.TERAPEUTA
-                } else if (resultSet.getInt("rol") == 2){
+                } else if (resultSet.getInt("ID_ROL") == 2){
                     rol = Roles.ADMINISTRADOR
                 } else {
                     rol = Roles.PACIENTE
                 }
-                var verificado = false
-                if (resultSet.getInt("verificado") == 1) {
-                    verificado = true
-                }
+                val idUsuario = resultSet.getInt("ID_USUARIO")
 
-                usuario = Usuario(idUsuario, username, email, password, rol, verificado)
+                paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, rol, idUsuario)
             }
         } catch (e: SQLException) {
-            println(DebugColors.error() + " Error al obtener los datos del usuario:")
+            println(DebugColors.error() + " Error al obtener los datos del paciente:")
             println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
         } finally {
             resultSet.close()
             statement.close()
         }
 
-        return usuario
+        return paciente
     }
 
     override fun obtenerPacienteIdUsuario(idUsuario: Int): Paciente? {
-        TODO("Not yet implemented")
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM cliente WHERE ID_USUARIO = ?")
+        statement.setInt(1, idUsuario)
+        val resultSet = statement.executeQuery()
+
+        var paciente: Paciente? = null
+
+        try {
+            if (resultSet.next()) {
+                val dni = resultSet.getString("DNI")
+                val nombre = resultSet.getString("NOMBRE")
+                val apellido = resultSet.getString("APELLIDO")
+                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
+                var rol: Roles
+                if (resultSet.getInt("ID_ROL") == 1) {
+                    rol = Roles.TERAPEUTA
+                } else if (resultSet.getInt("ID_ROL") == 2){
+                    rol = Roles.ADMINISTRADOR
+                } else {
+                    rol = Roles.PACIENTE
+                }
+
+                paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, rol, idUsuario)
+            }
+        } catch (e: SQLException) {
+            println(DebugColors.error() + " Error al obtener los datos del paciente:")
+            println(DebugColors.amarillo("[${e.errorCode}]") +  "${e.message}")
+        } finally {
+            resultSet.close()
+            statement.close()
+        }
+
+        return paciente
     }
 
     override fun modificarPermisos(paciente: Paciente, rol: Roles) {

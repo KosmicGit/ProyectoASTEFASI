@@ -24,7 +24,6 @@ import kweb.plugins.css.CSSPlugin
 import kweb.plugins.javascript.JavascriptPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.util.json
 import java.net.URI
 
 
