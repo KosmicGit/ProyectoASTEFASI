@@ -148,6 +148,9 @@ fun Component.registerVerify(usuario: Usuario) {
                                             element.classes("button is-danger")
                                             element.text("Error")
                                             browser.callJsFunction("mostrarNoti({})", "Debes rellenar todos los campos".json)
+                                        } else {
+                                            //TODO("logica del du")
+                                            browser.url.value = "/register/final"
                                         }
                                     }
                                 }.classes("button is-primary")

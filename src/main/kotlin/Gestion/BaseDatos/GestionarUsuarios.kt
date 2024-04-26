@@ -149,7 +149,6 @@ class GestionarUsuarios: IGestorUsuarios {
         } else {
             println(DebugColors.error() + " El usuario no existe.")
         }
-
     }
 
     /**
