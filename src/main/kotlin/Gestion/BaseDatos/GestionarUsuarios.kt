@@ -5,8 +5,12 @@ import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.DebugColors
 import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Gestores.Companion.conexionBD
 import es.cifpvirgen.Gestion.IGestorUsuarios
+import java.sql.PreparedStatement
+import java.sql.ResultSet
 import java.sql.SQLException
+import java.sql.Statement
 
 
 class GestionarUsuarios: IGestorUsuarios {
@@ -401,5 +405,44 @@ class GestionarUsuarios: IGestorUsuarios {
 
         return listaUsuarios
     }
+
+    override fun comprobarCredenciales(correo: String, pass: String): Usuario? {
+        val query = "SELECT * FROM 'USUARIO' WHERE correo = ?"
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        statement.setString(1, correo)
+        var rs = statement.executeQuery()!!
+        var usuario : Usuario? = null
+        try {
+            if (rs.next()) {
+                if (pass == Gestores.encrypt.desencriptar(rs.getString("CLAVE_ACCESO"))) {
+                    val idUsuario = rs.getInt("ID_USUARIO")
+                    val username = rs.getString("NOMBRE_USUARIO")
+                    val email = rs.getString("EMAIL")
+                    val password = Gestores.encrypt.desencriptar(rs.getString("CLAVE_ACCESO"))
+                    var rol: Roles
+                    if (rs.getInt("ROL") == 1) {
+                        rol = Roles.TERAPEUTA
+                    } else if (rs.getInt("ROL") == 2){
+                        rol = Roles.ADMINISTRADOR
+                    } else {
+                        rol = Roles.PACIENTE
+                    }
+                    var verificado = false
+                    if (rs.getInt("VERIFICADO") == 1) {
+                        verificado = true
+                    }
+
+                    usuario = Usuario(idUsuario, username, email, password, rol, verificado)
+                }
+            }
+        } catch (_: Exception) {
+
+        } finally {
+            statement.close()
+            rs.close()
+        }
+        return usuario
+    }
+
 }
 

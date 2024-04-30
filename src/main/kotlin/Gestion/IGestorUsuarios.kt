@@ -28,4 +28,6 @@ interface IGestorUsuarios {
     fun modificarUsuario(usuarioOriginal: Usuario, datosNuevos: Usuario)
 
     fun obtenerUsuarios(): ArrayList<Usuario>
+
+    fun comprobarCredenciales(correo : String, pass : String) : Usuario?
 }
