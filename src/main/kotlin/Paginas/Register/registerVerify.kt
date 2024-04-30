@@ -1,14 +1,12 @@
 package es.cifpvirgen.Paginas.Register
 
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
 import kweb.state.KVar
 import kweb.util.json
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 fun Component.registerVerify(usuario: Usuario) {
     section {

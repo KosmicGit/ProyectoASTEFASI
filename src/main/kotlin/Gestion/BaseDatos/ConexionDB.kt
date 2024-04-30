@@ -1,6 +1,6 @@
 package es.cifpvirgen.Gestion.BaseDatos
 
-import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.Gestores
 import java.sql.Connection
 import java.sql.DriverManager
 

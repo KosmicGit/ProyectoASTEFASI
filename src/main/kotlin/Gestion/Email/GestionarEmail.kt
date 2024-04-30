@@ -1,6 +1,6 @@
 package es.cifpvirgen.Gestion.Email
 
-import es.cifpvirgen.Gestion.DebugColors
+import es.cifpvirgen.Gestion.Inputs.DebugColors
 import javax.mail.*
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage

@@ -2,11 +2,10 @@ package es.cifpvirgen.Paginas.Profile
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
-import kweb.state.KVar
 import kweb.util.json
 
 fun Component.profilePage(usuario: Usuario) {

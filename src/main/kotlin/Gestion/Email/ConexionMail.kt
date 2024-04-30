@@ -1,6 +1,6 @@
 package es.cifpvirgen.Gestion.Email
 
-import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.Gestores
 import javax.mail.*
 import java.util.*
 import kotlin.collections.ArrayList

@@ -1,4 +1,4 @@
-package es.cifpvirgen.Gestion
+package es.cifpvirgen.Gestion.Inputs
 
 import com.google.gson.Gson
 import es.cifpvirgen.Data.Usuario
@@ -8,14 +8,11 @@ import es.cifpvirgen.Gestion.BaseDatos.GestionarUsuarios
 import es.cifpvirgen.Gestion.Email.ConexionMail
 import es.cifpvirgen.Gestion.Email.GestionarEmail
 import io.github.cdimascio.dotenv.dotenv
-import kweb.CookieReceiver
-import kweb.Kweb
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Base64
 
 class Gestores {
 

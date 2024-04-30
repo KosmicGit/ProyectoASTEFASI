@@ -1,8 +1,8 @@
 package es.cifpvirgen.Gestion.BaseDatos
 
 import es.cifpvirgen.Data.Log
-import es.cifpvirgen.Gestion.DebugColors
-import es.cifpvirgen.Gestion.IGestorLogs
+import es.cifpvirgen.Gestion.Inputs.DebugColors
+import es.cifpvirgen.Gestion.Inputs.IGestorLogs
 import java.sql.SQLException
 
 class GestionarLogs: IGestorLogs {

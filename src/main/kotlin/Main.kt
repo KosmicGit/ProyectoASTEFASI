@@ -1,7 +1,7 @@
 package es.cifpvirgen
 
 import es.cifpvirgen.Data.Roles
-import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.Gestores
 import es.cifpvirgen.Paginas.Admin.adminPage
 import es.cifpvirgen.Paginas.Documentation.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
@@ -24,7 +24,6 @@ import kweb.plugins.css.CSSPlugin
 import kweb.plugins.javascript.JavascriptPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.util.json
 import java.net.URI
 
 

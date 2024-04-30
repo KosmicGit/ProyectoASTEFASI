@@ -2,7 +2,7 @@ package es.cifpvirgen.Paginas.Profile.Settings
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
@@ -126,7 +126,7 @@ fun Component.dateSettings(usuario: Usuario) {
                                 }.classes("columna is-9 has-text-left")
                                 div { }.classes("column is-2")
                                 div {
-                                    val fotoPerfil = es.cifpvirgen.Gestion.Gestores.gestorUsuarios.obtenerFoto(usuario)
+                                    val fotoPerfil = Gestores.gestorUsuarios.obtenerFoto(usuario)
                                     if (fotoPerfil != null) {
                                         element("figure") {
                                             img(attributes = mapOf("src" to JsonPrimitive("data:image/png;base64,$fotoPerfil")))

@@ -1,4 +1,4 @@
-package es.cifpvirgen.Gestion
+package es.cifpvirgen.Gestion.Inputs
 
 class DebugColors {
     //Colores ANSI
@@ -25,7 +25,14 @@ class DebugColors {
 
         //Metodos colores
         fun random(texto: String): String {
-            val colores = arrayOf(::rojo, ::verde, ::amarillo, ::azul, ::magenta, ::cian)
+            val colores = arrayOf(
+                Companion::rojo,
+                Companion::verde,
+                Companion::amarillo,
+                Companion::azul,
+                Companion::magenta,
+                Companion::cian
+            )
             return (colores.random()).invoke(texto)
         }
 

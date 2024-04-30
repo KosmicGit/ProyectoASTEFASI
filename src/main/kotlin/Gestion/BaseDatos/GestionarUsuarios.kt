@@ -3,14 +3,10 @@ package es.cifpvirgen.Gestion.BaseDatos
 import es.cifpvirgen.Data.Log
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.DebugColors
-import es.cifpvirgen.Gestion.Gestores
-import es.cifpvirgen.Gestion.Gestores.Companion.conexionBD
-import es.cifpvirgen.Gestion.IGestorUsuarios
-import java.sql.PreparedStatement
-import java.sql.ResultSet
+import es.cifpvirgen.Gestion.Inputs.DebugColors
+import es.cifpvirgen.Gestion.Inputs.Gestores
+import es.cifpvirgen.Gestion.Inputs.IGestorUsuarios
 import java.sql.SQLException
-import java.sql.Statement
 
 
 class GestionarUsuarios: IGestorUsuarios {

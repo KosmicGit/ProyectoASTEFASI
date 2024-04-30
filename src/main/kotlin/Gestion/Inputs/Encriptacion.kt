@@ -1,4 +1,4 @@
-package es.cifpvirgen.Gestion
+package es.cifpvirgen.Gestion.Inputs
 
 import java.nio.file.Files
 import java.nio.file.Paths

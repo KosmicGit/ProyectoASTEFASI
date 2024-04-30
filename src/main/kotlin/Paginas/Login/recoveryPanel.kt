@@ -1,7 +1,7 @@
 package es.cifpvirgen.Paginas.Login
 
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.Gestores
+import es.cifpvirgen.Gestion.Inputs.Gestores
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component

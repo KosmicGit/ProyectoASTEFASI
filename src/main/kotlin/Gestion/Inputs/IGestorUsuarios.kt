@@ -1,4 +1,4 @@
-package es.cifpvirgen.Gestion
+package es.cifpvirgen.Gestion.Inputs
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
