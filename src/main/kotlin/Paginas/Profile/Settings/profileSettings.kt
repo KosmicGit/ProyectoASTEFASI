@@ -160,15 +160,17 @@ fun Component.profileSettings(usuario: Usuario) {
                                                 browser.url.value = "/profile/settings/user"
                                             }
                                         }.classes("button is-primary")
-                                        button {
-                                            span {
-                                                i().classes("fa-solid fa-calendar-days")
-                                            }.classes("icon is-small")
-                                            span().text("Cambiar Fecha")
-                                            element.on.click {
-                                                browser.url.value = "/profile/settings/date"
-                                            }
-                                        }.classes("button is-info")
+                                        if (usuario.rol != Roles.ADMINISTRADOR) {
+                                            button {
+                                                span {
+                                                    i().classes("fa-solid fa-calendar-days")
+                                                }.classes("icon is-small")
+                                                span().text("Cambiar Fecha")
+                                                element.on.click {
+                                                    browser.url.value = "/profile/settings/date"
+                                                }
+                                            }.classes("button is-info")
+                                        }
                                         button {
                                             span {
                                                 i().classes("fa-solid fa-envelope")

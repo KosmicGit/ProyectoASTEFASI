@@ -2,10 +2,7 @@ package es.cifpvirgen.Gestion
 
 import com.google.gson.Gson
 import es.cifpvirgen.Data.Usuario
-import es.cifpvirgen.Gestion.BaseDatos.ConexionBD
-import es.cifpvirgen.Gestion.BaseDatos.GestionarLogs
-import es.cifpvirgen.Gestion.BaseDatos.GestionarPacientes
-import es.cifpvirgen.Gestion.BaseDatos.GestionarUsuarios
+import es.cifpvirgen.Gestion.BaseDatos.*
 import es.cifpvirgen.Gestion.Email.ConexionMail
 import es.cifpvirgen.Gestion.Email.GestionarEmail
 import io.github.cdimascio.dotenv.dotenv
@@ -29,6 +26,7 @@ class Gestores {
         //Gestores
         val gestorUsuarios = GestionarUsuarios()
         val gestorPacientes = GestionarPacientes()
+        val gestorTerapeutas = GestionarTerapeutas()
         val gestorLogs = GestionarLogs()
         val gestorMail = GestionarEmail()
 

@@ -7,9 +7,27 @@ import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
 import kweb.util.json
+import java.time.LocalDate
 
 fun Component.profilePage(usuario: Usuario) {
-    val paciente = Gestores.gestorPacientes.obtenerPacienteIdUsuario(usuario.idUsuario)!!
+    var Nombre: String
+    var Apellido = ""
+    var FechaNacimiento: LocalDate = LocalDate.of(1970, 1, 1)
+
+    if (usuario.rol == Roles.PACIENTE) {
+        val paciente = Gestores.gestorPacientes.obtenerPacienteIdUsuario(usuario.idUsuario)!!
+        Nombre = paciente.nombre
+        Apellido = paciente.apellido
+        FechaNacimiento = paciente.fecha_nacimiento
+    } else if (usuario.rol == Roles.TERAPEUTA) {
+        val terapeuta = Gestores.gestorTerapeutas.obtenerTerapeutaIdUsuario(usuario.idUsuario)!!
+        Nombre = terapeuta.nombre
+        Apellido = terapeuta.apellidos
+        FechaNacimiento = terapeuta.fecha_nacimiento
+    } else {
+        Nombre = "Administrador"
+    }
+
     section {
         div {
             element("header") {
@@ -121,10 +139,10 @@ fun Component.profilePage(usuario: Usuario) {
                             element("hr")
                             div {
                                 div {
-                                    li().text("Nombre: ${paciente.nombre}")
-                                    li().text("Apellidos: ${paciente.apellido}")
+                                    li().text("Nombre: ${Nombre}")
+                                    li().text("Apellidos: ${Apellido}")
                                     li().text("Correo: ${usuario.email}")
-                                    li().text("Fecha de Nacimiento: ${Gestores.stringFecha(paciente.fecha_nacimiento)}")
+                                    li().text("Fecha de Nacimiento: ${Gestores.stringFecha(FechaNacimiento)}")
                                     li().text("Tipo: ${usuario.rol}")
                                 }.classes("columna is-9 has-text-left")
                                 div { }.classes("column is-2")
