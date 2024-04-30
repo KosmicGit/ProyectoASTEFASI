@@ -1,8 +1,9 @@
 package es.cifpvirgen.Gestion.BaseDatos
 
-import es.cifpvirgen.Datos.Cita
+import es.cifpvirgen.Datos.Sesion
 import es.cifpvirgen.Datos.Cliente
 import es.cifpvirgen.Gestion.Inputs.IGestorCliente
+import java.sql.ResultSet
 
 class GestionarClientes : IGestorCliente {
 
@@ -25,20 +26,45 @@ class GestionarClientes : IGestorCliente {
         return cliente
     }
 
-    override fun historicoCitasUsuario(idUsuario: Int): ArrayList<Cita> {
+    override fun modificarDatos(cliente: Cliente) : Boolean {
+        val query =  """
+            UPDATE CLIENTE
+            SET NOMBRE = ?
+            APELLIDO = ?
+            CAUSA_CITA = ?
+            WHERE DNI = ?
+            """
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        var rs : ResultSet? = null
+        try {
+            statement.setString(1, cliente.nombre)
+            statement.setString(2, cliente.apellido)
+            statement.setString(3, cliente.causa_cita)
+            statement.setString(4, cliente.dni)
+            rs = statement.executeQuery()!!
+        } catch (e : Exception) {
+            return false
+        } finally {
+            statement.close()
+            rs?.close()
+        }
+        return true
+    }
+
+    override fun historicoCitasUsuario(idUsuario: Int): ArrayList<Sesion> {
         val query = """
-            SELECT SIT.FECHA_SESION FECHA, T.NOMBRE, T.APELLIDO, SIT.SESION_FAMILIAR  
+            SELECT SIT.ID_SESION, SIT.FECHA_SESION FECHA, T.NOMBRE, T.APELLIDO, SIT.SESION_FAMILIAR  
             FROM SESION_INDIVIDUO_TERAPEUTA SIT, CLIENTE C, USUARIO U, TERAPEUTA T  
-            WHERE U.ID_USUARIO = ?, U.ID_USUARIO = C.ID_USUARIO, C.DNI = SIT.INDIVIDUO_DNI, SIT.ID_TERAPEUTA = T.ID_TERAPEUTA
+            WHERE U.ID_USUARIO = ? AND U.ID_USUARIO = C.ID_USUARIO AND C.DNI = SIT.INDIVIDUO_DNI AND SIT.ID_TERAPEUTA = T.ID_TERAPEUTA
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setInt(1, idUsuario)
         var rs = statement.executeQuery()!!
-        var citas = ArrayList<Cita>()
+        var sesiones = ArrayList<Sesion>()
         try {
             while (rs?.next() == true) {
-                val cita = Cita(rs.getDate("FECHA"), rs.getString("NOMBRE"), rs.getString("APELLIDO"), rs.getInt("SESION_FAMILIAR"))
-                citas.add(cita)
+                val sesion = Sesion(rs.getInt("ID_SESION"),rs.getDate("FECHA"), rs.getString("NOMBRE"), rs.getString("APELLIDO"), rs.getInt("SESION_FAMILIAR"))
+                sesiones.add(sesion)
             }
         } catch (e : Exception) {
 
@@ -46,7 +72,7 @@ class GestionarClientes : IGestorCliente {
             statement.close()
             rs.close()
         }
-        return citas
+        return sesiones
     }
 
 }

@@ -11,7 +11,7 @@ class ConexionBD {
 
     constructor() {
         val credenciales : ArrayList<String> = recogerRemoto()
-        ConexionBD.connection = DriverManager.getConnection(credenciales[2], credenciales[0], credenciales[1])
+        connection = DriverManager.getConnection(credenciales[2], credenciales[0], credenciales[1])
     }
 
     private fun recogerRemoto() : ArrayList<String> {
