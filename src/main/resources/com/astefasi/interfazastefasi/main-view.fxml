@@ -1,16 +1,156 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.astefasi.interfazastefasi.MainController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<AnchorPane fx:id="app" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.astefasi.interfazastefasi.screen.principal.PantallaPrincipalController">
+    <children>
+        <GridPane style="-fx-background-color: white; -fx-background-radius: 50;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.rowIndex="1" />
+                <Pane layoutY="210.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1" />
+            </children>
+        </GridPane>
+        <HBox alignment="TOP_RIGHT" blendMode="SRC_ATOP" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #0080ff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Button fx:id="hideButton" mnemonicParsing="false" onAction="#onHideButton" style="-fx-background-color: transparent; -fx-background-radius: 0;" text="-" textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button fx:id="exitButton" layoutX="586.0" layoutY="10.0" mnemonicParsing="false" onAction="#onExitButton" onMouseEntered="#onHoverExit" onMouseExited="#onUnhoverExit" style="-fx-background-color: transparent; -fx-background-radius: 0;" text="X" textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </HBox>
+        <HBox fx:id="loginPage" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <children>
+                <VBox alignment="CENTER" minWidth="250.0" prefHeight="200.0" prefWidth="250.0" spacing="20.0" HBox.hgrow="NEVER">
+                    <children>
+                        <Label text="Iniciar Sesion">
+                            <font>
+                                <Font name="Calibri Bold" size="31.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="emailInput" promptText="Usuario o Correo" style="-fx-background-radius: 30;" />
+                        <PasswordField fx:id="passwordInput" promptText="Contraseña" style="-fx-background-radius: 30;" />
+                        <CheckBox fx:id="keepLogedIn" mnemonicParsing="false" text="Mantener sesion">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </CheckBox>
+                        <CheckBox fx:id="savePassword" mnemonicParsing="false" text="Guardar contraseña">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </CheckBox>
+                        <Button fx:id="acceptButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#checkAccount" style="-fx-background-color: #f0f0f0; -fx-background-radius: 30; -fx-border-color: #808080; -fx-border-radius: 30;" text="Entrar" textAlignment="CENTER">
+                            <font>
+                                <Font size="13.0" />
+                            </font></Button>
+                        <Separator prefWidth="200.0" />
+                        <Hyperlink text="Registrarse" />
+                    </children>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                    <padding>
+                        <Insets left="40.0" right="40.0" />
+                    </padding>
+                </VBox>
+                <StackPane prefHeight="150.0" prefWidth="200.0">
+                    <children>
+                        <ImageView fx:id="imageLogin1" blendMode="SRC_ATOP" fitHeight="455.0" fitWidth="720.0" pickOnBounds="true" smooth="false">
+                            <image>
+                                <Image url="@images/terapia1.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="imageLogin2" blendMode="SRC_ATOP" fitHeight="455.0" fitWidth="720.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" smooth="false">
+                            <image>
+                                <Image url="@images/terapia2.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </StackPane>
+            </children>
+        </HBox>
+        <HBox fx:id="mainPage" blendMode="SRC_ATOP" disable="true" opacity="0.0" prefHeight="100.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00a0ff;">
+                    <children>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent;" text="INICIO" textAlignment="CENTER" textFill="WHITE">
+                            <font>
+                                <Font name="Calibri Bold" size="28.0" />
+                            </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent;" text="CITAS" textAlignment="CENTER" textFill="WHITE">
+                            <font>
+                                <Font name="Calibri Bold" size="28.0" />
+                            </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="163.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent;" text="FAMILIA" textAlignment="CENTER" textFill="WHITE">
+                            <font>
+                                <Font name="Calibri Bold" size="28.0" />
+                            </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent;" text="CUENTA" textAlignment="CENTER" textFill="WHITE">
+                            <font>
+                                <Font name="Calibri Bold" size="28.0" />
+                            </font>
+                        </Button>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <Button mnemonicParsing="false" style="-fx-background-color: transparent;">
+                                    <graphic>
+                                        <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/settings.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                                    <graphic>
+                                        <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/language.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children></HBox>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+    </children>
+</AnchorPane>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
