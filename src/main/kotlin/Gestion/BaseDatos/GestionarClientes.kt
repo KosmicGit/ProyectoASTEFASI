@@ -54,8 +54,11 @@ class GestionarClientes : IGestorCliente {
     override fun historicoCitasUsuario(idUsuario: Int): ArrayList<Sesion> {
         val query = """
             SELECT SIT.ID_SESION, SIT.FECHA_SESION FECHA, T.NOMBRE, T.APELLIDO, SIT.SESION_FAMILIAR  
-            FROM SESION_INDIVIDUO_TERAPEUTA SIT, CLIENTE C, USUARIO U, TERAPEUTA T  
-            WHERE U.ID_USUARIO = ? AND U.ID_USUARIO = C.ID_USUARIO AND C.DNI = SIT.INDIVIDUO_DNI AND SIT.ID_TERAPEUTA = T.ID_TERAPEUTA
+            FROM SESION_INDIVIDUO_TERAPEUTA SIT
+            INNER JOIN TERAPEUTA T ON SIT.ID_TERAPEUTA = T.ID_TERAPEUTA
+            INNER JOIN CLIENTE C ON C.DNI = SIT.INDIVIDUO_DNI
+            INNER JOIN USUARIO U ON U.ID_USUARIO = C.ID_USUARIO
+            WHERE U.ID_USUARIO = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setInt(1, idUsuario)
