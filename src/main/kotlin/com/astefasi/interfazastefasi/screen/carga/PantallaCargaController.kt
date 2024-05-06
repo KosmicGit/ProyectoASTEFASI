@@ -1,6 +1,9 @@
 package com.astefasi.interfazastefasi.screen.carga
 
+import com.astefasi.interfazastefasi.Main
 import com.astefasi.interfazastefasi.gestion.bbdd.ConexionDB
+import com.astefasi.interfazastefasi.gestion.ficheros.CacheFile
+import com.astefasi.interfazastefasi.gestion.ficheros.ConfigFile
 import com.astefasi.interfazastefasi.screen.principal.PantallaPrincipal
 import com.astefasi.interfazastefasi.util.AjustesAplicacion
 import javafx.animation.PauseTransition
@@ -28,19 +31,33 @@ class PantallaCargaController {
                 chargeBar.progress += 0.01
 
                 when (chargeBar.progress) {
+                    //Comprueba en el repositorio en los releases si es la ultima version.
                     in 0.1..0.11 -> {
                         chargeIndicator.text = "Comprobando actualizacion..."
                     }
+                    //Intenta conectar con la base de datos.
                     in 0.40..0.41 -> {
                         chargeIndicator.text = "Cargando BBDD..."
+                    }
+                    in 0.50..0.51 -> {
                         try {
                             ConexionDB()
                         }catch (ex : SQLException) {
                             this.error = true
                         }
                     }
+                    //Carga la configuracion y usuario en cuestion.
                     in 0.7..0.71 -> {
+                        chargeIndicator.text = "Cargando Configuracion..."
+                    }
+                    in 0.8.. 0.81 -> {
+                        Main.configuracion = ConfigFile()
+                    }
+                    in 0.85..0.86 -> {
                         chargeIndicator.text = "Cargando Usuario..."
+                    }
+                    in 0.9.. 0.91 -> {
+                        Main.cache = CacheFile()
                     }
                 }
 
