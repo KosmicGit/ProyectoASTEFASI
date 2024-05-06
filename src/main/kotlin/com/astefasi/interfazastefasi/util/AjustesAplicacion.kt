@@ -6,6 +6,9 @@ import java.awt.Dimension
 import java.awt.Toolkit
 class AjustesAplicacion {
     companion object {
+        //Version de la aplicacion
+        val VERSION = "0.33"
+
         //Stage principal
         lateinit var mainStage : Stage
 

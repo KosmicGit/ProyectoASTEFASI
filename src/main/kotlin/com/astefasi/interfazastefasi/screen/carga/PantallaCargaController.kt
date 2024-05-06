@@ -1,6 +1,7 @@
 package com.astefasi.interfazastefasi.screen.carga
 
 import com.astefasi.interfazastefasi.Main
+import com.astefasi.interfazastefasi.gestion.actualizador.UpdaterHandler
 import com.astefasi.interfazastefasi.gestion.bbdd.ConexionDB
 import com.astefasi.interfazastefasi.gestion.ficheros.CacheFile
 import com.astefasi.interfazastefasi.gestion.ficheros.ConfigFile
@@ -13,6 +14,7 @@ import javafx.scene.control.Alert
 import javafx.scene.control.Label
 import javafx.scene.control.ProgressIndicator
 import javafx.util.Duration
+import java.io.IOException
 import java.sql.SQLException
 
 class PantallaCargaController {
@@ -34,6 +36,11 @@ class PantallaCargaController {
                     //Comprueba en el repositorio en los releases si es la ultima version.
                     in 0.1..0.11 -> {
                         chargeIndicator.text = "Comprobando actualizacion..."
+                    }
+                    in 0.2..0.21 -> {
+                        try {
+                            val handler = UpdaterHandler()
+                        }catch (_ : IOException) {}
                     }
                     //Intenta conectar con la base de datos.
                     in 0.40..0.41 -> {

@@ -6,6 +6,7 @@ module com.astefasi.interfazastefasi {
     requires mysql.connector.j;
     requires java.sql;
     requires io.github.cdimascio.dotenv.java;
+    requires org.kohsuke.github.api;
 
 
     opens com.astefasi.interfazastefasi to javafx.fxml;
