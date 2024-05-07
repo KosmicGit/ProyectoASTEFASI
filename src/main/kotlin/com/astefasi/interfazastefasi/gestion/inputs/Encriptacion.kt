@@ -32,8 +32,8 @@ class Encriptacion {
 
     fun desencriptarBD(archivo : String) : List<String> {
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec)
-        val uri = javaClass.getResource("${Ficheros.RESOURCES_PATH}$archivo")!!.toURI()
-        val encryptedBytes = Base64.getDecoder().decode(Files.readAllBytes(Paths.get(uri)))
+        val stream = javaClass.getResourceAsStream("${Ficheros.RESOURCES_PATH}$archivo")
+        val encryptedBytes = Base64.getDecoder().decode(stream.readAllBytes())
         val decryptedString = String(cipher.doFinal(encryptedBytes))
         return decryptedString.split("\n")
     }

@@ -4,10 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv
 import org.kohsuke.github.GitHub
 import java.io.FileOutputStream
 import java.net.URI
-import java.net.URL
-import java.nio.channels.Channel
 import java.nio.channels.Channels
-import java.nio.channels.ReadableByteChannel
 
 class UpdaterHandler {
 
