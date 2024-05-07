@@ -1,6 +1,6 @@
 package es.cifpvirgen.Gestion.Inputs
 
-import es.cifpvirgen.Data.Usuario
+
 import es.cifpvirgen.Datos.Sesion
 import es.cifpvirgen.Datos.Terapeuta
 

@@ -406,7 +406,7 @@ class GestionarUsuarios: IGestorUsuarios {
         val query = "SELECT * FROM 'USUARIO' WHERE correo = ?"
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setString(1, correo)
-        var rs = statement.executeQuery()!!
+        val rs = statement.executeQuery()!!
         var usuario : Usuario? = null
         try {
             if (rs.next()) {
@@ -415,13 +415,12 @@ class GestionarUsuarios: IGestorUsuarios {
                     val username = rs.getString("NOMBRE_USUARIO")
                     val email = rs.getString("EMAIL")
                     val password = Gestores.encrypt.desencriptar(rs.getString("CLAVE_ACCESO"))
-                    var rol: Roles
-                    if (rs.getInt("ROL") == 1) {
-                        rol = Roles.TERAPEUTA
+                    val rol: Roles = if (rs.getInt("ROL") == 1) {
+                        Roles.TERAPEUTA
                     } else if (rs.getInt("ROL") == 2){
-                        rol = Roles.ADMINISTRADOR
+                        Roles.ADMINISTRADOR
                     } else {
-                        rol = Roles.PACIENTE
+                        Roles.PACIENTE
                     }
                     var verificado = false
                     if (rs.getInt("VERIFICADO") == 1) {

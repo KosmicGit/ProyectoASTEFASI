@@ -11,13 +11,13 @@ class GestionarClientes : IGestorCliente {
         val query = "SELECT * FROM CLIENTE WHERE ID_USUARIO = ?"
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setInt(1, idUsuario)
-        var rs = statement.executeQuery()!!
+        val rs = statement.executeQuery()!!
         var cliente : Cliente? = null
         try {
             if (rs.next()) {
                 cliente = Cliente(rs.getString("DNI"), rs.getString("NOMBRE"), rs.getString("CAUSA_CITA"), rs.getString("APELLIDO"), rs.getInt("EDAD"), rs.getInt("ID_ROL"), rs.getInt("ID_USUARIO") )
             }
-        } catch (e : Exception) {
+        } catch (_ : Exception) {
 
         } finally {
             statement.close()
@@ -62,14 +62,14 @@ class GestionarClientes : IGestorCliente {
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setInt(1, idUsuario)
-        var rs = statement.executeQuery()!!
-        var sesiones = ArrayList<Sesion>()
+        val rs = statement.executeQuery()!!
+        val sesiones = ArrayList<Sesion>()
         try {
-            while (rs?.next() == true) {
+            while (rs.next()) {
                 val sesion = Sesion(rs.getInt("ID_SESION"),rs.getDate("FECHA"), rs.getString("NOMBRE"), rs.getString("APELLIDO"), rs.getInt("SESION_FAMILIAR"))
                 sesiones.add(sesion)
             }
-        } catch (e : Exception) {
+        } catch (_ : Exception) {
 
         } finally {
             statement.close()

@@ -85,14 +85,14 @@ class GestionarTerapeuta : IGestorTerapeuta {
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setInt(1, idUsuario)
-        var rs = statement.executeQuery()!!
-        var sesiones = ArrayList<Sesion>()
+        val rs = statement.executeQuery()!!
+        val sesiones = ArrayList<Sesion>()
         try {
-            while (rs?.next() == true) {
+            while (rs.next()) {
                 val sesion = Sesion(rs.getInt("ID_SESION"),rs.getDate("FECHA"), rs.getString("NOMBRE"), rs.getString("APELLIDO"), rs.getInt("SESION_FAMILIAR"))
                 sesiones.add(sesion)
             }
-        } catch (e : Exception) {
+        } catch (_: Exception) {
 
         } finally {
             statement.close()
