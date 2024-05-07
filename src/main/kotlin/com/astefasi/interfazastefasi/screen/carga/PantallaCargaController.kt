@@ -2,7 +2,7 @@ package com.astefasi.interfazastefasi.screen.carga
 
 import com.astefasi.interfazastefasi.Main
 import com.astefasi.interfazastefasi.gestion.actualizador.UpdaterHandler
-import com.astefasi.interfazastefasi.gestion.bbdd.ConexionDB
+import com.astefasi.interfazastefasi.gestion.bbdd.ConexionBD
 import com.astefasi.interfazastefasi.gestion.ficheros.CacheFile
 import com.astefasi.interfazastefasi.gestion.ficheros.ConfigFile
 import com.astefasi.interfazastefasi.screen.principal.PantallaPrincipal
@@ -40,7 +40,12 @@ class PantallaCargaController {
                     in 0.2..0.21 -> {
                         try {
                             val handler = UpdaterHandler()
-                        }catch (_ : IOException) {}
+                            if (handler.obtenerVersion().toInt() > AjustesAplicacion.VERSION) {
+                                progression.pause()
+                            }
+                        }catch (ex : IOException) {
+                            println("No ha podido conectarse al github")
+                        }
                     }
                     //Intenta conectar con la base de datos.
                     in 0.40..0.41 -> {
@@ -48,7 +53,7 @@ class PantallaCargaController {
                     }
                     in 0.50..0.51 -> {
                         try {
-                            ConexionDB()
+                            ConexionBD()
                         }catch (ex : SQLException) {
                             this.error = true
                         }

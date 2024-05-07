@@ -1,7 +1,7 @@
 package com.astefasi.interfazastefasi.screen.principal
 
 import com.astefasi.interfazastefasi.animation.AnimationHandler
-import com.astefasi.interfazastefasi.gestion.bbdd.ConexionDB
+import com.astefasi.interfazastefasi.gestion.bbdd.ConexionBD
 import com.astefasi.interfazastefasi.util.AjustesAplicacion
 import javafx.application.Platform
 import javafx.fxml.FXML
@@ -47,7 +47,7 @@ class PantallaPrincipalController : Initializable {
 
     @FXML
     fun onExitButton() {
-        ConexionDB.connection!!.close()
+        ConexionBD.connection!!.close()
         Platform.exit()
     }
 

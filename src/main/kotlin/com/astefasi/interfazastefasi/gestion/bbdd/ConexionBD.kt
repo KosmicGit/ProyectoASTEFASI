@@ -4,7 +4,7 @@ import com.astefasi.interfazastefasi.gestion.inputs.Gestores
 import java.sql.Connection
 import java.sql.DriverManager
 
-class ConexionDB {
+class ConexionBD {
     companion object {
         var connection : Connection? = null
     }
