@@ -7,6 +7,12 @@ import java.sql.ResultSet
 
 class GestionarClientes : IGestorCliente {
 
+    /**
+     * Función para conseguir un cliente a partir de un la Id de un usuario pasado por parametro
+     *
+     * @param idUsuario
+     * @return cliente vacio si el id a fallado o cliente con sus respectivos datos
+     */
     override fun conseguirClientePorId(idUsuario: Int): Cliente? {
         val query = "SELECT * FROM CLIENTE WHERE ID_USUARIO = ?"
         val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -26,6 +32,12 @@ class GestionarClientes : IGestorCliente {
         return cliente
     }
 
+    /**
+     * Funcion para que el cliente modifique sus propios datos
+     *
+     * @param cliente
+     * @return true si a funcionado correctamente o false si falla en alguna parte del proceso
+     */
     override fun modificarDatos(cliente: Cliente) : Boolean {
         val query =  """
             UPDATE CLIENTE
@@ -51,17 +63,21 @@ class GestionarClientes : IGestorCliente {
         return true
     }
 
-    override fun historicoCitasUsuario(idUsuario: Int): ArrayList<Sesion> {
+    /**
+     * Metodo para conseguir el historico de sesiones de un cliente concreto
+     *
+     * @param cliente
+     * @return Devuelve un arrayList vacio si falla en algun momento o ArrayList con todas las sesiones del cliente
+     */
+    override fun historicoCitasCliente(cliente: Cliente): ArrayList<Sesion> {
         val query = """
             SELECT SIT.ID_SESION, SIT.FECHA_SESION FECHA, T.NOMBRE, T.APELLIDO, SIT.SESION_FAMILIAR  
             FROM SESION_INDIVIDUO_TERAPEUTA SIT
             INNER JOIN TERAPEUTA T ON SIT.ID_TERAPEUTA = T.ID_TERAPEUTA
-            INNER JOIN CLIENTE C ON C.DNI = SIT.INDIVIDUO_DNI
-            INNER JOIN USUARIO U ON U.ID_USUARIO = C.ID_USUARIO
-            WHERE U.ID_USUARIO = ?
+            WHERE SIT.DNI_CLIENTE = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
-        statement.setInt(1, idUsuario)
+        statement.setString(1, cliente.dni)
         val rs = statement.executeQuery()!!
         val sesiones = ArrayList<Sesion>()
         try {

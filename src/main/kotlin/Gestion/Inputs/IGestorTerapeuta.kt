@@ -6,9 +6,9 @@ import es.cifpvirgen.Datos.Terapeuta
 
 interface IGestorTerapeuta {
 
-    fun insertarCita (sesion : Sesion, dni : String, idTerapeuta: Int) : Boolean
-    fun modificarCita (sesion: Sesion) : Boolean
-    fun borrarCita (sesion: Sesion) : Boolean
-    fun historicoCitasTerapeuta (idUsuario: Int) : ArrayList<Sesion>
+    fun insertarSesion (sesion : Sesion, dni : String, idTerapeuta: Int) : Boolean
+    fun modificarSesion (sesion: Sesion) : Boolean
+    fun borrarSesion (sesion: Sesion) : Boolean
+    fun historicoCitasTerapeuta (terapeuta: Terapeuta) : ArrayList<Sesion>
     fun modificarDatos (terapeuta : Terapeuta) : Boolean
 }

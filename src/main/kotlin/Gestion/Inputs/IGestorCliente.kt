@@ -8,5 +8,5 @@ interface IGestorCliente {
 
     fun conseguirClientePorId(idUsuario : Int) : Cliente?
     fun modificarDatos (cliente : Cliente) : Boolean
-    fun historicoCitasUsuario (idUsuario : Int) : ArrayList<Sesion>
+    fun historicoCitasCliente (cliente : Cliente) : ArrayList<Sesion>
 }
