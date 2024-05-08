@@ -3,16 +3,12 @@ package es.cifpvirgen.Paginas.Admin
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
 import es.cifpvirgen.Gestion.Gestores
-import es.cifpvirgen.Gestion.Inputs.InputsUsuario
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
-import kweb.html.style.StyleReceiver
-import kweb.state.KVar
 import kweb.util.json
-import java.io.File
 
-fun Component.adminPage(usuario: Usuario) {
+fun Component.editPage(usuario : Usuario){
     section {
         div {
             element("header") {
@@ -88,7 +84,7 @@ fun Component.adminPage(usuario: Usuario) {
                                         browser.url.value = "/profile/settings"
                                     }
                                 }.classes("button is-info is-inverted")
-                            }.classes("navbar-item")
+                            }.classes("navbar-item is-active")
                             span {
                                 a {
                                     span {
@@ -112,89 +108,107 @@ fun Component.adminPage(usuario: Usuario) {
                 div {
                     div {
                         div {
-                            val mailUsuario = KVar("")
-                            nav {
-                                p {
+                            p {
+                                span {
                                     span {
-                                        span {
-                                            i().classes("fa-solid fa-screwdriver-wrench")
-                                        }.classes("icon")
-                                        span().text("Admin Panel")
-                                    }.classes("icon-text")
-                                }.classes("panel-heading")
+                                        i().classes("fa-solid fa-user-pen")
+                                    }.classes("icon")
+                                    span().text(" ")
+                                    span().text("User Settings")
+                                }.classes("icon-text")
+                            }.classes("title has-text-white")
+                            element("hr")
+                            div {
+                                div {
+                                    li().text("Usuario: ${usuario.username}")
+                                    li().text("Correo: ${usuario.email}")
+                                    li().text("Rol: ${usuario.rol}")
+                                }.classes("columna is-9 has-text-left")
+                                div { }.classes("column is-2")
+                                div {
+                                    val fotoPerfil = Gestores.gestorUsuarios.obtenerFoto(usuario)
+                                    if (fotoPerfil != null) {
+                                        element("figure") {
+                                            img(attributes = mapOf("src" to JsonPrimitive(fotoPerfil)))
+                                        }.classes("image is-128x128")
+                                    } else {
+                                        element("figure") {
+                                            img(attributes = mapOf("src" to JsonPrimitive("https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/user.png")))
+                                        }.classes("image is-128x128")
+                                    }
+                                }.classes("columna")
+                            }.classes("columns is-centered is-vcentered")
+                            element("hr")
+                            div {
                                 div {
                                     p {
-                                        input(type = InputType.text) {
-                                            element.setAttributes(Pair("placeholder", JsonPrimitive("Correo del usuario")))
-                                            element.value = mailUsuario
-                                            element.on.input {
-                                                element.on.focusout {
-                                                    if (!InputsUsuario.comprobarEmail(mailUsuario.value)) {
-                                                        element.classes("input is-small is-danger")
-                                                        element.on.focusin {
-                                                            element.classes("input is-small")
-                                                        }
-                                                    } else {
-                                                        element.classes("input is-small is-success")
-                                                    }
+                                        button {
+                                            span {
+                                                i().classes("fa-solid fa-image")
+                                            }.classes("icon is-small")
+                                            span().text("Cambiar Foto")
+                                            element.on.click {
+                                                browser.url.value = "/profile/settings/image"
+                                            }
+                                        }.classes("button is-success")
+                                        button {
+                                            span {
+                                                i().classes("fa-solid fa-user-pen")
+                                            }.classes("icon is-small")
+                                            span().text("Cambiar Usuario")
+                                            element.on.click {
+                                                browser.url.value = "/profile/settings/user"
+                                            }
+                                        }.classes("button is-primary")
+                                        if (usuario.rol != Roles.ADMINISTRADOR) {
+                                            button {
+                                                span {
+                                                    i().classes("fa-solid fa-calendar-days")
+                                                }.classes("icon is-small")
+                                                span().text("Cambiar Fecha")
+                                                element.on.click {
+                                                    browser.url.value = "/profile/settings/date"
                                                 }
+                                            }.classes("button is-info")
+                                        }
+                                        button {
+                                            span {
+                                                i().classes("fa-solid fa-envelope")
+                                            }.classes("icon is-small")
+                                            span().text("Cambiar Correo")
+                                            element.on.click {
+                                                browser.url.value = "/profile/settings/email"
                                             }
-                                        }.classes("input")
-                                        span {
-                                            i { element.setAttributes(Pair("aria-hidden", JsonPrimitive("true"))) }.classes("fas fa-search")
-                                        }.classes("icon is-left")
-                                    }.classes("control has-icons-left")
-                                    a{}
+                                        }.classes("button is-warning")
+                                        button {
+                                            span {
+                                                i().classes("fa-solid fa-key")
+                                            }.classes("icon is-small")
+                                            span().text("Cambiar Contraseña")
+                                            element.on.click {
+                                                browser.url.value = "/profile/settings/password"
+                                            }
+                                        }.classes("button is-danger")
+                                    }.classes("buttons is-centered")
+                                }.classes("column")
+                            }.classes("columns")
+                            element("hr")
+                            div {
+                                div {
                                     button {
-                                        element.text("Editar")
+                                        span {
+                                            i().classes("fa-solid fa-trash")
+                                        }.classes("icon is-small")
+                                        span().text("Eliminar Cuenta")
                                         element.on.click {
-                                            val usuarioBuscado = Gestores.gestorUsuarios.obtenerUsuarioMail(mailUsuario.value)
-                                            if (mailUsuario.value == "") {
-                                                browser.callJsFunction("mostrarNoti({})", "Introduce un correo válido".json)
-                                            } else if (usuarioBuscado == null) {
-                                                browser.callJsFunction("mostrarNoti({})", "Usuario no encontrado. Introduce un usuario válido".json)
-                                            } else {
-                                                browser.url.value = "/admin/edit/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuarioBuscado))
-                                            }
+                                            browser.url.value = "/profile/settings/delete"
                                         }
-                                    }.classes("button is-warning")
-                                }.classes("panel-block")
-
-                                p {
-                                    a { element.text("Todo") }.classes("is-active")
-                                    a {
-                                        element.text("Administradores")
-                                        element.on.click {
-                                            browser.url.value = "/admin/admins"
-                                        }
-                                    }
-                                    a {
-                                        element.text("Terapeutas")
-                                        element.on.click {
-                                            browser.url.value = "/admin/therapists"
-                                        }
-                                    }
-                                    a {
-                                        element.text("Pacientes")
-                                        element.on.click {
-                                            browser.url.value = "/admin/clients"
-                                        }
-                                    }
-                                }.classes("panel-tabs")
-                                val usuarios = Gestores.gestorUsuarios.obtenerUsuarios()
-                                for (i in usuarios) {
-                                    div {
-                                        li().text("ID: " + i.idUsuario.toString())
-                                        element.addText("  | ")
-                                        element.addText("Username: " + i.username)
-                                        element.addText(" | ")
-                                        element.addText("Email: " + i.email)
-                                    }.classes("panel-block")
-                                }
-                            }.classes("panel is-link")
+                                    }.classes("button is-danger is-inverted")
+                                }.classes("column")
+                            }.classes("colums is-centered")
                         }.classes("box")
-                    }.classes("column is-three-fifths")
-                }.classes("columns is-centered")
+                    }.classes("column is-half")
+                }.classes("columns is-centered has-text-center")
             }.classes("container has-text-centered hax-text-white")
         }.classes("hero-body")
 
@@ -249,6 +263,9 @@ fun Component.adminPage(usuario: Usuario) {
                                     }.classes("icon")
                                     span().text("Admin")
                                 }.classes("icon-text")
+                                element.on.click {
+                                    browser.url.value = "/admin"
+                                }
                             }
                         }.classes("is-active")
                     }

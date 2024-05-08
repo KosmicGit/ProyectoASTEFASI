@@ -7,12 +7,10 @@ import es.cifpvirgen.Gestion.Inputs.InputsUsuario
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.components.Component
-import kweb.html.style.StyleReceiver
 import kweb.state.KVar
 import kweb.util.json
-import java.io.File
 
-fun Component.adminPage(usuario: Usuario) {
+fun Component.clientList(usuario: Usuario) {
     section {
         div {
             element("header") {
@@ -161,7 +159,12 @@ fun Component.adminPage(usuario: Usuario) {
                                 }.classes("panel-block")
 
                                 p {
-                                    a { element.text("Todo") }.classes("is-active")
+                                    a {
+                                        element.text("Todo")
+                                        element.on.click {
+                                            browser.url.value = "/admin"
+                                        }
+                                    }
                                     a {
                                         element.text("Administradores")
                                         element.on.click {
@@ -174,22 +177,19 @@ fun Component.adminPage(usuario: Usuario) {
                                             browser.url.value = "/admin/therapists"
                                         }
                                     }
-                                    a {
-                                        element.text("Pacientes")
-                                        element.on.click {
-                                            browser.url.value = "/admin/clients"
-                                        }
-                                    }
+                                    a { element.text("Pacientes") }.classes("is-active")
                                 }.classes("panel-tabs")
                                 val usuarios = Gestores.gestorUsuarios.obtenerUsuarios()
                                 for (i in usuarios) {
-                                    div {
-                                        li().text("ID: " + i.idUsuario.toString())
-                                        element.addText("  | ")
-                                        element.addText("Username: " + i.username)
-                                        element.addText(" | ")
-                                        element.addText("Email: " + i.email)
-                                    }.classes("panel-block")
+                                    if (i.rol == Roles.PACIENTE) {
+                                        div {
+                                            li().text("ID: " + i.idUsuario.toString())
+                                            element.addText("  | ")
+                                            element.addText("Username: " + i.username)
+                                            element.addText(" | ")
+                                            element.addText("Email: " + i.email)
+                                        }.classes("panel-block")
+                                    }
                                 }
                             }.classes("panel is-link")
                         }.classes("box")
@@ -249,6 +249,9 @@ fun Component.adminPage(usuario: Usuario) {
                                     }.classes("icon")
                                     span().text("Admin")
                                 }.classes("icon-text")
+                                element.on.click {
+                                    browser.url.value = "/admin"
+                                }
                             }
                         }.classes("is-active")
                     }

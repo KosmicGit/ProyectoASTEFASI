@@ -14,7 +14,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 fun Component.registerVerify(usuario: Usuario) {
-    //TODO("Controlar entradas")
     section {
         div {
             element("header") {

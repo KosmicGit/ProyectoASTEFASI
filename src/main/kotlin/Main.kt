@@ -2,7 +2,7 @@ package es.cifpvirgen
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Gestion.Gestores
-import es.cifpvirgen.Paginas.Admin.adminPage
+import es.cifpvirgen.Paginas.Admin.*
 import es.cifpvirgen.Paginas.Documentation.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
 import es.cifpvirgen.Paginas.Documentation.installdocPage
@@ -111,6 +111,68 @@ fun main() {
                         } else {
                             url.value = "/login"
                         }
+                    }
+                }
+
+                // URL "/admin/admins"
+                path("/admin/admins") {
+                    elementScope().launch {
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
+                            if (usuario.verificado && usuario.rol == Roles.ADMINISTRADOR) {
+                                adminList(usuario)
+                            } else {
+                                url.value = "/login"
+                            }
+                        } else {
+                            url.value = "/login"
+                        }
+                    }
+                }
+
+                // URL "/admin/therapists"
+                path("/admin/therapists") {
+                    elementScope().launch {
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
+                            if (usuario.verificado && usuario.rol == Roles.ADMINISTRADOR) {
+                                therapistList(usuario)
+                            } else {
+                                url.value = "/login"
+                            }
+                        } else {
+                            url.value = "/login"
+                        }
+                    }
+                }
+
+                // URL "/admin/clients"
+                path("/admin/clients") {
+                    elementScope().launch {
+                        val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                        if (comprobarCookie != null) {
+                            val usuario = Gestores.desencriptarUsuario(comprobarCookie)
+                            if (usuario.verificado && usuario.rol == Roles.ADMINISTRADOR) {
+                                clientList(usuario)
+                            } else {
+                                url.value = "/login"
+                            }
+                        } else {
+                            url.value = "/login"
+                        }
+                    }
+                }
+
+                // URL "/admin/info/{user}"
+                path("/admin/info/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                        editPage(usuario)
+                    } else {
+                        url.value = "/admin"
                     }
                 }
 
