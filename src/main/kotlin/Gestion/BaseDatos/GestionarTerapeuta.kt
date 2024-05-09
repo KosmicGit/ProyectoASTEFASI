@@ -16,17 +16,16 @@ class GestionarTerapeuta : IGestorTerapeuta {
      */
     override fun insertarSesion(sesion: Sesion, dni : String, idTerapeuta: Int): Boolean {
         val query =  """
-            INSERT INTO SESION (ID_SESION, INDIVIDUO_DNI, TERAPEUTA_ID, FECHA_SESION, SESION_FAMILIAR)
-            VALUES(?,?,?,?,?)
+            INSERT INTO SESION ( INDIVIDUO_DNI, TERAPEUTA_ID, FECHA_SESION, SESION_FAMILIAR)
+            VALUES(?,?,?,?)
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         var rs : ResultSet? = null
         try {
-            statement.setInt(1, sesion.idSesion)
-            statement.setString(2, dni)
-            statement.setInt(3, idTerapeuta)
-            statement.setDate(4, sesion.fecha)
-            statement.setInt(5, sesion.familiar)
+            statement.setString(1, dni)
+            statement.setInt(2, idTerapeuta)
+            statement.setDate(3, sesion.fecha)
+            statement.setInt(4, sesion.familiar)
             rs = statement.executeQuery()!!
         } catch (e : Exception) {
             return false
