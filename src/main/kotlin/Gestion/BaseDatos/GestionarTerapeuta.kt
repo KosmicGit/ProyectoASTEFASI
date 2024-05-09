@@ -45,7 +45,7 @@ class GestionarTerapeuta : IGestorTerapeuta {
      */
     override fun modificarSesion(sesion: Sesion): Boolean {
         val query =  """
-            UPDATE SESION_INDIVIDUO_TERAPEUTA
+            UPDATE SESION
             SET 
             FECHA = ?
             DNI_INDIVIDUO = ?
@@ -77,7 +77,7 @@ class GestionarTerapeuta : IGestorTerapeuta {
      */
     override fun borrarSesion(sesion: Sesion): Boolean {
         val query =  """
-            DELETE FROM SESION_INDIVIDUO_TERAPEUTA
+            DELETE FROM SESION
             WHERE ID_SESION = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -102,10 +102,10 @@ class GestionarTerapeuta : IGestorTerapeuta {
      */
     override fun historicoCitasTerapeuta(terapeuta: Terapeuta): ArrayList<Sesion> {
         val query = """
-            SELECT SIT.ID_SESION, SIT.FECHA_SESION FECHA, C.NOMBRE, C.APELLIDO, SIT.SESION_FAMILIAR  
-            FROM SESION_INDIVIDUO_TERAPEUTA SIT
-            INNER JOIN CLIENTE C ON C.DNI = SIT.INDIVIDUO_DNI
-            WHERE SIT.TERAPEUTA_ID_TERAPEUTA = ?
+            SELECT S.ID_SESION, S.FECHA_SESION FECHA, C.NOMBRE, C.APELLIDO, S.SESION_FAMILIAR  
+            FROM SESION S
+            INNER JOIN CLIENTE C ON C.DNI = S.INDIVIDUO_DNI
+            WHERE S.TERAPEUTA_ID_TERAPEUTA = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setInt(1, terapeuta.idTerapeuta)
