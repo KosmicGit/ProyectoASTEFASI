@@ -11,7 +11,7 @@ import java.sql.SQLException
 class GestionarPacientes: IGestorPacientes {
 
     override fun addPaciente(paciente: Paciente) {
-        val query = "INSERT INTO cliente (DNI, NOMBRE, APELLIDO, FECHA_NACIMIENTO, ID_ROL, ID_USUARIO) VALUES (?, ?, ?, ?, ?, ?)"
+        val query = "INSERT INTO Cliente (DNI, NOMBRE, APELLIDO, FECHA_NACIMIENTO, ID_USUARIO) VALUES (?, ?, ?, ?, ?)"
 
         try {
             val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -19,18 +19,7 @@ class GestionarPacientes: IGestorPacientes {
             statement.setString(2, paciente.nombre)
             statement.setString(3, paciente.apellido)
             statement.setInt(4, Gestores.formatearFecha(paciente.fecha_nacimiento))
-            when (paciente.rol) {
-                Roles.TERAPEUTA -> {
-                    statement.setInt(5,1)
-                }
-                Roles.ADMINISTRADOR -> {
-                    statement.setInt(5, 2)
-                }
-                else -> {
-                    statement.setInt(5, 0)
-                }
-            }
-            statement.setInt(6, paciente.idUsuario)
+            statement.setInt(5, paciente.idUsuario)
 
             val usuario = Gestores.gestorUsuarios.obtenerUsuarioId(paciente.idUsuario)
             if (usuario != null) {
@@ -54,7 +43,7 @@ class GestionarPacientes: IGestorPacientes {
     override fun borrarPaciente(paciente: Paciente) {
         val user = obtenerPaciente(paciente.dni)
         if (user != null) {
-            val query = "DELETE FROM cliente WHERE DNI = ?"
+            val query = "DELETE FROM Cliente WHERE DNI = ?"
 
             try {
                 val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -78,7 +67,7 @@ class GestionarPacientes: IGestorPacientes {
     }
 
     override fun obtenerPaciente(dni: String): Paciente? {
-        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM cliente WHERE DNI = ?")
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Cliente WHERE DNI = ?")
         statement.setString(1, dni)
         val resultSet = statement.executeQuery()
 
@@ -90,17 +79,9 @@ class GestionarPacientes: IGestorPacientes {
                 val nombre = resultSet.getString("NOMBRE")
                 val apellido = resultSet.getString("APELLIDO")
                 val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
-                var rol: Roles
-                if (resultSet.getInt("ID_ROL") == 1) {
-                    rol = Roles.TERAPEUTA
-                } else if (resultSet.getInt("ID_ROL") == 2){
-                    rol = Roles.ADMINISTRADOR
-                } else {
-                    rol = Roles.PACIENTE
-                }
                 val idUsuario = resultSet.getInt("ID_USUARIO")
 
-                paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, rol, idUsuario)
+                paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, idUsuario)
             }
         } catch (e: SQLException) {
             println(DebugColors.error() + " Error al obtener los datos del paciente:")
@@ -114,7 +95,7 @@ class GestionarPacientes: IGestorPacientes {
     }
 
     override fun obtenerPacienteIdUsuario(idUsuario: Int): Paciente? {
-        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM cliente WHERE ID_USUARIO = ?")
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Cliente WHERE ID_USUARIO = ?")
         statement.setInt(1, idUsuario)
         val resultSet = statement.executeQuery()
 
@@ -126,16 +107,8 @@ class GestionarPacientes: IGestorPacientes {
                 val nombre = resultSet.getString("NOMBRE")
                 val apellido = resultSet.getString("APELLIDO")
                 val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
-                var rol: Roles
-                if (resultSet.getInt("ID_ROL") == 1) {
-                    rol = Roles.TERAPEUTA
-                } else if (resultSet.getInt("ID_ROL") == 2){
-                    rol = Roles.ADMINISTRADOR
-                } else {
-                    rol = Roles.PACIENTE
-                }
 
-                paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, rol, idUsuario)
+                paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, idUsuario)
             }
         } catch (e: SQLException) {
             println(DebugColors.error() + " Error al obtener los datos del paciente:")

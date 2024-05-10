@@ -207,7 +207,7 @@ fun Component.registerVerify(usuario: Usuario) {
                                         } else {
                                             Gestores.gestorUsuarios.verificarUsuario(usuario)
                                             browser.callJsFunction("mostrarNoti({})", "Usuario verificado correctamente.".json)
-                                            Gestores.gestorPacientes.addPaciente(Paciente(DNI.value, Nombre.value, Apellido.value, LocalDate.parse(FechaNac.value, DateTimeFormatter.ofPattern("yyyy-MM-dd")), Roles.PACIENTE, usuario.idUsuario))
+                                            Gestores.gestorPacientes.addPaciente(Paciente(DNI.value, Nombre.value, Apellido.value, LocalDate.parse(FechaNac.value, DateTimeFormatter.ofPattern("yyyy-MM-dd")), usuario.idUsuario))
                                             browser.url.value = "/login"
                                         }
                                     }

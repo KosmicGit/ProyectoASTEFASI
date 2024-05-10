@@ -128,12 +128,12 @@ fun Component.adminList(usuario: Usuario) {
                                             element.on.input {
                                                 element.on.focusout {
                                                     if (!InputsUsuario.comprobarEmail(mailUsuario.value)) {
-                                                        element.classes("input is-small is-danger")
+                                                        element.classes("input is-danger")
                                                         element.on.focusin {
-                                                            element.classes("input is-small")
+                                                            element.classes("input")
                                                         }
                                                     } else {
-                                                        element.classes("input is-small is-success")
+                                                        element.classes("input is-success")
                                                     }
                                                 }
                                             }
@@ -232,6 +232,9 @@ fun Component.adminList(usuario: Usuario) {
                                     }.classes("icon")
                                     span().text("Downloads")
                                 }.classes("icon-text")
+                                element.on.click {
+                                    browser.url.value = "/downloads"
+                                }
                                 element.on.mouseenter {
                                     iconos.setAttributes(Pair("style", JsonPrimitive("color: White")))
                                     element.on.mouseleave {
@@ -249,9 +252,6 @@ fun Component.adminList(usuario: Usuario) {
                                     }.classes("icon")
                                     span().text("Admin")
                                 }.classes("icon-text")
-                                element.on.click {
-                                    browser.url.value = "/admin"
-                                }
                             }
                         }.classes("is-active")
                     }

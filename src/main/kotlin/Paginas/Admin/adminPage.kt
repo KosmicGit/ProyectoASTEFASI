@@ -102,7 +102,7 @@ fun Component.adminPage(usuario: Usuario) {
                                 }.classes("button is-danger is-inverted")
                             }.classes("navbar-item")
                         }.classes("navbar-end")
-                    }.id = "navbarMenuHeroC"
+                    }.setAttributes(Pair("id", JsonPrimitive("navbarMenuHeroC")))
                 }.classes("container")
             }.classes("navbar is-black")
         }.classes("hero-head")
@@ -130,12 +130,12 @@ fun Component.adminPage(usuario: Usuario) {
                                             element.on.input {
                                                 element.on.focusout {
                                                     if (!InputsUsuario.comprobarEmail(mailUsuario.value)) {
-                                                        element.classes("input is-small is-danger")
+                                                        element.classes("input is-danger")
                                                         element.on.focusin {
-                                                            element.classes("input is-small")
+                                                            element.classes("input")
                                                         }
                                                     } else {
-                                                        element.classes("input is-small is-success")
+                                                        element.classes("input is-success")
                                                     }
                                                 }
                                             }
@@ -232,6 +232,9 @@ fun Component.adminPage(usuario: Usuario) {
                                     }.classes("icon")
                                     span().text("Downloads")
                                 }.classes("icon-text")
+                                element.on.click {
+                                    browser.url.value = "/downloads"
+                                }
                                 element.on.mouseenter {
                                     iconos.setAttributes(Pair("style", JsonPrimitive("color: White")))
                                     element.on.mouseleave {

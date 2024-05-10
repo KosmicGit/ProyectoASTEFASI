@@ -3,7 +3,9 @@ package es.cifpvirgen
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Gestion.Gestores
 import es.cifpvirgen.Paginas.Admin.*
+import es.cifpvirgen.Paginas.Admin.Settings.emailEdit
 import es.cifpvirgen.Paginas.Admin.Settings.imageEdit
+import es.cifpvirgen.Paginas.Admin.Settings.passwordEdit
 import es.cifpvirgen.Paginas.Documentation.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
 import es.cifpvirgen.Paginas.Documentation.installdocPage
@@ -170,8 +172,20 @@ fun main() {
                 path("/admin/info/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
-                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                        editPage(usuario)
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    editPage(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
                     } else {
                         url.value = "/admin"
                     }
@@ -181,8 +195,20 @@ fun main() {
                 path("/admin/date/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
-                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                        editPage(usuario)
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    editPage(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
                     } else {
                         url.value = "/admin"
                     }
@@ -192,8 +218,20 @@ fun main() {
                 path("/admin/delete/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
-                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                        editPage(usuario)
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    editPage(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
                     } else {
                         url.value = "/admin"
                     }
@@ -203,8 +241,20 @@ fun main() {
                 path("/admin/email/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
-                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                        editPage(usuario)
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    emailEdit(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
                     } else {
                         url.value = "/admin"
                     }
@@ -214,8 +264,20 @@ fun main() {
                 path("/admin/image/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
-                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                        imageEdit(usuario)
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    imageEdit(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
                     } else {
                         url.value = "/admin"
                     }
@@ -225,8 +287,20 @@ fun main() {
                 path("/admin/passwd/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
-                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                        editPage(usuario)
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    passwordEdit(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
                     } else {
                         url.value = "/admin"
                     }
@@ -236,8 +310,20 @@ fun main() {
                 path("/admin/user/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
-                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                        editPage(usuario)
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    editPage(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
                     } else {
                         url.value = "/admin"
                     }
