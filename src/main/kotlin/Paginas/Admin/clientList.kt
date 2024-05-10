@@ -152,7 +152,7 @@ fun Component.clientList(usuario: Usuario) {
                                             } else if (usuarioBuscado == null) {
                                                 browser.callJsFunction("mostrarNoti({})", "Usuario no encontrado. Introduce un usuario válido".json)
                                             } else {
-                                                browser.url.value = "/admin/edit/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuarioBuscado))
+                                                browser.url.value = "/admin/info/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuarioBuscado))
                                             }
                                         }
                                     }.classes("button is-warning")

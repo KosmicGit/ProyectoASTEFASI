@@ -3,6 +3,7 @@ package es.cifpvirgen
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Gestion.Gestores
 import es.cifpvirgen.Paginas.Admin.*
+import es.cifpvirgen.Paginas.Admin.Settings.imageEdit
 import es.cifpvirgen.Paginas.Documentation.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
 import es.cifpvirgen.Paginas.Documentation.installdocPage
@@ -167,6 +168,72 @@ fun main() {
 
                 // URL "/admin/info/{user}"
                 path("/admin/info/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                        editPage(usuario)
+                    } else {
+                        url.value = "/admin"
+                    }
+                }
+
+                // URL "/admin/date/{user}"
+                path("/admin/date/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                        editPage(usuario)
+                    } else {
+                        url.value = "/admin"
+                    }
+                }
+
+                // URL "/admin/delete/{user}"
+                path("/admin/delete/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                        editPage(usuario)
+                    } else {
+                        url.value = "/admin"
+                    }
+                }
+
+                // URL "/admin/email/{user}"
+                path("/admin/email/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                        editPage(usuario)
+                    } else {
+                        url.value = "/admin"
+                    }
+                }
+
+                // URL "/admin/image/{user}"
+                path("/admin/image/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                        imageEdit(usuario)
+                    } else {
+                        url.value = "/admin"
+                    }
+                }
+
+                // URL "/admin/passwd/{user}"
+                path("/admin/passwd/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                        editPage(usuario)
+                    } else {
+                        url.value = "/admin"
+                    }
+                }
+
+                // URL "/admin/user/{user}"
+                path("/admin/user/{user}") { params ->
                     val user = params.getValue("user").value
                     if (user != "") {
                         val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))

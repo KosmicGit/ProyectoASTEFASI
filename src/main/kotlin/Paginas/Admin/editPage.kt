@@ -148,7 +148,7 @@ fun Component.editPage(usuario : Usuario){
                                             }.classes("icon is-small")
                                             span().text("Cambiar Foto")
                                             element.on.click {
-                                                browser.url.value = "/profile/settings/image"
+                                                browser.url.value = "/admin/image/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
                                             }
                                         }.classes("button is-success")
                                         button {
@@ -157,7 +157,7 @@ fun Component.editPage(usuario : Usuario){
                                             }.classes("icon is-small")
                                             span().text("Cambiar Usuario")
                                             element.on.click {
-                                                browser.url.value = "/profile/settings/user"
+                                                browser.url.value = "/admin/user/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
                                             }
                                         }.classes("button is-primary")
                                         if (usuario.rol != Roles.ADMINISTRADOR) {
@@ -167,7 +167,7 @@ fun Component.editPage(usuario : Usuario){
                                                 }.classes("icon is-small")
                                                 span().text("Cambiar Fecha")
                                                 element.on.click {
-                                                    browser.url.value = "/profile/settings/date"
+                                                    browser.url.value = "/admin/date/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
                                                 }
                                             }.classes("button is-info")
                                         }
@@ -177,7 +177,7 @@ fun Component.editPage(usuario : Usuario){
                                             }.classes("icon is-small")
                                             span().text("Cambiar Correo")
                                             element.on.click {
-                                                browser.url.value = "/profile/settings/email"
+                                                browser.url.value = "/admin/email/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
                                             }
                                         }.classes("button is-warning")
                                         button {
@@ -186,7 +186,7 @@ fun Component.editPage(usuario : Usuario){
                                             }.classes("icon is-small")
                                             span().text("Cambiar Contraseña")
                                             element.on.click {
-                                                browser.url.value = "/profile/settings/password"
+                                                browser.url.value = "/admin/passwd/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
                                             }
                                         }.classes("button is-danger")
                                     }.classes("buttons is-centered")
@@ -201,7 +201,7 @@ fun Component.editPage(usuario : Usuario){
                                         }.classes("icon is-small")
                                         span().text("Eliminar Cuenta")
                                         element.on.click {
-                                            browser.url.value = "/profile/settings/delete"
+                                            browser.url.value = "/admin/delete/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
                                         }
                                     }.classes("button is-danger is-inverted")
                                 }.classes("column")
