@@ -125,7 +125,7 @@ fun Component.emailEdit(usuario: Usuario) {
                                     }.classes("icon-text")
                                 }.classes("title has-text-white")
                                 element("hr")
-                                p { element.text("Introduzca su nuevo correo electronico.") }
+                                p { element.text("Introduzca el nuevo correo electronico.") }
                                 br()
                                 input(type = InputType.text) {
                                     element.classes("input is-normal")
@@ -160,10 +160,8 @@ fun Component.emailEdit(usuario: Usuario) {
                                                         val modificacion = usuario.copy()
                                                         modificacion.email = newMail.value
                                                         Gestores.gestorUsuarios.modificarUsuario(usuario, modificacion)
-                                                        browser.callJsFunction("cerrarSesion({})", "sesion".json)
-                                                        browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(modificacion).json)
                                                         browser.callJsFunction("mostrarNoti({})", "Usuario actualizado correctamente.".json)
-                                                        browser.url.value = "/admin/info" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
+                                                        browser.url.value = "/admin/info" + Gestores.codificarURL(Gestores.encriptarUsuario(modificacion))
                                                     } else {
                                                         browser.callJsFunction("mostrarNoti({})", "El usuario ya existe.".json)
                                                     }

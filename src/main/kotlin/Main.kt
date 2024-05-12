@@ -3,9 +3,7 @@ package es.cifpvirgen
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Gestion.Gestores
 import es.cifpvirgen.Paginas.Admin.*
-import es.cifpvirgen.Paginas.Admin.Settings.emailEdit
-import es.cifpvirgen.Paginas.Admin.Settings.imageEdit
-import es.cifpvirgen.Paginas.Admin.Settings.passwordEdit
+import es.cifpvirgen.Paginas.Admin.Settings.*
 import es.cifpvirgen.Paginas.Documentation.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
 import es.cifpvirgen.Paginas.Documentation.installdocPage
@@ -201,7 +199,7 @@ fun main() {
                                 val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
                                 if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
                                     val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                                    editPage(usuario)
+                                    dateEdit(usuario)
                                 } else {
                                     url.value = "/login"
                                 }
@@ -224,7 +222,7 @@ fun main() {
                                 val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
                                 if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
                                     val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                                    editPage(usuario)
+                                    deleteEdit(usuario)
                                 } else {
                                     url.value = "/login"
                                 }
@@ -316,7 +314,7 @@ fun main() {
                                 val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
                                 if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
                                     val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
-                                    editPage(usuario)
+                                    userEdit(usuario)
                                 } else {
                                     url.value = "/login"
                                 }

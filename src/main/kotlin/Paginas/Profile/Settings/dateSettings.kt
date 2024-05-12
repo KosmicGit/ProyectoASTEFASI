@@ -11,7 +11,6 @@ import kweb.state.KVar
 import kweb.util.json
 
 fun Component.dateSettings(usuario: Usuario) {
-    //TODO("logica del du")
     section {
         div {
             element("header") {
@@ -111,13 +110,23 @@ fun Component.dateSettings(usuario: Usuario) {
                 div {
                     div {
                         div {
-                            val FechaNac = KVar("")
-
+                            val fechaNac = KVar("")
+                            p {
+                                span {
+                                    span {
+                                        i().classes("fa-solid fa-calendar-days")
+                                    }.classes("icon")
+                                    span().text(" ")
+                                    span().text("Date Settings")
+                                }.classes("icon-text")
+                            }.classes("title has-text-white")
+                            element("hr")
+                            p { element.text("Introduzca su nueva fecha de nacimiento:") }.classes("subtitle has-text-grey-light")
                             input(type = InputType.date){
-                                element.value = FechaNac
+                                element.value = fechaNac
                                 element.on.input {
                                     element.on.focusout {
-                                        if (!InputsUsuario.comprobarFecha(Gestores.parsearFecha(FechaNac.value))) {
+                                        if (!InputsUsuario.comprobarFecha(Gestores.parsearFecha(fechaNac.value))) {
                                             element.classes("input is-danger")
                                             element.on.focusin {
                                                 element.classes("input")
@@ -128,6 +137,51 @@ fun Component.dateSettings(usuario: Usuario) {
                                     }
                                 }
                             }.classes("input")
+                            br()
+                            br()
+                            button {
+                                span {
+                                    i().classes("fa-solid fa-user-clock")
+                                }.classes("icon is-small")
+                                span().text("Change")
+                                element.on.click {
+                                    if (fechaNac.value == "") {
+                                        element.classes("button is-danger")
+                                        element.text("Error")
+                                        browser.callJsFunction("mostrarNoti({})", "Introduzca una fecha.".json)
+                                    } else {
+                                        if (InputsUsuario.comprobarFecha(Gestores.parsearFecha(fechaNac.value))) {
+                                            when (usuario.rol) {
+                                                Roles.PACIENTE -> {
+                                                    val paciente = Gestores.gestorPacientes.obtenerPacienteIdUsuario(usuario.idUsuario)!!
+                                                    val modificacion = paciente.copy()
+                                                    modificacion.fecha_nacimiento = Gestores.parsearFecha(fechaNac.value)
+                                                    Gestores.gestorPacientes.modificarPaciente(paciente, modificacion)
+                                                    browser.callJsFunction("mostrarNoti({})", "Fecha de nacimiento actualizada.".json)
+                                                    browser.url.value = "/profile"
+                                                }
+                                                Roles.TERAPEUTA -> {
+                                                    val terapeuta = Gestores.gestorTerapeutas.obtenerTerapeutaIdUsuario(usuario.idUsuario)!!
+                                                    val modificacion = terapeuta.copy()
+                                                    modificacion.fecha_nacimiento = Gestores.parsearFecha(fechaNac.value)
+                                                    Gestores.gestorTerapeutas.modificarTerapeuta(terapeuta, modificacion)
+                                                    browser.callJsFunction("mostrarNoti({})", "Fecha de nacimiento actualizada.".json)
+                                                    browser.url.value = "/profile"
+                                                }
+                                                Roles.ADMINISTRADOR -> {
+                                                    element.classes("button is-danger")
+                                                    element.text("Error")
+                                                    browser.callJsFunction("mostrarNoti({})", "Las cuentas de Administrador no tienen fecha de nacimiento asociada a su usuario.".json)
+                                                }
+                                            }
+                                        } else {
+                                            element.classes("button is-danger")
+                                            element.text("Error")
+                                            browser.callJsFunction("mostrarNoti({})", "Ha introducido una fecha no válida.".json)
+                                        }
+                                    }
+                                }
+                            }.classes("button is-warning")
                         }.classes("box")
                     }.classes("column is-half")
                 }.classes("columns is-centered has-text-center")
@@ -165,7 +219,7 @@ fun Component.dateSettings(usuario: Usuario) {
                                 }
                             }
                         }
-                        if (usuario.rol == es.cifpvirgen.Data.Roles.ADMINISTRADOR) {
+                        if (usuario.rol == Roles.ADMINISTRADOR) {
                             li {
                                 a {
                                     span {

@@ -136,7 +136,7 @@ fun Component.passwordEdit(usuario : Usuario){
                                     div {
                                         button {
                                             span {
-                                                i().classes("fa-solid fa-envelope")
+                                                i().classes("fa-solid fa-key")
                                             }.classes("icon is-small")
                                             span().text("Change")
                                             element.on.click {
@@ -150,9 +150,7 @@ fun Component.passwordEdit(usuario : Usuario){
                                                         val modificacion = usuario.copy()
                                                         modificacion.password = newPasswd.value
                                                         Gestores.gestorUsuarios.modificarUsuario(usuario, modificacion)
-                                                        browser.callJsFunction("cerrarSesion({})", "sesion".json)
-                                                        browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(modificacion).json)
-                                                        browser.url.value = "/admin/info/" + Gestores.codificarURL(Gestores.encriptarUsuario(usuario))
+                                                        browser.url.value = "/admin/info/" + Gestores.codificarURL(Gestores.encriptarUsuario(modificacion))
                                                     }
                                                 }
                                             }

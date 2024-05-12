@@ -51,7 +51,8 @@ class Gestores {
         }
 
         fun parsearFecha(fecha: Int): LocalDate {
-            return (LocalDate.parse(fecha.toString(), DateTimeFormatter.ofPattern("ddMMyyyy")))
+            val fechaString = fecha.toString().padStart(8, '0')
+            return LocalDate.parse(fechaString, DateTimeFormatter.ofPattern("ddMMyyyy"))
         }
 
         fun parsearFecha(fecha: String): LocalDate {

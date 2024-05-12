@@ -121,14 +121,47 @@ class GestionarPacientes: IGestorPacientes {
         return paciente
     }
 
-    override fun modificarPermisos(paciente: Paciente, rol: Roles) {
-        TODO("Not yet implemented")
-    }
-
     override fun modificarPaciente(pacienteOriginal: Paciente, datosNuevos: Paciente) {
-        TODO("Not yet implemented")
-    }
+        val paciente = obtenerPaciente(pacienteOriginal.dni)
+        if (paciente != null) {
+            val query = "UPDATE Cliente SET DNI = ?, NOMBRE = ?, APELLIDO = ?, FECHA_NACIMIENTO = ? WHERE DNI = ?"
+            try {
+                val statement = ConexionBD.connection!!.prepareStatement(query)
+                statement.setString(1, datosNuevos.dni)
+                statement.setString(2, datosNuevos.nombre)
+                statement.setString(3, datosNuevos.apellido)
+                statement.setInt(4, Gestores.formatearFecha(datosNuevos.fecha_nacimiento))
+                statement.setString(5, pacienteOriginal.dni)
 
+                var cambios = ""
+                if (datosNuevos.dni != pacienteOriginal.dni) {
+                    cambios = "DNI: ${pacienteOriginal.dni} -> ${datosNuevos.dni}"
+                }
+                if (datosNuevos.nombre != pacienteOriginal.nombre) {
+                    cambios = "Nombre: ${pacienteOriginal.nombre} -> ${datosNuevos.nombre}"
+                }
+                if (datosNuevos.apellido != pacienteOriginal.apellido) {
+                    cambios = "Apellido: ${pacienteOriginal.apellido} -> ${datosNuevos.apellido}"
+                }
+                if (datosNuevos.fecha_nacimiento != pacienteOriginal.fecha_nacimiento) {
+                    cambios = "Fecha_Nacimiento: ${pacienteOriginal.fecha_nacimiento} -> ${datosNuevos.fecha_nacimiento}"
+                }
+
+                val usuario = Gestores.gestorUsuarios.obtenerUsuarioId(paciente.idUsuario)!!
+                val logModificacion = Log(usuario.username, usuario.email, Gestores.fechaActual(), "Se ha modificado el campo $cambios")
+                Gestores.gestorLogs.addLog(logModificacion)
+
+                statement.executeUpdate()
+                statement.close()
+                println(DebugColors.ok() + " Usuario " + DebugColors.magenta(usuario.username) + " modificado con éxito " + DebugColors.cian(cambios))
+            } catch (e: SQLException) {
+                println(DebugColors.error() + " Error al modificar el usuario:")
+                println(DebugColors.amarillo("[${e.errorCode}]") + "${e.message}")
+            }
+        } else {
+            println(DebugColors.error() + " El paciente no existe.")
+        }
+    }
 
     override fun obtenerPacientes(): ArrayList<Paciente> {
         TODO("Not yet implemented")

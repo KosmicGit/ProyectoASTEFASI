@@ -13,8 +13,6 @@ interface IGestorPacientes {
 
     fun obtenerPacienteIdUsuario(idUsuario: Int): Paciente?
 
-    fun modificarPermisos(paciente: Paciente, rol: Roles)
-
     fun modificarPaciente(pacienteOriginal: Paciente, datosNuevos: Paciente)
 
     fun obtenerPacientes(): ArrayList<Paciente>

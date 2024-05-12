@@ -396,7 +396,7 @@ class GestionarUsuarios: IGestorUsuarios {
 
                 statement.executeUpdate()
                 statement.close()
-                println(DebugColors.ok() + " Usuario " + DebugColors.magenta(datosNuevos.username) + " modificado con éxito")
+                println(DebugColors.ok() + " Usuario " + DebugColors.magenta(usuarioOriginal.username) + " modificado con éxito " + DebugColors.cian(cambios))
             } catch (e: SQLException) {
                 println(DebugColors.error() + " Error al modificar el usuario:")
                 println(DebugColors.amarillo("[${e.errorCode}]") + "${e.message}")

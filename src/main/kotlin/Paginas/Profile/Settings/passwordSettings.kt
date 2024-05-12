@@ -132,7 +132,7 @@ fun Component.passwordSettings(usuario: Usuario) {
                                 div {
                                     button {
                                         span {
-                                            i().classes("fa-solid fa-envelope")
+                                            i().classes("fa-solid fa-key")
                                         }.classes("icon is-small")
                                         span().text("Change")
                                         element.on.click {
