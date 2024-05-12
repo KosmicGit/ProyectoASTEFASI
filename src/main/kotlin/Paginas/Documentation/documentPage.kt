@@ -108,20 +108,6 @@ fun Component.documentPage() {
                         li {
                             a{
                                 element.on.click {
-                                    browser.url.value = "/doc/install"
-                                }
-                            }.text("Overview")
-                        }
-                        li {
-                            a{
-                                element.on.click {
-                                    browser.url.value = "/doc/install"
-                                }
-                            }.text("Overview")
-                        }
-                        li {
-                            a{
-                                element.on.click {
                                     browser.url.value = "/doc/credits"
                                 }
                             }.text("Créditos")

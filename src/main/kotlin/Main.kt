@@ -4,10 +4,10 @@ import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Gestion.Gestores
 import es.cifpvirgen.Paginas.Admin.*
 import es.cifpvirgen.Paginas.Admin.Settings.*
-import es.cifpvirgen.Paginas.Documentation.creditsdocPage
+import es.cifpvirgen.Paginas.Documentation.Categories.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
-import es.cifpvirgen.Paginas.Documentation.installdocPage
-import es.cifpvirgen.Paginas.Documentation.usedocPage
+import es.cifpvirgen.Paginas.Documentation.Categories.installdocPage
+import es.cifpvirgen.Paginas.Documentation.Categories.usedocPage
 import es.cifpvirgen.Paginas.Downloads.downloadsPage
 import es.cifpvirgen.Paginas.Home.homePage
 import es.cifpvirgen.Paginas.Login.loginPage
@@ -443,6 +443,22 @@ fun main() {
                         } else {
                             url.value = "/login"
                         }
+                    }
+                }
+
+                // URL "/profile/settings/email/verify"
+                path("/profile/settings/email/verify/{activateID}") { params ->
+                    val activateID = params.getValue("activateID").value
+                    if (activateID != "") {
+                        val usuarioModificado = Gestores.desencriptarUsuario(Gestores.decodificarURL(activateID))
+                        val checkUser = Gestores.gestorUsuarios.obtenerUsuario(usuarioModificado.username)
+                        if (checkUser != null) {
+                            emailVerify(usuarioModificado)
+                        } else {
+                            url.value = "/login"
+                        }
+                    } else {
+                        url.value = "/login"
                     }
                 }
 

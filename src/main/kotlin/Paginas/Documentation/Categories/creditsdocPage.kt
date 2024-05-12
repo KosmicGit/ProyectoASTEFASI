@@ -1,4 +1,4 @@
-package es.cifpvirgen.Paginas.Documentation
+package es.cifpvirgen.Paginas.Documentation.Categories
 
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*

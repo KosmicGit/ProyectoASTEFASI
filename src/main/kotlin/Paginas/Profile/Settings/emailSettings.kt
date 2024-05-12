@@ -122,6 +122,7 @@ fun Component.emailSettings(usuario: Usuario) {
                             }.classes("title has-text-white")
                             element("hr")
                             p { element.text("Introduzca su nuevo correo electronico.") }
+                            p { element.text("Le enviaremos un correo a la nueva dirección para confirmar el cambio.") }
                             br()
                             input(type = InputType.text) {
                                 element.classes("input is-normal")
@@ -153,13 +154,12 @@ fun Component.emailSettings(usuario: Usuario) {
                                                 browser.callJsFunction("mostrarNoti({})", "Introduzca una dirección de correo".json)
                                             } else {
                                                 if (Gestores.gestorUsuarios.obtenerUsuarioMail(newMail.value) == null) {
-                                                    //TODO("Mail de verificacion para el nuevo correo")
+                                                    browser.callJsFunction("mostrarNoti({})", "Revise la bandeja de su Correo Electronico.".json)
                                                     val modificacion = usuario.copy()
                                                     modificacion.email = newMail.value
-                                                    Gestores.gestorUsuarios.modificarUsuario(usuario, modificacion)
-                                                    browser.callJsFunction("cerrarSesion({})", "sesion".json)
-                                                    browser.callJsFunction("guardarCookie({})", Gestores.encriptarUsuario(modificacion).json)
-                                                    browser.callJsFunction("mostrarNoti({})", "Usuario actualizado correctamente.".json)
+                                                    Gestores.gestorMail.enviarCorreo(modificacion.email, "AsTeFaSi: Confirme su nuevo Correo.", "<img src='https://i.ibb.co/ysYXs7D/logo3.png' width='300'><hr>" +
+                                                            "<h1>¡Hola! ${usuario.username}!</h1>" + "<p>Utilice el siguiente enlace para veriricar su nueva dirección de correo:</p>" + "<a href='http://localhost:8080/profile/settings/email/verify/${Gestores.codificarURL(Gestores.encriptarUsuario(modificacion))}'>Verifica tu nueva dirección aqui.</a>" +
+                                                            "<p>Si Usted no ha solicitado ningún cambio de dirección, puede ignorar este mensaje.</p>")
                                                     browser.url.value = "/profile/settings"
                                                 } else {
                                                     browser.callJsFunction("mostrarNoti({})", "El usuario ya existe.".json)
