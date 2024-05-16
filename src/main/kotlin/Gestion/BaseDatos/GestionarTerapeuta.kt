@@ -106,7 +106,7 @@ class GestionarTerapeuta : IGestorTerapeuta {
             SELECT S.ID_SESION, S.FECHA_SESION FECHA, C.NOMBRE, C.APELLIDO, S.SESION_FAMILIAR  
             FROM SESION S
             INNER JOIN CLIENTE C ON C.DNI = S.INDIVIDUO_DNI
-            WHERE S.TERAPEUTA_ID_TERAPEUTA = ?
+            WHERE S.ID_TERAPEUTA = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setInt(1, terapeuta.idTerapeuta)
