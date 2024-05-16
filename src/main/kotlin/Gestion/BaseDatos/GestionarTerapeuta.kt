@@ -1,5 +1,7 @@
 package es.cifpvirgen.Gestion.BaseDatos
 
+import es.cifpvirgen.Datos.Cliente
+import es.cifpvirgen.Datos.Familia
 import es.cifpvirgen.Datos.Sesion
 import es.cifpvirgen.Datos.Terapeuta
 import es.cifpvirgen.Gestion.Inputs.IGestorTerapeuta
@@ -151,5 +153,128 @@ class GestionarTerapeuta : IGestorTerapeuta {
             rs?.close()
         }
         return true
+    }
+
+    /**
+     * Funcion para crear familia
+     *
+     * @param nombre
+     * @return true si a funcionado correctamente o false si falla en alguna parte del proceso
+     */
+    override fun aniadirFamilia(nombre : String) :Boolean {
+        val query =
+            """
+            INSERT INTO FAMILIA(NOMBRE_FAMILIA)
+            VALUES(?) 
+            """
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        var rs : ResultSet? = null
+        try {
+            statement.setString(1, nombre)
+            rs = statement.executeQuery()!!
+        } catch (e : Exception) {
+            return false
+        } finally {
+            statement.close()
+            rs?.close()
+        }
+        return true
+    }
+
+    /**
+     * Funcion para añadir clientes a la familia
+     *
+     * @param familia
+     * @param cliente
+     * @param parentesco
+     * @return true si a funcionado correctamente o false si falla en alguna parte del proceso
+     */
+    override fun aniadirFamiliar(familia: Familia, cliente: Cliente, parentesco : Int): Boolean {
+        val query =
+            """
+            INSERT INTO CLIENTE_FAMILIA(INDIVIDUO_DNI,ID_FAMILIA,ID_PARENTESCO)
+            VALUES(?,?,?) 
+            """
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        var rs : ResultSet? = null
+        try {
+            statement.setString(1, cliente.dni)
+            statement.setInt(2, familia.id)
+            statement.setInt(3, parentesco)
+            rs = statement.executeQuery()!!
+        } catch (e : Exception) {
+            return false
+        } finally {
+            statement.close()
+            rs?.close()
+        }
+        return true
+    }
+
+    /**
+     * Funcion para ver todas las familias
+     *
+     * @return Retorna un ArrayList con las familias
+     */
+    override fun verFamilias(): ArrayList<Familia> {
+        val query = """
+            SELECT ID_FAMILIA, NOMBRE_FAMILIA
+            FROM FAMILIA
+            """
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        val rs = statement.executeQuery()!!
+        val familias = ArrayList<Familia>()
+        try {
+            while (rs.next()) {
+                val familia = Familia(rs.getInt("ID_FAMILIA"), rs.getString("NOMBRE_FAMILIA"))
+                familias.add(familia)
+            }
+        } catch (_: Exception) {
+
+        } finally {
+            statement.close()
+            rs.close()
+        }
+        return familias
+    }
+
+    /**
+     * Funcion para ver todas las familias de un cliente
+     *
+     * @param cliente
+     * @return Retorna una lista con los integrantes de la familia del cliente
+     */
+    override fun verFamiliaCliente(cliente : Cliente) : ArrayList<Familia> {
+        val query = """
+            SELECT * , F.NOMBRE_FAMILIA, P.NOMBRE_PARENTESCO
+            FROM CLIENTE_FAMILIA CF
+            INNER JOIN PARENTESCO P INTO CF.ID_PARENTECO = P.PARENTESCO
+            INNER JOIN FAMILIA F INTO CF.ID_FAMILIA = C.ID_FAMILIA
+            WHERE C.CLIENTE = ?
+            """
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        statement.setString(1, cliente.dni)
+        val rs = statement.executeQuery()!!
+        val familia = ArrayList<Familia>()
+        try {
+            if (rs.next()) {
+                while(rs.next()) {
+                    val familiar = Familia (
+                        rs.getInt("ID_FAMILIA"),
+                        rs.getString("NOOMBRE_FAMILIA"),
+                        rs.getString("INDIVIDUO_DNI"),
+                        rs.getString("NOMBRE_PARENTESCO")
+                    )
+                    familia.add(familiar)
+                }
+
+            }
+        } catch (_: Exception) {
+
+        } finally {
+            statement.close()
+            rs.close()
+        }
+        return familia
     }
 }

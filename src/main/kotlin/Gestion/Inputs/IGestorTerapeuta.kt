@@ -1,6 +1,8 @@
 package es.cifpvirgen.Gestion.Inputs
 
 
+import es.cifpvirgen.Datos.Cliente
+import es.cifpvirgen.Datos.Familia
 import es.cifpvirgen.Datos.Sesion
 import es.cifpvirgen.Datos.Terapeuta
 
@@ -11,4 +13,8 @@ interface IGestorTerapeuta {
     fun borrarSesion (sesion: Sesion) : Boolean
     fun historicoCitasTerapeuta (terapeuta: Terapeuta) : ArrayList<Sesion>
     fun modificarDatos (terapeuta : Terapeuta) : Boolean
+    fun aniadirFamilia(nombre : String) : Boolean
+    fun aniadirFamiliar(familia: Familia, cliente: Cliente, parentesco : Int) : Boolean
+    fun verFamilias() : ArrayList<Familia>
+    fun verFamiliaCliente(cliente: Cliente) : ArrayList<Familia>
 }
