@@ -238,22 +238,23 @@ class GestionarTerapeuta : IGestorTerapeuta {
         return familias
     }
 
+
     /**
      * Funcion para ver todas las familias de un cliente
      *
-     * @param cliente
+     * @param dni
      * @return Retorna una lista con los integrantes de la familia del cliente
      */
-    override fun verFamiliaCliente(cliente : Cliente) : ArrayList<Familia> {
+    override fun verFamilia(dni:String) : ArrayList<Familia> {
         val query = """
-            SELECT * , F.NOMBRE_FAMILIA, P.NOMBRE_PARENTESCO
+            SELECT CF.ID_FAMILIA, CF.INDIVIDUO_DNI , F.NOMBRE_FAMILIA, P.NOMBRE_PARENTESCO
             FROM CLIENTE_FAMILIA CF
             INNER JOIN PARENTESCO P INTO CF.ID_PARENTECO = P.PARENTESCO
             INNER JOIN FAMILIA F INTO CF.ID_FAMILIA = C.ID_FAMILIA
             WHERE C.CLIENTE = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
-        statement.setString(1, cliente.dni)
+        statement.setString(1, dni)
         val rs = statement.executeQuery()!!
         val familia = ArrayList<Familia>()
         try {
@@ -261,7 +262,47 @@ class GestionarTerapeuta : IGestorTerapeuta {
                 while(rs.next()) {
                     val familiar = Familia (
                         rs.getInt("ID_FAMILIA"),
-                        rs.getString("NOOMBRE_FAMILIA"),
+                        rs.getString("NOMBRE_FAMILIA"),
+                        rs.getString("INDIVIDUO_DNI"),
+                        rs.getString("NOMBRE_PARENTESCO")
+                    )
+                    familia.add(familiar)
+                }
+
+            }
+        } catch (_: Exception) {
+
+        } finally {
+            statement.close()
+            rs.close()
+        }
+        return familia
+    }
+
+    /**
+     * Funcion para ver todas las familias de un cliente
+     *
+     * @param id
+     * @return Retorna una lista con los integrantes de la familia del cliente
+     */
+    override fun verFamilia(id: Int): ArrayList<Familia> {
+        val query = """
+            SELECT CF.ID_FAMILIA, CF.INDIVIDUO_DNI , F.NOMBRE_FAMILIA, P.NOMBRE_PARENTESCO
+            FROM CLIENTE_FAMILIA CF
+            INNER JOIN PARENTESCO P INTO CF.ID_PARENTECO = P.PARENTESCO
+            INNER JOIN FAMILIA F INTO CF.ID_FAMILIA = C.ID_FAMILIA
+            WHERE F.ID_FAMILIA = ?
+            """
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        statement.setInt(1, id)
+        val rs = statement.executeQuery()!!
+        val familia = ArrayList<Familia>()
+        try {
+            if (rs.next()) {
+                while(rs.next()) {
+                    val familiar = Familia (
+                        rs.getInt("ID_FAMILIA"),
+                        rs.getString("NOMBRE_FAMILIA"),
                         rs.getString("INDIVIDUO_DNI"),
                         rs.getString("NOMBRE_PARENTESCO")
                     )

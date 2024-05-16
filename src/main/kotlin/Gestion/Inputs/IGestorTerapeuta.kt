@@ -16,5 +16,6 @@ interface IGestorTerapeuta {
     fun aniadirFamilia(nombre : String) : Boolean
     fun aniadirFamiliar(familia: Familia, cliente: Cliente, parentesco : Int) : Boolean
     fun verFamilias() : ArrayList<Familia>
-    fun verFamiliaCliente(cliente: Cliente) : ArrayList<Familia>
+    fun verFamilia(dni : String) : ArrayList<Familia>
+    fun verFamilia(id : Int) : ArrayList<Familia>
 }
