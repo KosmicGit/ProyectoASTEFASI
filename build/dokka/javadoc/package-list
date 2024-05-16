@@ -1,0 +1,23 @@
+$dokka.format:javadoc-v1
+$dokka.linkExtension:html
+$dokka.location:es.cifpvirgen.Data/Usuario.Companion///PointingToDeclaration/es/cifpvirgen/Data/Usuario.Companion.html
+$dokka.location:es.cifpvirgen.Gestion.BaseDatos/ConexionBD.Companion///PointingToDeclaration/es/cifpvirgen/Gestion/BaseDatos/ConexionBD.Companion.html
+$dokka.location:es.cifpvirgen.Gestion.Email/ConexionMail.Companion///PointingToDeclaration/es/cifpvirgen/Gestion/Email/ConexionMail.Companion.html
+$dokka.location:es.cifpvirgen.Gestion.Inputs/DebugColors.Companion///PointingToDeclaration/es/cifpvirgen/Gestion/Inputs/DebugColors.Companion.html
+$dokka.location:es.cifpvirgen.Gestion.Inputs/Gestores.Companion///PointingToDeclaration/es/cifpvirgen/Gestion/Inputs/Gestores.Companion.html
+es.cifpvirgen
+es.cifpvirgen.Data
+es.cifpvirgen.Datos
+es.cifpvirgen.Gestion.BaseDatos
+es.cifpvirgen.Gestion.Email
+es.cifpvirgen.Gestion.Inputs
+es.cifpvirgen.Paginas.Admin
+es.cifpvirgen.Paginas.Documentation
+es.cifpvirgen.Paginas.Downloads
+es.cifpvirgen.Paginas.Home
+es.cifpvirgen.Paginas.Login
+es.cifpvirgen.Paginas.NotFound
+es.cifpvirgen.Paginas.Profile
+es.cifpvirgen.Paginas.Profile.Settings
+es.cifpvirgen.Paginas.Register
+
