@@ -47,9 +47,8 @@ class GestionarTerapeuta : IGestorTerapeuta {
     override fun modificarSesion(sesion: Sesion): Boolean {
         val query =  """
             UPDATE SESION
-            SET 
-            FECHA = ?
-            DNI_INDIVIDUO = ?
+            SET FECHA = ?,
+            DNI_INDIVIDUO = ?,
             FAMILIAR = ?
             WHERE ID_TERAPEUTA = ?
             """
@@ -135,7 +134,7 @@ class GestionarTerapeuta : IGestorTerapeuta {
     override fun modificarDatos(terapeuta: Terapeuta): Boolean {
         val query =  """
             UPDATE TERAPEUTA
-            SET NOMBRE = ?
+            SET NOMBRE = ?,
             APELLIDO = ?
             WHERE ID_TERAPEUTA = ?
             """

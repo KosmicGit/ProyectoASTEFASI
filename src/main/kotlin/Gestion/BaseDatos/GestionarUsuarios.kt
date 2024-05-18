@@ -413,7 +413,7 @@ class GestionarUsuarios: IGestorUsuarios {
                 if (pass == Gestores.encrypt.desencriptar(rs.getString("CLAVE_ACCESO"))) {
                     val idUsuario = rs.getInt("ID_USUARIO")
                     val username = rs.getString("NOMBRE_USUARIO")
-                    val email = rs.getString("EMAIL")
+                    val email = rs.getString("CORREO")
                     val password = Gestores.encrypt.desencriptar(rs.getString("CLAVE_ACCESO"))
                     val rol: Roles = if (rs.getInt("ROL") == 1) {
                         Roles.TERAPEUTA

@@ -41,9 +41,9 @@ class GestionarClientes : IGestorCliente {
     override fun modificarDatos(cliente: Cliente) : Boolean {
         val query =  """
             UPDATE CLIENTE
-            SET NOMBRE = ?
-            APELLIDO = ?
-            CAUSA_CITA = ?
+            SET NOMBRE = ?,
+            APELLIDO = ?,
+            CAUSA_CITA = ?,
             WHERE DNI = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
