@@ -19,7 +19,7 @@ class GestionarClientes {
         var cliente : Cliente? = null
         try {
             if (rs.next()) {
-                val clienteEncontrado = Cliente(rs.getString("DNI"), rs.getString("NOMBRE"), rs.getString("CAUSA_CITA"), rs.getString("APELLIDO"), rs.getDate("FECHA_NACIMIENTO"), rs.getInt("ID_USUARIO") )
+                val clienteEncontrado = Cliente(rs.getString("DNI"), rs.getString("NOMBRE"), rs.getString("APELLIDO"), rs.getString("CAUSA_CITA"), rs.getDate("FECHA_NACIMIENTO"), rs.getInt("ID_USUARIO") )
                 cliente = clienteEncontrado
             }
         } catch (_ : Exception) {
@@ -45,8 +45,14 @@ class GestionarClientes {
         var cliente : Cliente? = null
         try {
             if (rs.next()) {
-                val dni = rs.getString("DNI")
-                cliente = Cliente(dni, rs.getString("NOMBRE"), rs.getString("CAUSA_CITA"), rs.getString("APELLIDO"), rs.getDate("FECHA_NACIMIENTO"), rs.getInt("ID_USUARIO") )
+                cliente = Cliente(
+                    rs.getString("DNI"),
+                    rs.getString("NOMBRE"),
+                    rs.getString("APELLIDO"),
+                    rs.getString("CAUSA_CITA"),
+                    rs.getDate("FECHA_NACIMIENTO"),
+                    rs.getInt("ID_USUARIO")
+                )
             }
         } catch (_ : Exception) {
 

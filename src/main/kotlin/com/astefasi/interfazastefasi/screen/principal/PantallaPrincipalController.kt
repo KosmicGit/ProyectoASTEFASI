@@ -4,18 +4,22 @@ import com.astefasi.interfazastefasi.Main
 import com.astefasi.interfazastefasi.animation.AnimationHandler
 import com.astefasi.interfazastefasi.gestion.bbdd.ConexionBD
 import com.astefasi.interfazastefasi.gestion.ficheros.CacheFile
+import com.astefasi.interfazastefasi.gestion.ficheros.ConfigFile
 import com.astefasi.interfazastefasi.gestion.inputs.Gestores
 import com.astefasi.interfazastefasi.util.AjustesAplicacion
+import com.astefasi.interfazastefasi.util.data.Sesion
+import com.astefasi.interfazastefasi.util.data.configuracion.Resolucion
+import com.astefasi.interfazastefasi.util.data.family.Familia
 import com.astefasi.interfazastefasi.util.data.user.Cliente
 import com.astefasi.interfazastefasi.util.data.user.Roles
 import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.geometry.Insets
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBox
+import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.PasswordField
 import javafx.scene.control.ScrollPane
@@ -31,6 +35,7 @@ import javafx.scene.text.Font
 import java.net.URL
 import java.sql.Date
 import java.util.*
+import kotlin.collections.ArrayList
 
 class PantallaPrincipalController : Initializable {
 
@@ -63,11 +68,17 @@ class PantallaPrincipalController : Initializable {
     //Paginas individuales
     @FXML
     lateinit var historialSesiones : VBox
+    @FXML
+    lateinit var historialFamilias : VBox
+    @FXML
+    lateinit var historialClientes : VBox
 
     //Botones
     //Barra superior
     @FXML
     lateinit var exitButton : Button
+    @FXML
+    lateinit var resolucionConfig : ComboBox<String>
     //Navegador
     @FXML
     lateinit var homeButton : Button
@@ -86,6 +97,14 @@ class PantallaPrincipalController : Initializable {
     //Inputs fields
     @FXML
     lateinit var emailInput : TextField
+    @FXML
+    lateinit var correoConfigField : TextField
+    @FXML
+    lateinit var nameConfigField : TextField
+    @FXML
+    lateinit var subnameConfigField : TextField
+    @FXML
+    lateinit var passwordConfigField : PasswordField
     @FXML
     lateinit var passwordInput : PasswordField
     @FXML
@@ -106,6 +125,8 @@ class PantallaPrincipalController : Initializable {
         imageLogin1.fitHeightProperty().bind(AjustesAplicacion.mainStage.heightProperty())
         imageLogin2.fitWidthProperty().bind(AjustesAplicacion.mainStage.widthProperty().multiply(0.9))
         imageLogin2.fitHeightProperty().bind(AjustesAplicacion.mainStage.heightProperty())
+
+        resolucionConfig.items.addAll("Adaptada (Recomendable)", "1920x1080", "1080x720")
 
         emailInput.text = CacheFile.cacheUsuario.email
         passwordInput.text = CacheFile.cacheUsuario.password
@@ -152,17 +173,26 @@ class PantallaPrincipalController : Initializable {
                 Main.usuario = usuario
                 if (!guardarContraseña) password = ""
 
+                correoConfigField.text = usuario.email
+                passwordConfigField.text = usuario.password
+
                 if (usuario.rol == Roles.ADMINISTRADOR) {
                     familyButton.text = "Administracion"
                     val admin = Cliente("xxxxx", "Administrador", "", "Ninguna", Date(0), usuario.idUsuario)
                     Main.cliente = admin
+                    nameConfigField.text = Main.cliente!!.nombre
+                    subnameConfigField.text = Main.cliente!!.apellido
                 }else if (usuario.rol == Roles.TERAPEUTA) {
                     familyButton.text = "Clientes"
                     val terapeuta = Gestores.gestorTerapeuta.conseguirTerapeutaPorIdUsuario(usuario.idUsuario)
                     Main.terapeuta = terapeuta
+                    nameConfigField.text = Main.terapeuta!!.nombre
+                    subnameConfigField.text = Main.terapeuta!!.apellido
                 }else {
                     val cliente = Gestores.gestorClientes.conseguirClientePorId(usuario.idUsuario)
                     Main.cliente = cliente
+                    nameConfigField.text = Main.cliente!!.nombre
+                    subnameConfigField.text = Main.cliente!!.apellido
                 }
 
                 Main.cache.cambiarEmail(email)
@@ -173,6 +203,27 @@ class PantallaPrincipalController : Initializable {
                     configImage.image = Image(Gestores.gestorUsuarios.obtenerFoto(usuario))
                 }
                 AnimationHandler.fadeAnimation(loginPage, mainPage)
+            }
+        }
+    }
+
+    @FXML
+    fun cambiarResolucion() {
+        when (resolucionConfig.selectionModel.selectedIndex) {
+            0 -> {
+                AjustesAplicacion.mainStage.width = Resolucion.ADAPTADA.anchura
+                AjustesAplicacion.mainStage.height = Resolucion.ADAPTADA.altura
+                Main.configuracion.cambiarResolucion(Resolucion.ADAPTADA)
+            }
+            1 -> {
+                AjustesAplicacion.mainStage.width = Resolucion.FULLHD.anchura
+                AjustesAplicacion.mainStage.height = Resolucion.FULLHD.altura
+                Main.configuracion.cambiarResolucion(Resolucion.FULLHD)
+            }
+            2 -> {
+                AjustesAplicacion.mainStage.width = Resolucion.HD.anchura
+                AjustesAplicacion.mainStage.height = Resolucion.HD.altura
+                Main.configuracion.cambiarResolucion(Resolucion.HD)
             }
         }
     }
@@ -269,6 +320,24 @@ class PantallaPrincipalController : Initializable {
         exitButton.style = "-fx-background-color: transparent"
     }
 
+    private fun updateClients() {
+        historialClientes.children.clear()
+        val clientes = Gestores.gestorTerapeuta.obtenerClientes()
+        clientes.forEach { cliente ->
+            val hbox = createClient(cliente)
+            historialClientes.children.add(hbox)
+        }
+    }
+
+    private fun updateFamilies() {
+        historialFamilias.children.clear()
+        val familia = Gestores.gestorTerapeuta.verFamilia(Main.cliente!!.dni)
+        if (familia.isNotEmpty()) {
+            val vbox = createFamily(familia)
+            historialFamilias.children.add(vbox)
+        }
+    }
+
     private fun updateSessions() {
         historialSesiones.children.clear()
         if (Main.cliente != null) {
@@ -279,19 +348,85 @@ class PantallaPrincipalController : Initializable {
                     activa = "Pendiente"
                 }
                 val terapeuta = Gestores.gestorTerapeuta.conseguirTerapeutaPorIdTerapeuta(sesion.idTerapeuta)
-                val miembros = arrayListOf(Gestores.gestorClientes.conseguirClientePorDNI(sesion.dniCliente)!!.nombre)
+                val miembros = ArrayList<String>()
                 if (sesion.familiar == 1) {
                     Gestores.gestorTerapeuta.verFamilia(sesion.dniCliente).forEach {fam ->
                         miembros.add(Gestores.gestorClientes.conseguirClientePorDNI(fam.dni)!!.nombre)
                     }
+                }else {
+                    miembros.add(Gestores.gestorClientes.conseguirClientePorDNI(sesion.dniCliente)!!.nombre)
                 }
                 historialSesiones.children.add(createVisualSession(fecha, activa, terapeuta!!.nombre, miembros))
             }
-        }else if (Main.terapeuta != null) {
-
         }else {
-
+            Gestores.gestorTerapeuta.historicoCitasTerapeuta(Main.terapeuta!!).forEach { sesion ->
+                val fecha = "${sesion.fecha.toLocalDate().year}-${sesion.fecha.toLocalDate().month.value}-${sesion.fecha.toLocalDate().dayOfMonth}"
+                var activa = "Realizada"
+                if (sesion.activa == 1) {
+                    activa = "Pendiente"
+                }
+                val terapeuta = Gestores.gestorTerapeuta.conseguirTerapeutaPorIdTerapeuta(sesion.idTerapeuta)
+                val miembros = ArrayList<String>()
+                if (sesion.familiar == 1) {
+                    Gestores.gestorTerapeuta.verFamilia(sesion.dniCliente).forEach {fam ->
+                        miembros.add(Gestores.gestorClientes.conseguirClientePorDNI(fam.dni)!!.nombre)
+                    }
+                }else {
+                    miembros.add(Gestores.gestorClientes.conseguirClientePorDNI(sesion.dniCliente)!!.nombre)
+                }
+                historialSesiones.children.add(createVisualSessionTerapeuta(fecha, activa, terapeuta!!.nombre, miembros, sesion.idSesion))
+            }
         }
+    }
+
+    private fun createClient(cliente : Cliente) : HBox {
+        val hbox = HBox()
+        hbox.spacing = 30.0
+        hbox.alignment = Pos.CENTER
+        hbox.style = "-fx-background-color: #0cf574; -fx-background-radius: 50;"
+
+        val clienteInfo = Label()
+        clienteInfo.font = Font("System Bold", 21.0)
+        clienteInfo.text = "${cliente.nombre} ${cliente.apellido} - ${cliente.dni} - "
+
+        val darCita = Button()
+        darCita.style = "-fx-background-color: #FFFFFF; -fx-background-radius: 50;"
+        darCita.text = "Dar Cita"
+        darCita.setOnAction {
+            val currentTime = System.currentTimeMillis()
+            val tiempoAniadir = 7 * 86400000L
+
+            val sesion = Sesion(0, cliente.dni, Main.terapeuta!!.idTerapeuta, Date(currentTime + tiempoAniadir), 0, 1)
+            Gestores.gestorTerapeuta.insertarSesion(sesion, cliente.dni, Main.terapeuta!!.idTerapeuta)
+        }
+
+        hbox.children.addAll(clienteInfo, darCita)
+        return hbox
+    }
+
+    private fun createFamily(miembros : ArrayList<Familia>): VBox {
+        val vbox = VBox()
+        vbox.spacing = 10.0
+        vbox.alignment = Pos.CENTER
+        vbox.style = "-fx-background-color: #0cf574; -fx-background-radius: 50;"
+
+        val labelFamilia = Label()
+        labelFamilia.font = Font("System Bold", 21.0)
+        labelFamilia.text = "Miembros"
+
+        vbox.children.add(labelFamilia)
+
+        miembros.forEach { miembros ->
+            val miembro = Gestores.gestorClientes.conseguirClientePorDNI(miembros.dni)
+
+            val labelMiembro = Label()
+            labelMiembro.font = Font("System Bold", 18.0)
+            labelMiembro.text = "${miembro!!.nombre} ${miembro!!.apellido} - ${miembros.parentesco}"
+
+            vbox.children.add(labelMiembro)
+        }
+
+        return vbox
     }
 
     private fun createVisualSession(fecha : String, estado : String, terapeuta : String, miembros : ArrayList<String>) : HBox {
@@ -302,7 +437,7 @@ class PantallaPrincipalController : Initializable {
         if (estado == "Pendiente") {
             hbox.style = "-fx-background-color: #0cf574; -fx-background-radius: 50;"
         }else {
-            hbox.style = "-fx-background-color: #0cf574; -fx-background-radius: 50;"
+            hbox.style = "-fx-background-color: #a83832; -fx-background-radius: 50;"
         }
 
         val labelFecha = Label()
@@ -337,7 +472,7 @@ class PantallaPrincipalController : Initializable {
         return hbox
     }
 
-    private fun createVisualSessionAdmin(fecha : String, estado : String, terapeuta : String, miembros : ArrayList<String>, mensaje : String) : HBox {
+    private fun createVisualSessionTerapeuta(fecha : String, estado : String, terapeuta : String, miembros : ArrayList<String>, id : Int) : HBox {
         val hbox = HBox()
         hbox.spacing = 30.0
         hbox.alignment = Pos.CENTER
@@ -345,7 +480,7 @@ class PantallaPrincipalController : Initializable {
         if (estado == "Pendiente") {
             hbox.style = "-fx-background-color: #0cf574; -fx-background-radius: 50;"
         }else {
-            hbox.style = "-fx-background-color: #0cf574; -fx-background-radius: 50;"
+            hbox.style = "-fx-background-color: #a83832; -fx-background-radius: 50;"
         }
 
         val labelFecha = Label()
@@ -370,9 +505,10 @@ class PantallaPrincipalController : Initializable {
 
         val anularCita = Button()
         anularCita.style = "-fx-background-color: #FFFFFF; -fx-background-radius: 50;"
-        anularCita.text = mensaje
+        anularCita.text = "Anular Cita"
         anularCita.setOnAction {
-
+            Gestores.gestorTerapeuta.borrarSesion(id)
+            this.updateSessions()
         }
 
         val separator1 = Separator()
@@ -427,10 +563,12 @@ class PantallaPrincipalController : Initializable {
                     Roles.PACIENTE -> {
                         familyPage.isVisible = true
                         familyPage.isDisable = false
+                        this.updateFamilies()
                     }
                     Roles.TERAPEUTA -> {
                         clientsPage.isVisible = true
                         clientsPage.isDisable = false
+                        this.updateClients()
                     }
                     Roles.ADMINISTRADOR -> {
                         adminPage.isVisible = true

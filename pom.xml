@@ -6,7 +6,7 @@
 
     <groupId>com.astefasi</groupId>
     <artifactId>InterfazASTEFASI</artifactId>
-    <version>0.33-SNAPSHOT</version>
+    <version>1.0</version>
     <name>InterfazASTEFASI</name>
 
     <properties>

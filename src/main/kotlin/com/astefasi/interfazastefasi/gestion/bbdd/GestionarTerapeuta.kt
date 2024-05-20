@@ -5,6 +5,7 @@ import com.astefasi.interfazastefasi.util.data.family.Familia
 import com.astefasi.interfazastefasi.util.data.user.Cliente
 import com.astefasi.interfazastefasi.util.data.user.Terapeuta
 import java.sql.ResultSet
+import java.sql.SQLException
 
 class GestionarTerapeuta {
     /**
@@ -67,22 +68,21 @@ class GestionarTerapeuta {
      */
     fun insertarSesion(sesion: Sesion, dni : String, idTerapeuta: Int): Boolean {
         val query =  """
-            INSERT INTO Sesion ( INDIVIDUO_DNI, TERAPEUTA_ID, FECHA_SESION, SESION_FAMILIAR)
-            VALUES(?,?,?,?)
+            INSERT INTO Sesion ( INDIVIDUO_DNI, ID_TERAPEUTA, FECHA_SESION, FAMILIAR, ACTIVA)
+            VALUES(?,?,?,?,?)
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
-        var rs : ResultSet? = null
         try {
             statement.setString(1, dni)
             statement.setInt(2, idTerapeuta)
             statement.setDate(3, sesion.fecha)
             statement.setInt(4, sesion.familiar)
-            rs = statement.executeQuery()!!
+            statement.setInt(5, sesion.activa)
+            statement.executeUpdate()
         } catch (e : Exception) {
             return false
         } finally {
             statement.close()
-            rs?.close()
         }
         return true
     }
@@ -124,21 +124,19 @@ class GestionarTerapeuta {
      * @param sesion
      * @return true si a funcionado correctamente o false si falla en alguna parte del proceso
      */
-    fun borrarSesion(sesion: Sesion): Boolean {
+    fun borrarSesion(idSesion: Int): Boolean {
         val query =  """
             DELETE FROM Sesion
             WHERE ID_SESION = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
-        var rs : ResultSet? = null
         try {
-            statement.setInt(1, sesion.idSesion)
-            rs = statement.executeQuery()!!
+            statement.setInt(1, idSesion)
+            statement.executeUpdate()
         } catch (e : Exception) {
             return false
         } finally {
             statement.close()
-            rs?.close()
         }
         return true
     }
@@ -151,9 +149,8 @@ class GestionarTerapeuta {
      */
     fun historicoCitasTerapeuta(terapeuta: Terapeuta): ArrayList<Sesion> {
         val query = """
-            SELECT S.ID_SESION, S.FECHA_SESION FECHA, C.NOMBRE, C.APELLIDO, S.SESION_FAMILIAR, S.ACTIVA  
+            SELECT S.ID_SESION, S.INDIVIDUO_DNI, S.FECHA_SESION FECHA, S.ID_TERAPEUTA, S.FAMILIAR, S.ACTIVA  
             FROM Sesion S
-            INNER JOIN Cliente C ON C.DNI = S.INDIVIDUO_DNI
             WHERE S.ID_TERAPEUTA = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
@@ -162,7 +159,7 @@ class GestionarTerapeuta {
         val sesiones = ArrayList<Sesion>()
         try {
             while (rs.next()) {
-                val sesion = Sesion(rs.getInt("ID_SESION"),rs.getDate("FECHA"), rs.getString("NOMBRE"), rs.getString("APELLIDO"), rs.getInt("SESION_FAMILIAR"), rs.getInt("ACTIVA"))
+                val sesion = Sesion(rs.getInt("ID_SESION"), rs.getString("INDIVIDUO_DNI"), rs.getInt("ID_TERAPEUTA"), rs.getDate("FECHA"), rs.getInt("FAMILIAR"), rs.getInt("ACTIVA"))
                 sesiones.add(sesion)
             }
         } catch (_: Exception) {
@@ -259,6 +256,34 @@ class GestionarTerapeuta {
         return true
     }
 
+    fun obtenerClientes(): ArrayList<Cliente> {
+        val query = """
+            SELECT * FROM Cliente
+            """
+        val statement = ConexionBD.connection!!.prepareStatement(query)
+        val rs = statement.executeQuery()
+        val clientes = ArrayList<Cliente>()
+        try {
+            while (rs.next()) {
+                val cliente = Cliente(
+                    rs.getString("DNI"),
+                    rs.getString("NOMBRE"),
+                    rs.getString("APELLIDO"),
+                    rs.getString("CAUSA_CITA"),
+                    rs.getDate("FECHA_NACIMIENTO"),
+                    rs.getInt("ID_USUARIO")
+                )
+                clientes.add(cliente)
+            }
+        }catch (_: SQLException) {
+
+        }finally {
+            rs.close()
+            statement.close()
+        }
+        return clientes
+    }
+
     /**
      * Funcion para ver todas las familias
      *
@@ -295,28 +320,25 @@ class GestionarTerapeuta {
      */
     fun verFamilia(dni:String) : ArrayList<Familia> {
         val query = """
-            SELECT CF.ID_FAMILIA, CF.INDIVIDUO_DNI , F.NOMBRE_FAMILIA, P.NOMBRE_PARENTESCO
-            FROM Cliente_familia CF
-            INNER JOIN Parentesco P INTO CF.ID_PARENTECO = P.PARENTESCO
-            INNER JOIN Familia F INTO CF.ID_FAMILIA = C.ID_FAMILIA
-            WHERE C.CLIENTE = ?
+            SELECT CF.ID_FAMILIA, CF.INDIVIDUO_DNI , F.NOMBRE_FAMILIA, P.NOMBRE_PARENTESCO 
+            FROM Cliente_Familia CF 
+            INNER JOIN Parentesco P ON CF.ID_PARENTESCO = P.ID_PARENTESCO 
+            INNER JOIN Familia F ON CF.ID_FAMILIA = F.ID_FAMILIA 
+            WHERE CF.INDIVIDUO_DNI = ?
             """
         val statement = ConexionBD.connection!!.prepareStatement(query)
         statement.setString(1, dni)
         val rs = statement.executeQuery()!!
         val familia = ArrayList<Familia>()
         try {
-            if (rs.next()) {
-                while(rs.next()) {
-                    val familiar = Familia (
-                        rs.getInt("ID_FAMILIA"),
-                        rs.getString("NOMBRE_FAMILIA"),
-                        rs.getString("INDIVIDUO_DNI"),
-                        rs.getString("NOMBRE_PARENTESCO")
-                    )
-                    familia.add(familiar)
-                }
-
+            while(rs.next()) {
+                val familiar = Familia (
+                    rs.getInt("ID_FAMILIA"),
+                    rs.getString("NOMBRE_FAMILIA"),
+                    rs.getString("INDIVIDUO_DNI"),
+                    rs.getString("NOMBRE_PARENTESCO")
+                )
+                familia.add(familiar)
             }
         } catch (_: Exception) {
 
