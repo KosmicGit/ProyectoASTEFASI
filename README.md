@@ -3,3 +3,5 @@
 
 ## Rama para almacenar ficheros en CDN
 
+Mediante GitHack (https://raw.githack.com/) podemos obtener ficheros desde un repositorio como si de un CDN se tratase.
+
