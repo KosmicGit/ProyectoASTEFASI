@@ -42,9 +42,10 @@ class PantallaCargaController {
                             val handler = UpdaterHandler()
                             if (handler.obtenerVersion().toInt() > AjustesAplicacion.VERSION) {
                                 progression.pause()
+                                //TODO
                             }
                         }catch (ex : IOException) {
-                            println("No ha podido conectarse al github")
+                            println("No ha podido conectarse al github o se ha producido un error.")
                         }
                     }
                     //Intenta conectar con la base de datos.

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -8,11 +9,16 @@
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="300.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.astefasi.interfazastefasi.screen.carga.PantallaCargaController">
    <children>
       <Circle fill="#ffffff00" radius="91.0" stroke="#1a5fff" strokeType="INSIDE" strokeWidth="20.0" StackPane.alignment="TOP_CENTER" />
-      <ProgressIndicator fx:id="chargeBar" blendMode="SRC_ATOP" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" progress="0.0" style="-fx-border-color: #5555FF; -fx-background-color: transparent;" StackPane.alignment="TOP_CENTER" />
+      <ProgressIndicator fx:id="chargeBar" blendMode="SRC_ATOP" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" progress="0.0" style="-fx-border-color: #FFFFFF; -fx-background-color: transparent; -fx-accent: linear-gradient(to left, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1); -fx-control-inner-background: #DDDDDD;" StackPane.alignment="TOP_CENTER" />
       <Label fx:id="chargeIndicator" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Cargando..." textAlignment="CENTER" StackPane.alignment="BOTTOM_CENTER">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
+      <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="70.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+         <image>
+            <Image url="@images/logo_astefasi.png" />
+         </image>
+      </ImageView>
    </children>
 </StackPane>

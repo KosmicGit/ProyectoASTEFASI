@@ -202,7 +202,7 @@ class GestionarUsuarios {
      * @return El objeto Usuario correspondiente al correo electrónico proporcionado, o null si no se encuentra en la base de datos.
      */
     fun obtenerUsuarioMail(email : String) : Usuario? {
-        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE email = ?")
+        val statement = ConexionBD.connection!!.prepareStatement("SELECT * FROM Usuario WHERE CORREO = ?")
         statement.setString(1, email)
         val resultSet = statement.executeQuery()
 
@@ -210,20 +210,20 @@ class GestionarUsuarios {
 
         try {
             if (resultSet.next()) {
-                val idUsuario = resultSet.getInt("idUsuario")
-                val username = resultSet.getString("username")
-                val email = resultSet.getString("email")
-                val password = Gestores.encrypt.desencriptar(resultSet.getString("password"))
+                val idUsuario = resultSet.getInt("ID_USUARIO")
+                val username = resultSet.getString("NOMBRE_USUARIO")
+                val email = resultSet.getString("CORREO")
+                val password = Gestores.encrypt.desencriptar(resultSet.getString("CLAVE_ACCESO"))
                 var rol: Roles
-                if (resultSet.getInt("rol") == 1) {
+                if (resultSet.getInt("ROL") == 1) {
                     rol = Roles.TERAPEUTA
-                } else if (resultSet.getInt("rol") == 2){
+                } else if (resultSet.getInt("ROL") == 2){
                     rol = Roles.ADMINISTRADOR
                 } else {
                     rol = Roles.PACIENTE
                 }
                 var verificado = false
-                if (resultSet.getInt("verificado") == 1) {
+                if (resultSet.getInt("VERIFICADO") == 1) {
                     verificado = true
                 }
 
@@ -264,7 +264,7 @@ class GestionarUsuarios {
         var fotoBase64: String? = null
 
         try {
-            val statement = ConexionBD.connection!!.prepareStatement("SELECT foto_perfil FROM Usuario WHERE email = ?")
+            val statement = ConexionBD.connection!!.prepareStatement("SELECT foto_perfil FROM Usuario WHERE correo = ?")
             statement.setString(1, usuario.email)
             val resultSet = statement.executeQuery()
 

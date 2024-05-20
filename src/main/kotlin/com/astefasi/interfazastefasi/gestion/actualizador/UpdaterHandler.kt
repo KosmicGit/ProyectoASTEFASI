@@ -16,7 +16,7 @@ class UpdaterHandler {
     val repositorio = github.getRepository("$OWNER/$REPOSITORY_NAME")
 
     fun obtenerVersion() : String {
-        val ultimoRelease = repositorio.latestRelease
+        val ultimoRelease = repositorio.latestRelease ?: return "0"
         return ultimoRelease.tagName
     }
 
