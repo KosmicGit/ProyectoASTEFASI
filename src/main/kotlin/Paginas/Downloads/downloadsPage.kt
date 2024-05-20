@@ -131,7 +131,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                                                                 i().classes("fa-solid fa-download")
                                                             }.classes("icon")
                                                             span().text("Download")
-                                                            element.href = "https://rawcdn.githack.com/KosmicGit/ProyectoASTEFASI/fc948926d86f973b4c1507d98f1a14818c310470/DatMaker_Setup.exe"
+                                                            element.href = "https://rawcdn.githack.com/KosmicGit/ProyectoASTEFASI/1cdea82c37bc6b1d7e0e78f5fc840d6e1820421f/Sessions_Setup.exe"
                                                         }.classes("button is-warning is-inverted")
                                                     }
                                                 }.classes("column is-4")
@@ -145,7 +145,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                                                         div {
                                                             p {
                                                                 element.text("MD5 (")
-                                                                element("u").text("b02a6dad79aa82b8528958407c41a1a8")
+                                                                element("u").text("6854a7f02a6e9ed8c4fae4f50a499428")
                                                                 element.addText(")")
                                                             }
                                                         }.classes("colum")
