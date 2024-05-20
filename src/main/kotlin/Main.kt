@@ -3,6 +3,9 @@ package es.cifpvirgen
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Gestion.Gestores
 import es.cifpvirgen.Paginas.Admin.*
+import es.cifpvirgen.Paginas.Admin.Lists.adminList
+import es.cifpvirgen.Paginas.Admin.Lists.clientList
+import es.cifpvirgen.Paginas.Admin.Lists.therapistList
 import es.cifpvirgen.Paginas.Admin.Settings.*
 import es.cifpvirgen.Paginas.Documentation.Categories.creditsdocPage
 import es.cifpvirgen.Paginas.Documentation.documentPage
@@ -112,6 +115,29 @@ fun main() {
                         } else {
                             url.value = "/login"
                         }
+                    }
+                }
+
+                // URL "/admin/add/{user}"
+                path("/admin/add/{user}") { params ->
+                    val user = params.getValue("user").value
+                    if (user != "") {
+                        elementScope().launch {
+                            val comprobarCookie = CookieReceiver(browser).getString("sesion")
+                            if (comprobarCookie != null) {
+                                val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
+                                if (usercheck.verificado && usercheck.rol == Roles.ADMINISTRADOR) {
+                                    val usuario = Gestores.desencriptarUsuario(Gestores.decodificarURL(user))
+                                    addPage(usuario)
+                                } else {
+                                    url.value = "/login"
+                                }
+                            } else {
+                                url.value = "/login"
+                            }
+                        }
+                    } else {
+                        url.value = "/admin"
                     }
                 }
 

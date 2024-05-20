@@ -70,12 +70,14 @@ fun Component.usedocPage() {
         div {
             div {
                 div {
-                    p { element.text("AsTeFaSi es un proyecto final para 1º DAW.") }
-                    p { element.text("En él se trata de poner en conocimiento de los docentes, las habilidades adquiridas por los alumnos.") }
-                    p { element.text("Desde Base de Datos hasta Administración de Sistemas, pasando por Lenguajes de Marcas y por supuesto Programación") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
+                    p { element.text("Uso básico")}.classes("title has-text-white")
+                    element("hr")
+                    div {
+                        div {
+                            li().text("AsTeFaSi Sessions: Aplicación de gestion de sesiones terapeuticas.")
+                            li().text("AsTeFaSi DatMaker: Herramienta que encripta credenciales de Servidor JavaMail o SqlServer en un archivo DAT.")
+                        }.classes("column is-8 has-text-left")
+                    }.classes("columns is-centered")
                 }.classes("box")
             }.classes("container has-text-centered hax-text-white")
         }.classes("hero-body")
@@ -101,8 +103,6 @@ fun Component.usedocPage() {
                             }.text("Instalación")
                         }
                         li { a().text("Uso básico") }.classes("is-active")
-                        li { a().text("Overview") }
-                        li { a().text("Overview") }
                         li {
                             a{
                                 element.on.click {

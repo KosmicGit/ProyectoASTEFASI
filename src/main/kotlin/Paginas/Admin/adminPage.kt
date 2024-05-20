@@ -144,7 +144,6 @@ fun Component.adminPage(usuario: Usuario) {
                                             i { element.setAttributes(Pair("aria-hidden", JsonPrimitive("true"))) }.classes("fas fa-search")
                                         }.classes("icon is-left")
                                     }.classes("control has-icons-left")
-                                    a{}
                                     button {
                                         element.text("Editar")
                                         element.on.click {
@@ -158,6 +157,19 @@ fun Component.adminPage(usuario: Usuario) {
                                             }
                                         }
                                     }.classes("button is-warning")
+                                    button {
+                                        span {
+                                            i().classes("fa-solid fa-user-plus")
+                                        }.classes("icon")
+                                        span().text("Añadir")
+                                        element.on.click {
+                                            if (mailUsuario.value == "" || !InputsUsuario.comprobarEmail(mailUsuario.value)) {
+                                                browser.callJsFunction("mostrarNoti({})", "Introduce un correo válido".json)
+                                            } else {
+                                                browser.url.value = "/admin/add/" + Gestores.codificarURL(Gestores.encriptarUsuario(Usuario(idUsuario = 0, username = "", email = mailUsuario.value, password = "", rol = Roles.PACIENTE, true)))
+                                            }
+                                        }
+                                    }.classes("button is-primary")
                                 }.classes("panel-block")
 
                                 p {

@@ -13,7 +13,7 @@ import kweb.util.json
 fun Component.deleteEdit(usuario: Usuario) {
     elementScope().launch {
         val comprobarCookie = CookieReceiver(browser).getString("sesion")!!
-        val usercheck = es.cifpvirgen.Gestion.Gestores.desencriptarUsuario(comprobarCookie)
+        val usercheck = Gestores.desencriptarUsuario(comprobarCookie)
 
         section {
             div {

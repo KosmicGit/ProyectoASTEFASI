@@ -11,7 +11,9 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.sql.*
 
 class Gestores {
 
@@ -50,17 +52,16 @@ class Gestores {
             return URLDecoder.decode(url, StandardCharsets.UTF_8.toString())
         }
 
-        fun parsearFecha(fecha: Int): LocalDate {
-            val fechaString = fecha.toString().padStart(8, '0')
-            return LocalDate.parse(fechaString, DateTimeFormatter.ofPattern("ddMMyyyy"))
+        fun parsearFecha(fecha: Date): LocalDate {
+            return fecha.toLocalDate()
         }
 
         fun parsearFecha(fecha: String): LocalDate {
             return LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         }
 
-        fun formatearFecha(fecha: LocalDate): Int {
-            return fecha.format(DateTimeFormatter.ofPattern("ddMMyyyy")).toInt()
+        fun formatearFecha(fecha: LocalDate): Date {
+            return Date.valueOf(fecha)
         }
 
         fun stringFecha(fecha: LocalDate): String {

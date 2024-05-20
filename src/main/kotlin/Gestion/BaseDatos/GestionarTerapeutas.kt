@@ -49,7 +49,7 @@ class GestionarTerapeutas: IGestorTerapeutas {
                 val id = resultSet.getInt("ID_TERAPEUTA")
                 val nombre = resultSet.getString("NOMBRE")
                 val apellido = resultSet.getString("APELLIDO")
-                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
+                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getDate("FECHA_NACIMIENTO"))
                 val idUsuario = resultSet.getInt("ID_USUARIO")
 
                 terapeuta = Terapeuta(id, nombre, apellido, fecha_nacimiento, idUsuario)
@@ -77,7 +77,7 @@ class GestionarTerapeutas: IGestorTerapeutas {
                 val id = resultSet.getInt("ID_TERAPEUTA")
                 val nombre = resultSet.getString("NOMBRE")
                 val apellido = resultSet.getString("APELLIDO")
-                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
+                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getDate("FECHA_NACIMIENTO"))
 
                 terapeuta = Terapeuta(id, nombre, apellido, fecha_nacimiento, idUsuario)
             }
@@ -100,7 +100,7 @@ class GestionarTerapeutas: IGestorTerapeutas {
                 val statement = ConexionBD.connection!!.prepareStatement(query)
                 statement.setString(1, datosNuevos.nombre)
                 statement.setString(2, datosNuevos.apellidos)
-                statement.setInt(3, Gestores.formatearFecha(datosNuevos.fecha_nacimiento))
+                statement.setDate(3, Gestores.formatearFecha(datosNuevos.fecha_nacimiento))
                 statement.setInt(4, terapeutaOriginal.idUsuario)
 
                 var cambios = ""

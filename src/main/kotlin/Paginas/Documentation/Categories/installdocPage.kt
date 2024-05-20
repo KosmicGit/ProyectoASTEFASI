@@ -70,12 +70,14 @@ fun Component.installdocPage() {
         div {
             div {
                 div {
-                    p { element.text("AsTeFaSi es un proyecto final para 1º DAW.") }
-                    p { element.text("En él se trata de poner en conocimiento de los docentes, las habilidades adquiridas por los alumnos.") }
-                    p { element.text("Desde Base de Datos hasta Administración de Sistemas, pasando por Lenguajes de Marcas y por supuesto Programación") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
-                    p { element.text("\uD83C\uDF08 Empresa de emociones, sentimientos y terapias.\uD83C\uDF24\uFE0F") }
+                    p { element.text("Instalación")}.classes("title has-text-white")
+                    element("hr")
+                    div {
+                        div {
+                            li().text("Después de registrarte en la plataforma, puedes obtener los programas desde la sección Descargas.")
+                            li().text("Una vez descargado el fichero de instalación EXE, basta con ejecutarlo y seguir las intrucciones.")
+                        }.classes("column is-8 has-text-left")
+                    }.classes("columns is-centered")
                 }.classes("box")
             }.classes("container has-text-centered hax-text-white")
         }.classes("hero-body")
@@ -101,8 +103,6 @@ fun Component.installdocPage() {
                                 }
                             }.text("Uso básico")
                         }
-                        li { a().text("Overview") }
-                        li { a().text("Overview") }
                         li {
                             a{
                                 element.on.click {

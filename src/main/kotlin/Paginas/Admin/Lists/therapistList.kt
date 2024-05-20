@@ -1,4 +1,4 @@
-package es.cifpvirgen.Paginas.Admin
+package es.cifpvirgen.Paginas.Admin.Lists
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario

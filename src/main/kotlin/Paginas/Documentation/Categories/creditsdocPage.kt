@@ -229,8 +229,6 @@ fun Component.creditsdocPage() {
                                 }
                             }.text("Uso básico")
                         }
-                        li { a().text("Overview") }
-                        li { a().text("Overview") }
                         li { a().text("Créditos") }.classes("is-active")
                     }
                 }

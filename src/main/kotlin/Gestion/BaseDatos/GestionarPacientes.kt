@@ -18,7 +18,7 @@ class GestionarPacientes: IGestorPacientes {
             statement.setString(1, paciente.dni)
             statement.setString(2, paciente.nombre)
             statement.setString(3, paciente.apellido)
-            statement.setInt(4, Gestores.formatearFecha(paciente.fecha_nacimiento))
+            statement.setDate(4, Gestores.formatearFecha(paciente.fecha_nacimiento))
             statement.setInt(5, paciente.idUsuario)
 
             val usuario = Gestores.gestorUsuarios.obtenerUsuarioId(paciente.idUsuario)
@@ -78,7 +78,7 @@ class GestionarPacientes: IGestorPacientes {
                 val dni = resultSet.getString("DNI")
                 val nombre = resultSet.getString("NOMBRE")
                 val apellido = resultSet.getString("APELLIDO")
-                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
+                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getDate("FECHA_NACIMIENTO"))
                 val idUsuario = resultSet.getInt("ID_USUARIO")
 
                 paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, idUsuario)
@@ -106,7 +106,7 @@ class GestionarPacientes: IGestorPacientes {
                 val dni = resultSet.getString("DNI")
                 val nombre = resultSet.getString("NOMBRE")
                 val apellido = resultSet.getString("APELLIDO")
-                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getInt("FECHA_NACIMIENTO"))
+                val fecha_nacimiento = Gestores.parsearFecha(resultSet.getDate("FECHA_NACIMIENTO"))
 
                 paciente = Paciente(dni, nombre, apellido, fecha_nacimiento, idUsuario)
             }
@@ -130,7 +130,7 @@ class GestionarPacientes: IGestorPacientes {
                 statement.setString(1, datosNuevos.dni)
                 statement.setString(2, datosNuevos.nombre)
                 statement.setString(3, datosNuevos.apellido)
-                statement.setInt(4, Gestores.formatearFecha(datosNuevos.fecha_nacimiento))
+                statement.setDate(4, Gestores.formatearFecha(datosNuevos.fecha_nacimiento))
                 statement.setString(5, pacienteOriginal.dni)
 
                 var cambios = ""

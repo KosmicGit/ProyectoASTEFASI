@@ -1,4 +1,4 @@
-package es.cifpvirgen.Paginas.Admin
+package es.cifpvirgen.Paginas.Admin.Lists
 
 import es.cifpvirgen.Data.Roles
 import es.cifpvirgen.Data.Usuario
@@ -10,7 +10,7 @@ import kweb.components.Component
 import kweb.state.KVar
 import kweb.util.json
 
-fun Component.adminList(usuario: Usuario) {
+fun Component.clientList(usuario: Usuario) {
     section {
         div {
             element("header") {
@@ -165,23 +165,23 @@ fun Component.adminList(usuario: Usuario) {
                                             browser.url.value = "/admin"
                                         }
                                     }
-                                    a { element.text("Administradores") }.classes("is-active")
+                                    a {
+                                        element.text("Administradores")
+                                        element.on.click {
+                                            browser.url.value = "/admin/admins"
+                                        }
+                                    }
                                     a {
                                         element.text("Terapeutas")
                                         element.on.click {
                                             browser.url.value = "/admin/therapists"
                                         }
                                     }
-                                    a {
-                                        element.text("Pacientes")
-                                        element.on.click {
-                                            browser.url.value = "/admin/clients"
-                                        }
-                                    }
+                                    a { element.text("Pacientes") }.classes("is-active")
                                 }.classes("panel-tabs")
                                 val usuarios = Gestores.gestorUsuarios.obtenerUsuarios()
                                 for (i in usuarios) {
-                                    if (i.rol == Roles.ADMINISTRADOR) {
+                                    if (i.rol == Roles.PACIENTE) {
                                         div {
                                             li().text("ID: " + i.idUsuario.toString())
                                             element.addText("  | ")

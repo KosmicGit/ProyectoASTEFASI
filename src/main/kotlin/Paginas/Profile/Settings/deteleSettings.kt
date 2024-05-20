@@ -127,6 +127,7 @@ fun Component.deleteSettings(usuario: Usuario) {
                                 span().text("Detele")
                                 element.on.click {
                                     browser.callJsFunction("mostarNoti({})", "Cuenta de usuario eliminada, hasta más ver ${usuario.username}.".json)
+                                    Gestores.gestorPacientes.borrarPaciente(Gestores.gestorPacientes.obtenerPacienteIdUsuario(usuario.idUsuario)!!)
                                     Gestores.gestorUsuarios.borrarUsuario(usuario)
                                     browser.callJsFunction("cerrarSesion({})", "sesion".json)
                                     browser.url.value = "/"
