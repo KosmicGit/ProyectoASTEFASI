@@ -188,7 +188,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                                                                     i().classes("fa-solid fa-download")
                                                                 }.classes("icon")
                                                                 span().text("Download")
-                                                                element.href = "https://rawcdn.githack.com/KosmicGit/ProyectoASTEFASI/fc948926d86f973b4c1507d98f1a14818c310470/DatMaker_Setup.exe"
+                                                                element.href = "https://rawcdn.githack.com/KosmicGit/ProyectoASTEFASI/88e0755181c890edced1c7deb30dd95829413b01/DatMaker_Setup.exe"
                                                             }.classes("button is-warning is-inverted")
                                                         }
                                                     }.classes("column is-4")
@@ -202,7 +202,7 @@ fun Component.downloadsPage(usuario: Usuario) {
                                                             div {
                                                                 p {
                                                                     element.text("MD5 (")
-                                                                    element("u").text("b02a6dad79aa82b8528958407c41a1a8")
+                                                                    element("u").text("8d9f66556edd80fd4a0c84cd501a23c2")
                                                                     element.addText(")")
                                                                 }
                                                             }.classes("colum")
