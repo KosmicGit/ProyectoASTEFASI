@@ -14,3 +14,5 @@ Herramienta Administrativa realizada en Kotlin y JavaFX en la cual los administr
 # Características
 - Permite encriptar las variables de conexión mediante una clave de cifrado AES
 - Lectura, escritura y creación de archivos DAT
+
+<img src="https://i.ibb.co/w4dqYSv/6.png" width=525>
